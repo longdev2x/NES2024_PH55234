@@ -14,7 +14,7 @@ class AppText10 extends StatelessWidget {
       this.fontWeight,
       this.maxLines = 1,
       this.textAlign,
-      this.color = AppColors.primaryText});
+      this.color});
   @override
   Widget build(context) {
     return Text(
@@ -41,7 +41,7 @@ class AppText14 extends StatelessWidget {
       this.fontWeight,
       this.maxLines = 1,
       this.textAlign,
-      this.color = AppColors.primaryText});
+      this.color});
   @override
   Widget build(context) {
     return Text(
@@ -68,7 +68,7 @@ class AppText16 extends StatelessWidget {
       this.fontWeight,
       this.maxLines = 1,
       this.textAlign,
-      this.color = AppColors.primaryText});
+      this.color});
   @override
   Widget build(context) {
     return Text(
@@ -95,7 +95,7 @@ class AppText20 extends StatelessWidget {
       this.fontWeight,
       this.maxLines = 1,
       this.textAlign,
-      this.color = AppColors.primaryText});
+      this.color});
   @override
   Widget build(context) {
     return Text(
@@ -122,7 +122,7 @@ class AppText24 extends StatelessWidget {
       this.fontWeight = FontWeight.bold,
       this.maxLines = 1,
       this.textAlign,
-      this.color = AppColors.primaryText});
+      this.color});
   @override
   Widget build(context) {
     return Text(
@@ -149,7 +149,7 @@ class AppText26 extends StatelessWidget {
       this.fontWeight = FontWeight.bold,
       this.maxLines = 1,
       this.textAlign,
-      this.color = AppColors.primaryText});
+      this.color});
   @override
   Widget build(context) {
     return Text(
@@ -172,7 +172,7 @@ class AppText28 extends StatelessWidget {
       this.fontWeight = FontWeight.bold,
       this.maxLines = 1,
       this.textAlign,
-      this.color = AppColors.primaryText});
+      this.color});
   @override
   Widget build(context) {
     return Text(
@@ -195,7 +195,7 @@ class AppText34 extends StatelessWidget {
       this.fontWeight = FontWeight.bold,
       this.maxLines = 1,
       this.textAlign,
-      this.color = AppColors.primaryText});
+      this.color});
   @override
   Widget build(context) {
     return Text(
@@ -218,7 +218,7 @@ class AppText40 extends StatelessWidget {
       this.fontWeight = FontWeight.bold,
       this.maxLines = 1,
       this.textAlign,
-      this.color = AppColors.primaryText});
+      this.color});
   @override
   Widget build(context) {
     return Text(

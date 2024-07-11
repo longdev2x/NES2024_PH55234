@@ -79,6 +79,14 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
 
   @override
   Widget build(BuildContext context) {
+    const List<BannerContainer> list = [
+      BannerContainer(imagePath: ImageRes.stepCounterBanner),
+      BannerContainer(imagePath: ImageRes.sleepBanner),
+      BannerContainer(imagePath: ImageRes.gratefulBanner),
+      BannerContainer(imagePath: ImageRes.bmiBanner),
+      BannerContainer(imagePath: ImageRes.yogaBanner),
+      BannerContainer(imagePath: ImageRes.adviseBanner),
+    ];
     return Column(
       children: [
         // banner
@@ -90,11 +98,7 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
             onPageChanged: (index) {
               ref.read(bannerDotsProvider.notifier).changIndex(index);
             },
-            children: const [
-              BannerContainer(imagePath: ImageRes.banner1),
-              BannerContainer(imagePath: ImageRes.banner2),
-              BannerContainer(imagePath: ImageRes.banner3),
-            ],
+            children: list,
           ),
         ),
         SizedBox(height: 5.h),
@@ -106,7 +110,7 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
                 curve: Curves.bounceIn);
           },
           position: ref.watch(bannerDotsProvider),
-          dotsCount: 3,
+          dotsCount: list.length,
           decorator: DotsDecorator(
             size: const Size.square(9),
             activeSize: const Size(20, 8),
@@ -155,7 +159,6 @@ class HomeMenuBar extends ConsumerWidget {
       children: [
         const AppText16(
           'Các tính năng',
-          color: AppColors.primaryText,
           fontWeight: FontWeight.bold,
         ),
         SizedBox(height: 20.h),
@@ -182,22 +185,18 @@ class CourseItemGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final listImage = [
-      ImageRes.banner1,
-      ImageRes.banner2,
-      ImageRes.banner3,
-      ImageRes.banner1,
-      ImageRes.banner2,
-      ImageRes.banner3,
-      ImageRes.banner1,
-      ImageRes.banner2,
-      ImageRes.banner3,
-      ImageRes.banner1,
+      ImageRes.sleepBanner,
+      ImageRes.gratefulBanner,
+      ImageRes.bmiBanner,
+      ImageRes.yogaBanner,
+      ImageRes.stepCounterBanner,
+      ImageRes.adviseBanner
     ];
 
     return GridView.builder(
       physics: const ScrollPhysics(),
       shrinkWrap: true,
-      itemCount: 10,
+      itemCount: listImage.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 15,
@@ -213,6 +212,7 @@ class CourseItemGrid extends ConsumerWidget {
           },
           imagePath: listImage[index],
           boxFit: BoxFit.fitWidth,
+
         );
       },
     );

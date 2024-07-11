@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/components/app_drawer_widget.dart';
 import 'package:nes24_ph55234/common/components/app_search_bar.dart';
+import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/features/home/view/home_widgets.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -24,7 +25,7 @@ class HomeScreen extends ConsumerWidget {
               const HelloText(),
               const UserName(),
               SizedBox(height: 20.h),
-              const AppSearchBar(),
+              AppSearchBar(onTap: () => Navigator.of(context).pushNamed(AppRoutesNames.search),),
               SizedBox(height: 15.h),
               const HomeBanner(),
               SizedBox(height: 15.h),

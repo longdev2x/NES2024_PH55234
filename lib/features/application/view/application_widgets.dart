@@ -4,7 +4,7 @@ import 'package:nes24_ph55234/common/components/app_icon.dart';
 import 'package:nes24_ph55234/features/home/view/home.dart';
 import 'package:nes24_ph55234/features/profile/profile_screens.dart';
 import 'package:flutter/material.dart';
-import 'package:nes24_ph55234/features/search/view/search.dart';
+import 'package:nes24_ph55234/features/search/view/search_screen.dart';
 
 List<BottomNavigationBarItem> bottomTabs = [
   BottomNavigationBarItem(

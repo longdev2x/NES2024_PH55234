@@ -23,7 +23,7 @@ class IsDarkNotifier extends StateNotifier<bool> with WidgetsBindingObserver{
 
   @override
   void didChangePlatformBrightness() {
-    state = WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
+    state = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
     super.didChangePlatformBrightness();
   }
 }

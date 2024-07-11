@@ -35,7 +35,7 @@ class AppSearchBar extends StatelessWidget {
                     width: 240, 
                     height: 40, 
                     action: TextInputAction.search,
-                    hintText: 'Search your course...'),
+                    hintText: 'Tính năng bạn cần...'),
               ),
             ],
           ),
