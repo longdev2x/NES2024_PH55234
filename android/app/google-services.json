@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1084690578262",
+    "project_id": "nes24-ph55234",
+    "storage_bucket": "nes24-ph55234.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084690578262:android:6df3b7babd27d0625c34f7",
+        "android_client_info": {
+          "package_name": "com.example.nes24_ph55234"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVtzdQ0-PKyNzSWqh_SM8ztrv_8RsmLlU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
