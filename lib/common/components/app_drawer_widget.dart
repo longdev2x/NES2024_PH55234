@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/data/repositories/auth_repos.dart';
 
 class AppDrawerWidget extends StatelessWidget {
@@ -22,7 +23,9 @@ class AppDrawerWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(AppRoutesNames.steps);
+            },
             leading: const Icon(Icons.star),
             title: const Text('Đếm số bước chân'),
           ),

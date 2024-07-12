@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -70,23 +72,50 @@ class HomeBanner extends ConsumerStatefulWidget {
 
 class _HomeBannerState extends ConsumerState<HomeBanner> {
   late PageController pageController;
+  int _currentIndex = 0;
+  Timer? timer;
+
+  final List<BannerContainer> list = const [
+    BannerContainer(imagePath: ImageRes.stepCounterBanner),
+    BannerContainer(imagePath: ImageRes.sleepBanner),
+    BannerContainer(imagePath: ImageRes.gratefulBanner),
+    BannerContainer(imagePath: ImageRes.bmiBanner),
+    BannerContainer(imagePath: ImageRes.yogaBanner),
+    BannerContainer(imagePath: ImageRes.adviseBanner),
+  ];
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     pageController = PageController(initialPage: ref.watch(bannerDotsProvider));
+    _startAutoScroll();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  void _startAutoScroll() {
+    timer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
+      if (_currentIndex < list.length - 1) {
+        _currentIndex++;
+      } else {
+        _currentIndex = 0;
+      }
+      pageController.animateToPage(
+        _currentIndex,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+      ref.read(bannerDotsProvider.notifier).changIndex(_currentIndex);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    const List<BannerContainer> list = [
-      BannerContainer(imagePath: ImageRes.stepCounterBanner),
-      BannerContainer(imagePath: ImageRes.sleepBanner),
-      BannerContainer(imagePath: ImageRes.gratefulBanner),
-      BannerContainer(imagePath: ImageRes.bmiBanner),
-      BannerContainer(imagePath: ImageRes.yogaBanner),
-      BannerContainer(imagePath: ImageRes.adviseBanner),
-    ];
+    _currentIndex = ref.watch(bannerDotsProvider);
     return Column(
       children: [
         // banner
@@ -186,8 +215,8 @@ class CourseItemGrid extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final listImage = [
       ImageRes.sleepBanner,
-      ImageRes.gratefulBanner,
       ImageRes.bmiBanner,
+      ImageRes.gratefulBanner,
       ImageRes.yogaBanner,
       ImageRes.stepCounterBanner,
       ImageRes.adviseBanner
@@ -212,7 +241,6 @@ class CourseItemGrid extends ConsumerWidget {
           },
           imagePath: listImage[index],
           boxFit: BoxFit.fitWidth,
-
         );
       },
     );
