@@ -4,14 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_circular_progress.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
+import 'package:nes24_ph55234/data/models/steps_entity.dart';
 
 class StepsMainCircle extends StatelessWidget {
-  const StepsMainCircle({super.key});
+  final StepsEntity objSteps;
+  const StepsMainCircle({super.key, required this.objSteps});
 
   @override
   Widget build(BuildContext context) {
-    return const AppCircularProgressContent(
-      steps: 1000,
+    return AppCircularProgressContent(
+      steps: objSteps.steps,
       targetSteps: 1500,
       date: 'Hôm qua',
       iconPath: ImageRes.clap,
@@ -20,29 +22,37 @@ class StepsMainCircle extends StatelessWidget {
 }
 
 class StepsRowMoreInfor extends StatelessWidget {
-  const StepsRowMoreInfor({super.key});
+  final StepsEntity objSteps;
+  //Giả định target
+  final int targetMetre = 1100;
+  final int targetCaloreis = 100;
+  final int targetMinutes = 150;
+  const StepsRowMoreInfor({super.key, required this.objSteps});
 
   @override
   Widget build(BuildContext context) {
+    final percentMetre = ( objSteps.metre / targetMetre ).clamp(0.0, 1.0);
+    final percentKacl = (objSteps.calories / targetCaloreis).clamp(0.0, 1.0);
+    final percentMinutes = (objSteps.minutes / targetMinutes).clamp(0.0, 1.0);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 36.r),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AppCircularProgressIcon(
-            percent: 0.4,
+            percent: percentMetre,
             iconPath: ImageRes.icBirth,
-            title: '2 km',
+            title: '${objSteps.metre} m',
           ),
           AppCircularProgressIcon(
-            percent: 0.6,
+            percent: percentKacl,
             iconPath: ImageRes.icWork,
-            title: '75 kcal',
+            title: '${objSteps.calories} kcal',
           ),
           AppCircularProgressIcon(
-            percent: 0.4,
+            percent: percentMinutes,
             iconPath: ImageRes.icAlarm,
-            title: '56 phút',
+            title: '${objSteps.minutes} phút',
           ),
         ],
       ),

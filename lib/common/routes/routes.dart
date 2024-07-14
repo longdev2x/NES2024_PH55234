@@ -4,7 +4,7 @@ import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/features/application/view/application.dart';
 import 'package:nes24_ph55234/features/auth/view/auth_screen.dart';
 import 'package:nes24_ph55234/features/onboarding/view/onboarding.dart';
-import 'package:nes24_ph55234/features/steps_counter/view/daily_steps_counter.dart';
+import 'package:nes24_ph55234/features/steps_counter/view/daily_steps_screen.dart';
 import 'package:nes24_ph55234/global.dart';
 
 class AppRoutes {
@@ -28,7 +28,7 @@ class AppRoutes {
       ),
       const RouteEntity(
         path: AppRoutesNames.steps,
-        page: DailyStepsCounterScreen(),
+        page: DailyStepsScreen(),
       ),
     ];
   }

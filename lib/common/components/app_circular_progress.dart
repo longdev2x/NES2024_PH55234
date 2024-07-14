@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_icon.dart';
+import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -41,11 +42,12 @@ class AppCircularProgressIcon extends StatelessWidget {
 }
 
 class AppCircularProgressContent extends StatelessWidget {
-  final double? steps;
-  final double? targetSteps;
+  final int? steps;
+  final int? targetSteps;
   final String? iconPath;
   final String? date;
   final double? radius;
+  final bool? isStart;
   const AppCircularProgressContent({
     super.key,
     this.steps = 0,
@@ -53,18 +55,22 @@ class AppCircularProgressContent extends StatelessWidget {
     this.iconPath,
     this.date,
     this.radius = 130,
+    this.isStart = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    double percent = (steps! / targetSteps!).clamp(0.0, 1.0);
     return CircularPercentIndicator(
       radius: radius!,
-      percent: targetSteps != 0 ? steps! / targetSteps! : 0,
+      percent: targetSteps != 0 ? percent : 0,
       backgroundColor: AppColors.primaryThreeElementText,
       progressColor: AppColors.primaryElement,
       backgroundWidth: 10.r,
       lineWidth: 10.r,
-      center: Column(
+      center: isStart! 
+      ? const AppText40('Được rồi đi thôi!')
+      : Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           iconPath != null ? AppIcon(path: iconPath!) : const SizedBox(),

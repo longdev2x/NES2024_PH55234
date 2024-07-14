@@ -15,13 +15,26 @@ class SharedPreferencesHelper {
   Future<bool> setString(String key, String value) async {
     return await _pref.setString(key, value);
   }
+  String getString(String key) {
+    return _pref.getString(key) ?? '';
+  }
+
+  Future<bool> setInt(String key, int value) async {
+    return await _pref.setInt(key, value);
+  }
+  int? getInt(String key)  {
+    return _pref.getInt(key);
+  }
+
+  Future<bool> setDouble(String key, double value) async {
+    return await _pref.setDouble(key, value);
+  }
+  double? getDouble(String key)  {
+    return _pref.getDouble(key);
+  }
 
   Future<bool> setBool(String key, bool value) async {
     return await _pref.setBool(key, value);
-  }
-
-  String getString(String key) {
-    return _pref.getString(key) ?? '';
   }
 
   String getUserToken() {
