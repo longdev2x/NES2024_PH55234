@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/data/models/steps_entity.dart';
+import 'package:nes24_ph55234/data/models/user_entity.dart';
+import 'package:nes24_ph55234/global.dart';
 import 'package:pedometer/pedometer.dart';
 
 class DailyStepsAsyncNotifier
@@ -10,7 +12,7 @@ class DailyStepsAsyncNotifier
   FutureOr<List<StepsEntity>> build() {
     return _getValueFromApi();
   }
-
+  UserEntity objUser = Global.storageService.getUserProfile();
   Stream<StepCount>? _stepCountStream;
   Stream<PedestrianStatus>? _pedestrianStatusStream;
   StreamSubscription<StepCount>? _stepCountSubscription;
@@ -19,6 +21,7 @@ class DailyStepsAsyncNotifier
   List<StepsEntity> _getValueFromApi() {
     final list = [
       StepsEntity(
+          userId: objUser.id,
           date: DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day),
           steps: 150,
@@ -52,7 +55,7 @@ class DailyStepsAsyncNotifier
 
     StepsEntity newObjSteps;
     if (currentState.isEmpty || !currentState.last.date.isSameDate(today)) {
-      newObjSteps = StepsEntity(date: today, steps: event.steps);
+      newObjSteps = StepsEntity(userId: objUser.id, date: today, steps: event.steps);
       state = AsyncData([...currentState, newObjSteps]);
     } else {
       final updatedSteps = currentState.last.steps + 1;

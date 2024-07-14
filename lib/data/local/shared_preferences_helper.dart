@@ -37,12 +37,13 @@ class SharedPreferencesHelper {
     return await _pref.setBool(key, value);
   }
 
-  String getUserToken() {
-    return _pref.getString(AppConstants.storageUserTokenKey) ?? '';
-  }
-
   bool getDeviceFirstOpen() {
     return _pref.getBool(AppConstants.storageDeviceOpenFirstKey) ?? true;
+  }
+
+  Future<bool> setUserProfile(UserEntity objUser) {
+    var profileJson = jsonEncode(objUser);
+    return _pref.setString(AppConstants.storageUserProfileKey, profileJson);
   }
 
   UserEntity getUserProfile() {

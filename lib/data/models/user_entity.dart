@@ -1,23 +1,27 @@
+import 'package:uuid/uuid.dart';
+
 class UserEntity {
-  final String? id;
-  final String? email;
+  final String id;
+  final String email;
   final String? name;
   final String? avatar;
   final String? gender;
   final double? height;
   final double? weight;
+  final double? bmi;
   final int? age;
 
-  const UserEntity({
-    this.id,
-    this.email,
+  UserEntity({
+    String? id,
+    required this.email,
     this.name,
     this.avatar,
     this.gender,
     this.height,
     this.weight,
+    this.bmi,
     this.age,
-  });
+  }) : id = id ?? const Uuid().v4();
 
   UserEntity copyWith({
     String? email,
@@ -26,6 +30,7 @@ class UserEntity {
     String? gender,
     double? height,
     double? weight,
+    double? bmi,
     int? age,
   }) =>
       UserEntity(
@@ -36,6 +41,7 @@ class UserEntity {
         gender: gender ?? this.gender,
         height: height ?? this.height,
         weight: weight ?? this.weight,
+        bmi: bmi ?? this.bmi,
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,6 +52,7 @@ class UserEntity {
     'gender' : gender,
     'height' : height,
     'weight' : weight,
+    'bmi' : bmi,
     'age' : age,
   };
 
@@ -59,6 +66,7 @@ class UserEntity {
       gender: json['gender'],
       weight: json['weight'],
       height: json['height'],
+      bmi: json['bmi']
     );
   }
   

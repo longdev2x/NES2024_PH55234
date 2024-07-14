@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,22 +29,30 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
     if (status.isGranted) {
       ref.read(stepsCounterProvider.notifier).initPlatformState();
     } else if (status.isDenied) {
-      AppToast.showToast("Không thể phát hiện bước chân khi bạn từ chối", length: Toast.LENGTH_LONG);
+      AppToast.showToast("Không thể phát hiện bước chân khi bạn từ chối",
+          length: Toast.LENGTH_LONG);
     } else if (status.isPermanentlyDenied) {
       // Mở cài đặt để người dùng cấp quyền
       openAppSettings();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final StepsEntity objSteps = ref.watch(stepsCounterProvider);
+    final bool isStarted = ref.watch(onOffStepsCounterProvider);
+
     return Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
-        child: Column(children: [
+      padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
+      child: Column(
+        children: [
           SizedBox(height: 40.h),
-          StepsCounterMainCircle(objSteps: objSteps),
-        ],),
-        );
+          isStarted 
+          ? StepsCounterMainCircle(objSteps: objSteps)
+          : const StepsCounterMainCircleHolder(),
+          
+        ],
+      ),
+    );
   }
 }

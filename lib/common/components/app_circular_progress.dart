@@ -42,6 +42,7 @@ class AppCircularProgressIcon extends StatelessWidget {
 }
 
 class AppCircularProgressContent extends StatelessWidget {
+  final Function()? btnStart;
   final int? steps;
   final int? targetSteps;
   final String? iconPath;
@@ -50,6 +51,7 @@ class AppCircularProgressContent extends StatelessWidget {
   final bool? isStart;
   const AppCircularProgressContent({
     super.key,
+    this.btnStart,
     this.steps = 0,
     this.targetSteps = 1000,
     this.iconPath,
@@ -69,7 +71,11 @@ class AppCircularProgressContent extends StatelessWidget {
       backgroundWidth: 10.r,
       lineWidth: 10.r,
       center: isStart! 
-      ? const AppText40('Được rồi đi thôi!')
+      ? Column(
+        children: [
+          ElevatedButton(onPressed: btnStart, child: const AppText24("Đi Thôi")),
+        ],
+      )
       : Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

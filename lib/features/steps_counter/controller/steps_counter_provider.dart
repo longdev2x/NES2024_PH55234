@@ -2,10 +2,15 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/data/models/steps_entity.dart';
+import 'package:nes24_ph55234/global.dart';
 import 'package:pedometer/pedometer.dart';
 
 class StepsCounterNotifier extends StateNotifier<StepsEntity> {
-  StepsCounterNotifier() : super(StepsEntity(date: DateTime.now()));
+  StepsCounterNotifier()
+      : super(StepsEntity(
+          userId: Global.storageService.getUserProfile().id,
+          date: DateTime.now(),
+        ));
 
   Stream<StepCount>? _stepCountStream;
   Stream<PedestrianStatus>? _pedestrianStatusStream;
@@ -30,17 +35,17 @@ class StepsCounterNotifier extends StateNotifier<StepsEntity> {
   }
 
   void onStepCount(StepCount event) {
-      final updatedSteps = state.steps + 1;
-      final updatedCalories = calculateCalories(updatedSteps);
-      final updatedDistance = calculateMetre(updatedSteps);
-      final updatedDuration = calculateMinutes(updatedSteps);
+    final updatedSteps = state.steps + 1;
+    final updatedCalories = calculateCalories(updatedSteps);
+    final updatedDistance = calculateMetre(updatedSteps);
+    final updatedDuration = calculateMinutes(updatedSteps);
 
-      state = state.copyWith(
-        steps: updatedSteps,
-        calories: updatedCalories,
-        metre: updatedDistance,
-        minutes: updatedDuration,
-      );
+    state = state.copyWith(
+      steps: updatedSteps,
+      calories: updatedCalories,
+      metre: updatedDistance,
+      minutes: updatedDuration,
+    );
   }
 
   void onPedestrianStatusChanged(PedestrianStatus event) {
@@ -81,3 +86,5 @@ class StepsCounterNotifier extends StateNotifier<StepsEntity> {
 final stepsCounterProvider =
     StateNotifierProvider.autoDispose<StepsCounterNotifier, StepsEntity>(
         (ref) => StepsCounterNotifier());
+
+final onOffStepsCounterProvider = StateProvider<bool>((ref) => false);

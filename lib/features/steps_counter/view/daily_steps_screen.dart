@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
-import 'package:nes24_ph55234/common/components/app_global_app_bar.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/features/steps_counter/controller/daily_step_provider.dart';
 import 'package:nes24_ph55234/features/steps_counter/view/daily_steps_widgets.dart';
@@ -39,7 +38,6 @@ class _DailyStepsScreenState extends ConsumerState<DailyStepsScreen> {
   Widget build(BuildContext context) {
     final fetchList = ref.watch(dailyStepProvider);
     return Scaffold(
-      appBar: appGlobalAppBar(title: 'Daily Steps'),
       body: Padding(
         padding:
             const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
