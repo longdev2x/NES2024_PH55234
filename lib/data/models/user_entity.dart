@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 class UserEntity {
   final String id;
   final String email;
+  final String role;
   final String? name;
   final String? avatar;
   final String? gender;
@@ -14,6 +15,7 @@ class UserEntity {
   UserEntity({
     String? id,
     required this.email,
+    required this.role,
     this.name,
     this.avatar,
     this.gender,
@@ -26,6 +28,7 @@ class UserEntity {
   UserEntity copyWith({
     String? email,
     String? name,
+    String? role,
     String? avatar,
     String? gender,
     double? height,
@@ -35,6 +38,7 @@ class UserEntity {
   }) =>
       UserEntity(
         email: email ?? this.email,
+        role: role ?? this.role,
         name: name ?? this.name,
         avatar: avatar ?? this.avatar,
         age: age ?? this.age,
@@ -47,6 +51,7 @@ class UserEntity {
   Map<String, dynamic> toJson() => {
     'id' : id,
     'email' : email,
+    'role' : role,
     'name' : name,
     'avatar' : avatar,
     'gender' : gender,
@@ -60,6 +65,7 @@ class UserEntity {
     return UserEntity(
       id: json['id'],
       email: json['email'],
+      role: json['role'],
       name: json['name'],
       avatar: json['avatar'],
       age: json['age'],

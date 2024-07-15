@@ -1,6 +1,6 @@
 import 'package:uuid/uuid.dart';
 
-class StepsEntity {
+class StepEntity {
   final String id;
   final String userId;
   final DateTime date;
@@ -9,7 +9,7 @@ class StepsEntity {
   final int metre;
   final int minutes;
 
-  StepsEntity({
+  StepEntity({
     String? id,
     required this.userId,
     required this.date,
@@ -19,14 +19,14 @@ class StepsEntity {
     this.minutes = 0,
   }) : id = id ?? const Uuid().v4();
 
-  StepsEntity copyWith({
+  StepEntity copyWith({
     DateTime? date,
     int? steps,
     int? calories,
     int? metre,
     int? minutes,
   }) =>
-      StepsEntity(
+      StepEntity(
         id: id,
         userId: userId,
         date: date ?? this.date,
@@ -46,7 +46,7 @@ class StepsEntity {
         'minutes': minutes,
       };
 
-  factory StepsEntity.fromJson(Map<String, dynamic> json) => StepsEntity(
+  factory StepEntity.fromJson(Map<String, dynamic> json) => StepEntity(
         id: json['id'],
         userId: json['user_id'],
         date: json['date'],

@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nes24_ph55234/data/models/steps_entity.dart';
+import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'package:pedometer/pedometer.dart';
 
-class StepsCounterNotifier extends StateNotifier<StepsEntity> {
+class StepsCounterNotifier extends StateNotifier<StepEntity> {
   StepsCounterNotifier()
-      : super(StepsEntity(
+      : super(StepEntity(
           userId: Global.storageService.getUserProfile().id,
           date: DateTime.now(),
         ));
@@ -84,7 +84,7 @@ class StepsCounterNotifier extends StateNotifier<StepsEntity> {
 }
 
 final stepsCounterProvider =
-    StateNotifierProvider.autoDispose<StepsCounterNotifier, StepsEntity>(
+    StateNotifierProvider.autoDispose<StepsCounterNotifier, StepEntity>(
         (ref) => StepsCounterNotifier());
 
 final onOffStepsCounterProvider = StateProvider<bool>((ref) => false);

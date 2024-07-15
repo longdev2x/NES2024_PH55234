@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nes24_ph55234/data/models/steps_entity.dart';
+import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'package:pedometer/pedometer.dart';
 
 class DailyStepsAsyncNotifier
-    extends AutoDisposeAsyncNotifier<List<StepsEntity>> {
+    extends AutoDisposeAsyncNotifier<List<StepEntity>> {
   @override
-  FutureOr<List<StepsEntity>> build() {
+  FutureOr<List<StepEntity>> build() {
     return _getValueFromApi();
   }
   UserEntity objUser = Global.storageService.getUserProfile();
@@ -18,9 +18,9 @@ class DailyStepsAsyncNotifier
   StreamSubscription<StepCount>? _stepCountSubscription;
   StreamSubscription<PedestrianStatus>? _pedestrianStatusSubscription;
 
-  List<StepsEntity> _getValueFromApi() {
+  List<StepEntity> _getValueFromApi() {
     final list = [
-      StepsEntity(
+      StepEntity(
           userId: objUser.id,
           date: DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day),
@@ -53,9 +53,9 @@ class DailyStepsAsyncNotifier
     final today = DateTime.now();
     final currentState = state.valueOrNull ?? [];
 
-    StepsEntity newObjSteps;
+    StepEntity newObjSteps;
     if (currentState.isEmpty || !currentState.last.date.isSameDate(today)) {
-      newObjSteps = StepsEntity(userId: objUser.id, date: today, steps: event.steps);
+      newObjSteps = StepEntity(userId: objUser.id, date: today, steps: event.steps);
       state = AsyncData([...currentState, newObjSteps]);
     } else {
       final updatedSteps = currentState.last.steps + 1;
@@ -112,7 +112,7 @@ class DailyStepsAsyncNotifier
 
 final dailyStepProvider = AutoDisposeAsyncNotifierProvider<
     DailyStepsAsyncNotifier,
-    List<StepsEntity>>(() => DailyStepsAsyncNotifier());
+    List<StepEntity>>(() => DailyStepsAsyncNotifier());
 
 extension DateTimeExtensions on DateTime {
   bool isSameDate(DateTime other) {

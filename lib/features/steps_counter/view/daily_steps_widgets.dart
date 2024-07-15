@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_circular_progress.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
-import 'package:nes24_ph55234/data/models/steps_entity.dart';
+import 'package:nes24_ph55234/data/models/step_entity.dart';
 
 class StepsMainCircle extends StatelessWidget {
-  final StepsEntity objSteps;
+  final StepEntity objSteps;
   const StepsMainCircle({super.key, required this.objSteps});
 
   @override
@@ -22,7 +22,7 @@ class StepsMainCircle extends StatelessWidget {
 }
 
 class StepsRowMoreInfor extends StatelessWidget {
-  final StepsEntity objSteps;
+  final StepEntity objSteps;
   //Giả định target
   final int targetMetre = 1100;
   final int targetCaloreis = 100;

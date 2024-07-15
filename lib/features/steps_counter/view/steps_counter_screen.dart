@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
-import 'package:nes24_ph55234/data/models/steps_entity.dart';
+import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/features/steps_counter/controller/steps_counter_provider.dart';
 import 'package:nes24_ph55234/features/steps_counter/view/steps_counter_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -39,7 +39,7 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final StepsEntity objSteps = ref.watch(stepsCounterProvider);
+    final StepEntity objSteps = ref.watch(stepsCounterProvider);
     final bool isStarted = ref.watch(onOffStepsCounterProvider);
 
     return Padding(

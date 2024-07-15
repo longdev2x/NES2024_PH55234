@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/common/components/app_circular_progress.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
-import 'package:nes24_ph55234/data/models/steps_entity.dart';
+import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/features/steps_counter/controller/steps_counter_provider.dart';
 
 class StepsCounterMainCircleHolder extends ConsumerWidget {
@@ -21,7 +21,7 @@ class StepsCounterMainCircleHolder extends ConsumerWidget {
 }
 
 class StepsCounterMainCircle extends ConsumerWidget {
-  final StepsEntity objSteps;
+  final StepEntity objSteps;
   const StepsCounterMainCircle({super.key, required this.objSteps});
 
   @override
