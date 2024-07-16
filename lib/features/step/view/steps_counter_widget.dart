@@ -4,7 +4,7 @@ import 'package:nes24_ph55234/common/components/app_circular_progress.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
-import 'package:nes24_ph55234/features/step_counter/controller/step_counter_provider.dart';
+import 'package:nes24_ph55234/features/step/controller/step_counter_provider.dart';
 
 class StepCounterMainCircleHolder extends ConsumerWidget {
   const StepCounterMainCircleHolder({super.key});

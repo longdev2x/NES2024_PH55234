@@ -23,8 +23,9 @@ class TargetRepos {
         .where('user_id', isEqualTo: userId)
         .where('type', isEqualTo: type)
         .get();
-        
+
     if(querySnap.docs.isEmpty) {
+      print('Ok come err');
       return TargetEntity(userId: userId, type: type, target: 10);
     }
 

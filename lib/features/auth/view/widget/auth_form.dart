@@ -71,7 +71,7 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
                 ref.read(roleProvider.notifier).state = role;
               },
             ),
-          SizedBox(height: isLogin ? 180.h : 135.h),
+          SizedBox(height: isLogin ? 180.h : 80.h),
           AppTextFormField(
             hintText: "Email",
             controller: emailController,

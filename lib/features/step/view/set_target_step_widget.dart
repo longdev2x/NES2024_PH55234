@@ -6,7 +6,7 @@ import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/target_entity.dart';
-import 'package:nes24_ph55234/features/step_counter/controller/target_provider.dart';
+import 'package:nes24_ph55234/features/step/controller/target_provider.dart';
 
 class SetTargetStepsWidget extends ConsumerStatefulWidget {
   final bool isDaily;

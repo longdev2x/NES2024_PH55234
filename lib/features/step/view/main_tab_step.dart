@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
-import 'package:nes24_ph55234/features/step_counter/view/daily_step_screen.dart';
-import 'package:nes24_ph55234/features/step_counter/view/steps_counter_screen.dart';
+import 'package:nes24_ph55234/features/step/view/daily_step_screen.dart';
+import 'package:nes24_ph55234/features/step/view/steps_counter_screen.dart';
 
 class StepMainTab extends StatefulWidget {
   const StepMainTab({super.key});

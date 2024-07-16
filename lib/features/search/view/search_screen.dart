@@ -11,7 +11,7 @@ class SearchScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: appGlobalAppBar(title: 'Tìm kiếm'),
+      appBar: appGlobalAppBar('Tìm kiếm'),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: SingleChildScrollView(

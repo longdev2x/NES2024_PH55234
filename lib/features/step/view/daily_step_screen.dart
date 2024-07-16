@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
-import 'package:nes24_ph55234/features/step_counter/controller/daily_step_provider.dart';
-import 'package:nes24_ph55234/features/step_counter/view/daily_step_widgets.dart';
+import 'package:nes24_ph55234/features/step/controller/daily_step_provider.dart';
+import 'package:nes24_ph55234/features/step/view/daily_step_widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class DailyStepScreen extends ConsumerStatefulWidget {

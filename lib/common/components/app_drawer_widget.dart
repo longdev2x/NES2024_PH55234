@@ -40,7 +40,9 @@ class AppDrawerWidget extends StatelessWidget {
             title: const Text('Đo lường giấc ngủ'),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(AppRoutesNames.yoga);
+            },
             leading: const Icon(Icons.mode),
             title: const Text('Video Thiền và Yoga'),
           ),

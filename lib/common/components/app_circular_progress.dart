@@ -7,8 +7,8 @@ import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/target_entity.dart';
-import 'package:nes24_ph55234/features/step_counter/controller/target_provider.dart';
-import 'package:nes24_ph55234/features/step_counter/view/set_target_step_widget.dart';
+import 'package:nes24_ph55234/features/step/controller/target_provider.dart';
+import 'package:nes24_ph55234/features/step/view/set_target_step_widget.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class AppCircularProgressIcon extends StatelessWidget {

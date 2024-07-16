@@ -4,7 +4,8 @@ import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/features/application/view/application.dart';
 import 'package:nes24_ph55234/features/auth/view/auth_screen.dart';
 import 'package:nes24_ph55234/features/onboarding/view/onboarding.dart';
-import 'package:nes24_ph55234/features/step_counter/view/main_tab_step.dart';
+import 'package:nes24_ph55234/features/step/view/main_tab_step.dart';
+import 'package:nes24_ph55234/features/yoga/view/yoga_screen.dart';
 import 'package:nes24_ph55234/global.dart';
 
 class AppRoutes {
@@ -30,13 +31,17 @@ class AppRoutes {
         path: AppRoutesNames.steps,
         page: StepMainTab(),
       ),
+      const RouteEntity(
+        path: AppRoutesNames.yoga,
+        page: YogaScreen(),
+      ),
     ];
   }
 
   static MaterialPageRoute generateRoutSettings(RouteSettings settings) {
-    // Global.storageService.removeKey(AppConstants.storageDeviceOpenFirstKey, 5);
     // Global.storageService.removeKey(AppConstants.storageUserTokenKey, 5);
     // Global.storageService.removeKey(AppConstants.storageUserProfileKey, 5);
+    // Global.storageService.removeKey(AppConstants.storageDeviceOpenFirstKey, 5);
     //print('Tokkennnn-   ${Global.storageService.getUserToken()}');
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 

@@ -17,7 +17,7 @@ class ApplicationScreen extends ConsumerWidget {
       child: Scaffold(
           body: screens[index],
           bottomNavigationBar: Container(
-            height: 98.h,
+            height: 50.h,
             width: 375.w,
             decoration: appBoxShadowWithRadius(),
             child: BottomNavigationBar(

@@ -5,9 +5,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
-import 'package:nes24_ph55234/features/step_counter/controller/step_counter_provider.dart';
-import 'package:nes24_ph55234/features/step_counter/view/set_target_step_widget.dart';
-import 'package:nes24_ph55234/features/step_counter/view/steps_counter_widget.dart';
+import 'package:nes24_ph55234/features/step/controller/step_counter_provider.dart';
+import 'package:nes24_ph55234/features/step/view/set_target_step_widget.dart';
+import 'package:nes24_ph55234/features/step/view/steps_counter_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class StepsCounterScreen extends ConsumerStatefulWidget {
@@ -21,7 +21,7 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
   @override
   void initState() {
     super.initState();
-    // _requestPermission();
+    _requestPermission();
   }
 
   @override
