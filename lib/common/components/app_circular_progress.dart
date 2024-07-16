@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_icon.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
+import 'package:nes24_ph55234/common/utils/app_constants.dart';
+import 'package:nes24_ph55234/data/models/target_entity.dart';
+import 'package:nes24_ph55234/features/step_counter/controller/target_provider.dart';
+import 'package:nes24_ph55234/features/step_counter/view/set_target_step_widget.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class AppCircularProgressIcon extends StatelessWidget {
@@ -41,10 +47,10 @@ class AppCircularProgressIcon extends StatelessWidget {
   }
 }
 
-class AppCircularProgressContent extends StatelessWidget {
+class AppCircularProgressContent extends ConsumerWidget {
   final Function()? btnStart;
-  final int? steps;
-  final int? targetSteps;
+  final int? step;
+  final int? targetStep;
   final String? iconPath;
   final String? date;
   final double? radius;
@@ -52,45 +58,70 @@ class AppCircularProgressContent extends StatelessWidget {
   const AppCircularProgressContent({
     super.key,
     this.btnStart,
-    this.steps = 0,
-    this.targetSteps = 1000,
+    this.step = 0,
+    this.targetStep = 1000,
     this.iconPath,
     this.date,
-    this.radius = 130,
+    this.radius = 175,
     this.isStart = false,
   });
 
   @override
-  Widget build(BuildContext context) {
-    double percent = (steps! / targetSteps!).clamp(0.0, 1.0);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AsyncValue<TargetEntity?> stepTarget =
+        ref.watch(targetAsyncFamilyProvider(AppConstants.typeStepCounter));
+    double percent = (step! / targetStep!).clamp(0.0, 1.0);
     return CircularPercentIndicator(
       radius: radius!,
-      percent: targetSteps != 0 ? percent : 0,
+      percent: targetStep != 0 ? percent : 0,
       backgroundColor: AppColors.primaryThreeElementText,
       progressColor: AppColors.primaryElement,
       backgroundWidth: 10.r,
       lineWidth: 10.r,
-      center: isStart! 
-      ? Column(
-        children: [
-          ElevatedButton(onPressed: btnStart, child: const AppText24("Đi Thôi")),
-        ],
-      )
-      : Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          iconPath != null ? AppIcon(path: iconPath!) : const SizedBox(),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.r),
-            child: Text(
-              steps.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40.sp),
+      center: isStart!
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) =>
+                          const SetTargetStepsWidget(isDaily: false),
+                    );
+                  },
+                  child: stepTarget.when(
+                    data: (target) {
+                      return AppText20("Target: ${target?.target.toInt().toString() ?? ''}");
+                    },
+                    error: (error, stackTrace) => const Text('Error'),
+                    loading: () => const AppText24("Mục tiêu: "),
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                AppButton(
+                  ontap: btnStart,
+                  name: 'Đi Thôi',
+                  width: 160,
+                ),
+              ],
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                iconPath != null ? AppIcon(path: iconPath!) : const SizedBox(),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.r),
+                  child: Text(
+                    step.toString(),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 40.sp),
+                  ),
+                ),
+                Text(date ?? ''),
+                Text('MỤC TIÊU $targetStep'),
+              ],
             ),
-          ),
-          Text(date ?? ''),
-          Text('MỤC TIÊU $targetSteps'),
-        ],
-      ),
     );
   }
 }

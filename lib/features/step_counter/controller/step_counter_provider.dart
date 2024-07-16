@@ -5,8 +5,8 @@ import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'package:pedometer/pedometer.dart';
 
-class StepsCounterNotifier extends StateNotifier<StepEntity> {
-  StepsCounterNotifier()
+class StepCounterNotifier extends StateNotifier<StepEntity> {
+  StepCounterNotifier()
       : super(StepEntity(
           userId: Global.storageService.getUserProfile().id,
           date: DateTime.now(),
@@ -35,16 +35,16 @@ class StepsCounterNotifier extends StateNotifier<StepEntity> {
   }
 
   void onStepCount(StepCount event) {
-    final updatedSteps = state.steps + 1;
-    final updatedCalories = calculateCalories(updatedSteps);
-    final updatedDistance = calculateMetre(updatedSteps);
-    final updatedDuration = calculateMinutes(updatedSteps);
+    final updatedStep = state.step + 1;
+    final updatedCalo = calculateCalo(updatedStep);
+    final updatedDistance = calculateMetre(updatedStep);
+    final updatedDuration = calculateMinute(updatedStep);
 
     state = state.copyWith(
-      steps: updatedSteps,
-      calories: updatedCalories,
+      step: updatedStep,
+      calo: updatedCalo,
       metre: updatedDistance,
-      minutes: updatedDuration,
+      minute: updatedDuration,
     );
   }
 
@@ -68,23 +68,23 @@ class StepsCounterNotifier extends StateNotifier<StepEntity> {
   }
 
   //Giả định là 1 bước đốt hết 0.0566 calo
-  int calculateCalories(int steps) {
-    return (steps * 0.0566).toInt();
+  int calculateCalo(int step) {
+    return (step * 0.0566).toInt();
   }
 
   //Tính theo mét, giả định sải bước trung bình 76.2
-  int calculateMetre(int steps) {
-    return (steps * 0.762).toInt();
+  int calculateMetre(int step) {
+    return (step * 0.762).toInt();
   }
 
   // Giả định mất 1 phút để đi 100 bước
-  int calculateMinutes(int steps) {
-    return steps ~/ 100;
+  int calculateMinute(int step) {
+    return step ~/ 100;
   }
 }
 
-final stepsCounterProvider =
-    StateNotifierProvider.autoDispose<StepsCounterNotifier, StepEntity>(
-        (ref) => StepsCounterNotifier());
+final stepCounterProvider =
+    StateNotifierProvider.autoDispose<StepCounterNotifier, StepEntity>(
+        (ref) => StepCounterNotifier());
 
-final onOffStepsCounterProvider = StateProvider<bool>((ref) => false);
+final onOffStepCounterProvider = StateProvider.autoDispose<bool>((ref) => false);

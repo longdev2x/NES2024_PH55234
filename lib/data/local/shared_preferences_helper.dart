@@ -41,6 +41,10 @@ class SharedPreferencesHelper {
     return _pref.getBool(AppConstants.storageDeviceOpenFirstKey) ?? true;
   }
 
+  bool isRemember() {
+    return _pref.getBool(AppConstants.isRemember) ?? false;
+  }
+
   Future<bool> setUserProfile(UserEntity objUser) {
     var profileJson = jsonEncode(objUser);
     return _pref.setString(AppConstants.storageUserProfileKey, profileJson);

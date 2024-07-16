@@ -6,7 +6,7 @@ import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'package:pedometer/pedometer.dart';
 
-class DailyStepsAsyncNotifier
+class DailyStepAsyncNotifier
     extends AutoDisposeAsyncNotifier<List<StepEntity>> {
   @override
   FutureOr<List<StepEntity>> build() {
@@ -24,10 +24,10 @@ class DailyStepsAsyncNotifier
           userId: objUser.id,
           date: DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day),
-          steps: 150,
-          calories: 5,
+          step: 150,
+          calo: 5,
           metre: 10,
-          minutes: 2),
+          minute: 2),
     ];
     return list;
   }
@@ -53,25 +53,25 @@ class DailyStepsAsyncNotifier
     final today = DateTime.now();
     final currentState = state.valueOrNull ?? [];
 
-    StepEntity newObjSteps;
+    StepEntity newObjStep;
     if (currentState.isEmpty || !currentState.last.date.isSameDate(today)) {
-      newObjSteps = StepEntity(userId: objUser.id, date: today, steps: event.steps);
-      state = AsyncData([...currentState, newObjSteps]);
+      newObjStep = StepEntity(userId: objUser.id, date: today, step: event.steps);
+      state = AsyncData([...currentState, newObjStep]);
     } else {
-      final updatedSteps = currentState.last.steps + 1;
-      final updatedCalories = calculateCalories(updatedSteps);
-      final updatedDistance = calculateMetre(updatedSteps);
-      final updatedDuration = calculateMinutes(updatedSteps);
+      final updatedStep = currentState.last.step + 1;
+      final updatedCalo = calculateCalo(updatedStep);
+      final updatedDistance = calculateMetre(updatedStep);
+      final updatedDuration = calculateMinute(updatedStep);
 
-      newObjSteps = currentState.last.copyWith(
-        steps: updatedSteps,
-        calories: updatedCalories,
+      newObjStep = currentState.last.copyWith(
+        step: updatedStep,
+        calo: updatedCalo,
         metre: updatedDistance,
-        minutes: updatedDuration,
+        minute: updatedDuration,
       );
 
       state = AsyncData(
-          [...currentState.sublist(0, currentState.length - 1), newObjSteps]);
+          [...currentState.sublist(0, currentState.length - 1), newObjStep]);
     }
   }
 
@@ -95,24 +95,24 @@ class DailyStepsAsyncNotifier
   }
 
   //Giả định là 1 bước đốt hết 0.0566 calo
-  int calculateCalories(int steps) {
-    return (steps * 0.0566).toInt();
+  int calculateCalo(int step) {
+    return (step * 0.0566).toInt();
   }
 
   //Tính theo mét, giả định sải bước trung bình 76.2
-  int calculateMetre(int steps) {
-    return (steps * 0.762).toInt();
+  int calculateMetre(int step) {
+    return (step * 0.762).toInt();
   }
 
   // Giả định mất 1 phút để đi 100 bước
-  int calculateMinutes(int steps) {
-    return steps ~/ 100;
+  int calculateMinute(int step) {
+    return step ~/ 100;
   }
 }
 
 final dailyStepProvider = AutoDisposeAsyncNotifierProvider<
-    DailyStepsAsyncNotifier,
-    List<StepEntity>>(() => DailyStepsAsyncNotifier());
+    DailyStepAsyncNotifier,
+    List<StepEntity>>(() => DailyStepAsyncNotifier());
 
 extension DateTimeExtensions on DateTime {
   bool isSameDate(DateTime other) {

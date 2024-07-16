@@ -5,7 +5,7 @@ class TargetEntity {
   final String id;
   final String userId;
   final String type;
-  final String target;
+  final double target;
   final DateTime? dateStart;
   final DateTime? dateEnd;
 
@@ -14,20 +14,19 @@ class TargetEntity {
     required this.userId,
     required this.type,
     required this.target,
-    required this.dateStart,
-    required this.dateEnd,
+    this.dateStart,
+    this.dateEnd,
   }) : id = id ?? const Uuid().v4();
 
   TargetEntity copyWith({
-    String? type,
-    String? target,
+    double? target,
     DateTime? dateStart,
     DateTime? dateEnd,
   }) =>
       TargetEntity(
         id: id,
         userId: userId,
-        type: type ?? this.type,
+        type: type,
         target: target ?? this.target,
         dateStart: dateStart ?? this.dateStart,
         dateEnd: dateEnd ?? this.dateEnd,

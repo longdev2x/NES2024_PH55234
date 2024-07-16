@@ -16,31 +16,31 @@ class TargetRepos {
         .toList();
   }
 
-  static Future<List<TargetEntity>?> getTargetFollowType(String userId, String type) async {
+  static Future<TargetEntity?> getTargetFollowType(
+      String userId, String type) async {
     final querySnap = await _instance
         .collection(_c)
         .where('user_id', isEqualTo: userId)
         .where('type', isEqualTo: type)
         .get();
+        
+    if(querySnap.docs.isEmpty) {
+      return TargetEntity(userId: userId, type: type, target: 10);
+    }
+
     return querySnap.docs
         .map((queryDoc) => TargetEntity.fromJson(queryDoc.data()))
-        .toList();
+        .toList()
+        .first;
   }
 
-  static Future<void> addTarget(TargetEntity objTarget) async {
-    await _instance.collection(_c).doc(objTarget.id).set(objTarget.toJson());
-  }
-
-  static Future<void> updateTarget(TargetEntity objTarget) async {
-    _instance.collection(_c).doc(objTarget.id).update(objTarget.toJson());
-  }
-
-  static Future<void> batchUpdateTarget(List<TargetEntity> targets) async {
-    final batch = _instance.batch();
-    for (final target in targets) {
-      final docRef = _instance.collection(_c).doc(target.id);
-      batch.set(docRef, target.toJson());
+  static Future<void> updateTargetIfExistsOrAdd(TargetEntity objTarget) async {
+    final docRef = _instance.collection(_c).doc(objTarget.id);
+    final docSnapshot = await docRef.get();
+    if (docSnapshot.exists) {
+      docRef.update(objTarget.toJson());
+    } else {
+      docRef.set(objTarget.toJson());
     }
-    await batch.commit();
   }
 }

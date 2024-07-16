@@ -4,22 +4,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
-import 'package:nes24_ph55234/features/steps_counter/controller/daily_step_provider.dart';
-import 'package:nes24_ph55234/features/steps_counter/view/daily_steps_widgets.dart';
+import 'package:nes24_ph55234/features/step_counter/controller/daily_step_provider.dart';
+import 'package:nes24_ph55234/features/step_counter/view/daily_step_widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class DailyStepsScreen extends ConsumerStatefulWidget {
-  const DailyStepsScreen({super.key});
+class DailyStepScreen extends ConsumerStatefulWidget {
+  const DailyStepScreen({super.key});
 
   @override
-  ConsumerState<DailyStepsScreen> createState() => _DailyStepsScreenState();
+  ConsumerState<DailyStepScreen> createState() => _DailyStepScreenState();
 }
 
-class _DailyStepsScreenState extends ConsumerState<DailyStepsScreen> {
+class _DailyStepScreenState extends ConsumerState<DailyStepScreen> {
   @override
   void initState() {
     super.initState();
-    _requestPermission();
+    // _requestPermission();
   }
   
   Future<void> _requestPermission() async {
@@ -42,14 +42,14 @@ class _DailyStepsScreenState extends ConsumerState<DailyStepsScreen> {
         padding:
             const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
         child: fetchList.when(
-          data: (listSteps) {
+          data: (listStep) {
             return Column(children: [
-              SizedBox(height: 40.h),
-              StepsMainCircle(objSteps: listSteps.last),
-              SizedBox(height: 55.h),
-              StepsRowMoreInfor(objSteps: listSteps.last),
+              SizedBox(height: 30.h),
+              StepMainCircle(objStep: listStep.last),
+              SizedBox(height: 35.h),
+              StepRowMoreInfor(objStep: listStep.last),
               SizedBox(height: 20.h),
-              const StepsLineChart(),
+              const StepLineChart(),
             ]);
           },
           error: (error, stackTrace) => Center(

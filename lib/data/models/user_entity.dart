@@ -1,8 +1,21 @@
+import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:uuid/uuid.dart';
+
+const List<Role> listRoles = [
+  Role(value: AppConstants.roleUser, name: 'Người dùng'),
+  Role(value: AppConstants.roleExpert, name: 'Chuyên gia'),
+  Role(value: AppConstants.roleAdmin, name: 'Admin'),
+];
+class Role {
+  final String value;
+  final String name;
+  const Role({required this.value, required this.name});
+}
 
 class UserEntity {
   final String id;
   final String email;
+  final String password;
   final String role;
   final String? name;
   final String? avatar;
@@ -15,6 +28,7 @@ class UserEntity {
   UserEntity({
     String? id,
     required this.email,
+    required this.password,
     required this.role,
     this.name,
     this.avatar,
@@ -27,6 +41,7 @@ class UserEntity {
 
   UserEntity copyWith({
     String? email,
+    String? password,
     String? name,
     String? role,
     String? avatar,
@@ -38,6 +53,7 @@ class UserEntity {
   }) =>
       UserEntity(
         email: email ?? this.email,
+        password: password ?? this.password,
         role: role ?? this.role,
         name: name ?? this.name,
         avatar: avatar ?? this.avatar,
@@ -51,6 +67,7 @@ class UserEntity {
   Map<String, dynamic> toJson() => {
     'id' : id,
     'email' : email,
+    'password' : password,
     'role' : role,
     'name' : name,
     'avatar' : avatar,
@@ -65,6 +82,7 @@ class UserEntity {
     return UserEntity(
       id: json['id'],
       email: json['email'],
+      password: json['password'],
       role: json['role'],
       name: json['name'],
       avatar: json['avatar'],
@@ -75,5 +93,6 @@ class UserEntity {
       bmi: json['bmi']
     );
   }
-  
 }
+
+

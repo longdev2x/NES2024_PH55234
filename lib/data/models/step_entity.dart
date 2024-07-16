@@ -4,55 +4,71 @@ class StepEntity {
   final String id;
   final String userId;
   final DateTime date;
-  final int steps;
-  final int calories;
+  final int step;
+  final int calo;
   final int metre;
-  final int minutes;
+  final int minute;
+  final int targetStep;
+  final int targetCalo;
+  final int targetMetre;
+  final int targetMinute;
 
   StepEntity({
     String? id,
     required this.userId,
     required this.date,
-    this.steps = 0,
-    this.calories = 0,
+    this.step = 0,
+    this.calo = 0,
     this.metre = 0,
-    this.minutes = 0,
+    this.minute = 0,
+    this.targetStep = 1,
+    this.targetCalo = 1,
+    this.targetMetre = 1,
+    this.targetMinute = 1,
   }) : id = id ?? const Uuid().v4();
 
   StepEntity copyWith({
     DateTime? date,
-    int? steps,
-    int? calories,
+    int? step,
+    int? calo,
     int? metre,
-    int? minutes,
+    int? minute,
+    int? targetStep,
+    int? targetCalo,
+    int? targetMetre,
+    int? targetMinute,
   }) =>
       StepEntity(
         id: id,
         userId: userId,
         date: date ?? this.date,
-        steps: steps ?? this.steps,
-        calories: calories ?? this.calories,
+        step: step ?? this.step,
+        calo: calo ?? this.calo,
         metre: metre ?? this.metre,
-        minutes: minutes ?? this.minutes,
+        minute: minute ?? this.minute,
+        targetStep: targetStep ?? this.targetStep, 
+        targetCalo: targetCalo ?? this.calo,
+        targetMetre: targetMetre ?? this.targetMetre,
+        targetMinute: targetMinute ?? this.targetMinute,
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'user_id': userId,
         'date': date,
-        'steps': steps,
-        'calo': calories,
+        'step': step,
+        'calo': calo,
         'metre': metre,
-        'minutes': minutes,
+        'minute': minute,
       };
 
   factory StepEntity.fromJson(Map<String, dynamic> json) => StepEntity(
         id: json['id'],
         userId: json['user_id'],
         date: json['date'],
-        steps: json['steps'],
-        calories: json['calo'],
+        step: json['step'],
+        calo: json['calo'],
         metre: json['metre'],
-        minutes: json['minutes'],
+        minute: json['minute'],
       );
 }

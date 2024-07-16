@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nes24_ph55234/common/components/app_text.dart';
+import 'package:nes24_ph55234/common/utils/app_colors.dart';
 
 class AppTextFormField extends StatelessWidget {
   final String? hintText;
+  final String? lable;
   final bool? isPass;
   final bool? autofocus;
   final String? initialValue;
+  final TextInputType? inputType;
   final String? Function(String? value)? validator;
   final void Function(String? value)? onSaved;
   final Function(String? value)? onChanged;
@@ -13,10 +17,12 @@ class AppTextFormField extends StatelessWidget {
   const AppTextFormField(
       {super.key,
       this.hintText = "",
+      this.lable = '',
       this.isPass = false,
       this.validator,
       this.onChanged,
       this.initialValue,
+      this.inputType,
       this.autofocus = false,
       this.controller,
       this.onSaved});
@@ -31,7 +37,10 @@ class AppTextFormField extends StatelessWidget {
       initialValue: initialValue,
       autofocus: autofocus ?? false,
       controller: controller,
+      keyboardType: inputType,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),
+        label: AppText16(lable ?? '',color: AppColors.primaryThreeElementText,),
         hintText: hintText,
         enabledBorder: _customOutline(borderColor: Colors.blue),
         focusedBorder: _customOutline(),

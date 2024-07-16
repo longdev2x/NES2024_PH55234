@@ -1,4 +1,3 @@
-import 'package:nes24_ph55234/features/auth/view/widget/auth_title.dart';
 import 'package:nes24_ph55234/common/provider_global/loader_provider.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/features/auth/view/widget/auth_form.dart';
@@ -26,9 +25,7 @@ class AuthScreen extends StatelessWidget {
             child: Column(
               children: [
                 const AuthLightWidget(),
-                SizedBox(height: 20.h),
-                const AuthTitle(),
-                SizedBox(height: 160.h),
+                SizedBox(height: 25.h),
                 const AuthFormWidget(),
               ],
             ),

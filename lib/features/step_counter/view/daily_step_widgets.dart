@@ -6,34 +6,34 @@ import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
 
-class StepsMainCircle extends StatelessWidget {
-  final StepEntity objSteps;
-  const StepsMainCircle({super.key, required this.objSteps});
+class StepMainCircle extends StatelessWidget {
+  final StepEntity objStep;
+  const StepMainCircle({super.key, required this.objStep});
 
   @override
   Widget build(BuildContext context) {
     return AppCircularProgressContent(
-      steps: objSteps.steps,
-      targetSteps: 1500,
+      step: objStep.step,
+      targetStep: 1500,
       date: 'Hôm qua',
       iconPath: ImageRes.clap,
     );
   }
 }
 
-class StepsRowMoreInfor extends StatelessWidget {
-  final StepEntity objSteps;
+class StepRowMoreInfor extends StatelessWidget {
+  final StepEntity objStep;
   //Giả định target
   final int targetMetre = 1100;
   final int targetCaloreis = 100;
-  final int targetMinutes = 150;
-  const StepsRowMoreInfor({super.key, required this.objSteps});
+  final int targetMinute = 150;
+  const StepRowMoreInfor({super.key, required this.objStep});
 
   @override
   Widget build(BuildContext context) {
-    final percentMetre = ( objSteps.metre / targetMetre ).clamp(0.0, 1.0);
-    final percentKacl = (objSteps.calories / targetCaloreis).clamp(0.0, 1.0);
-    final percentMinutes = (objSteps.minutes / targetMinutes).clamp(0.0, 1.0);
+    final percentMetre = ( objStep.metre / targetMetre ).clamp(0.0, 1.0);
+    final percentKacl = (objStep.calo / targetCaloreis).clamp(0.0, 1.0);
+    final percentMinute = (objStep.minute / targetMinute).clamp(0.0, 1.0);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 36.r),
       child: Row(
@@ -42,17 +42,17 @@ class StepsRowMoreInfor extends StatelessWidget {
           AppCircularProgressIcon(
             percent: percentMetre,
             iconPath: ImageRes.icBirth,
-            title: '${objSteps.metre} m',
+            title: '${objStep.metre} m',
           ),
           AppCircularProgressIcon(
             percent: percentKacl,
             iconPath: ImageRes.icWork,
-            title: '${objSteps.calories} kcal',
+            title: '${objStep.calo} kcal',
           ),
           AppCircularProgressIcon(
-            percent: percentMinutes,
+            percent: percentMinute,
             iconPath: ImageRes.icAlarm,
-            title: '${objSteps.minutes} phút',
+            title: '${objStep.minute} phút',
           ),
         ],
       ),
@@ -60,8 +60,8 @@ class StepsRowMoreInfor extends StatelessWidget {
   }
 }
 
-class StepsLineChart extends StatelessWidget {
-  const StepsLineChart({super.key});
+class StepLineChart extends StatelessWidget {
+  const StepLineChart({super.key});
 
   @override
   Widget build(BuildContext context) {
