@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nes24_ph55234/common/provider_global/is_dart_theme_provider.dart';
+import 'package:nes24_ph55234/common/provider_global/is_dark_theme_provider.dart';
 import 'package:rive/rive.dart';
 
 class AppThemeSwitcher extends ConsumerStatefulWidget {

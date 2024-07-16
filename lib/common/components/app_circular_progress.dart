@@ -16,6 +16,7 @@ class AppCircularProgressIcon extends StatelessWidget {
   final String? iconPath;
   final String? title;
   final double? radius;
+
   const AppCircularProgressIcon({
     super.key,
     this.percent = 80.0,
@@ -34,7 +35,8 @@ class AppCircularProgressIcon extends StatelessWidget {
           backgroundColor: AppColors.primaryThreeElementText,
           progressColor: AppColors.primaryElement,
           backgroundWidth: 4.r,
-          lineWidth: 4.r,
+          lineWidth: 5.r,
+          circularStrokeCap: CircularStrokeCap.round,
           center: iconPath == null ? null : AppIcon(path: iconPath!),
         ),
         SizedBox(height: 5.h),
@@ -55,6 +57,7 @@ class AppCircularProgressContent extends ConsumerWidget {
   final String? date;
   final double? radius;
   final bool? isStart;
+
   const AppCircularProgressContent({
     super.key,
     this.btnStart,
@@ -68,36 +71,42 @@ class AppCircularProgressContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<TargetEntity?> stepTarget =
-        ref.watch(targetAsyncFamilyProvider(AppConstants.typeStepCounter));
+    final AsyncValue<TargetEntity?> stepTarget = ref.watch(
+        targetAsyncFamilyProvider(btnStart != null
+            ? AppConstants.typeStepCounter
+            : AppConstants.typeStepDaily));
     double percent = (step! / targetStep!).clamp(0.0, 1.0);
+
+    Widget btnTarget = ElevatedButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (ctx) => SetTargetStepsWidget(isDaily: btnStart == null),
+        );
+      },
+      child: stepTarget.when(
+        data: (target) {
+          return AppText20(
+              "Target: ${target?.target.toInt().toString() ?? ''}");
+        },
+        error: (error, stackTrace) => const Text('Error'),
+        loading: () => const AppText24("Mục tiêu: "),
+      ),
+    );
+
     return CircularPercentIndicator(
       radius: radius!,
       percent: targetStep != 0 ? percent : 0,
       backgroundColor: AppColors.primaryThreeElementText,
       progressColor: AppColors.primaryElement,
-      backgroundWidth: 10.r,
+      backgroundWidth: 6.r,
       lineWidth: 10.r,
+      circularStrokeCap: CircularStrokeCap.round,
       center: isStart!
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) =>
-                          const SetTargetStepsWidget(isDaily: false),
-                    );
-                  },
-                  child: stepTarget.when(
-                    data: (target) {
-                      return AppText20("Target: ${target?.target.toInt().toString() ?? ''}");
-                    },
-                    error: (error, stackTrace) => const Text('Error'),
-                    loading: () => const AppText24("Mục tiêu: "),
-                  ),
-                ),
+                btnTarget,
                 SizedBox(height: 20.h),
                 AppButton(
                   ontap: btnStart,
@@ -109,17 +118,14 @@ class AppCircularProgressContent extends ConsumerWidget {
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                iconPath != null ? AppIcon(path: iconPath!) : const SizedBox(),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.r),
-                  child: Text(
-                    step.toString(),
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 40.sp),
-                  ),
+                iconPath != null ? AppIcon(path: iconPath!, size: 35) : const SizedBox(),
+                Text(
+                  step.toString(),
+                  style:
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: 80.sp),
                 ),
-                Text(date ?? ''),
-                Text('MỤC TIÊU $targetStep'),
+                Text(date ?? '', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w400),),
+                btnStart == null ? btnTarget : const SizedBox(),
               ],
             ),
     );

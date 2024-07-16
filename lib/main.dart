@@ -4,9 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/routes/routes.dart';
 import 'package:nes24_ph55234/common/utils/app_theme_datas.dart';
-import 'package:nes24_ph55234/common/provider_global/is_dart_theme_provider.dart';
+import 'package:nes24_ph55234/common/provider_global/is_dark_theme_provider.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'firebase_options.dart';
+
+final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
+bool isDarkGlobal = false;
 
 void main() async {
   await Global.init();
@@ -16,14 +19,12 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
-
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDark = ref.watch(isDarkThemeProvider);
+    isDarkGlobal = ref.watch(isDarkThemeProvider);
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) => MaterialApp(
@@ -32,7 +33,7 @@ class MyApp extends ConsumerWidget {
         title: 'NES24 PH55234 Hoàng Nhật Long',
         theme: AppThemeDatas.lightTheme,
         darkTheme: AppThemeDatas.darkTheme,
-        themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+        themeMode: isDarkGlobal ? ThemeMode.dark : ThemeMode.light,
         onGenerateRoute: (settings) {
           return AppRoutes.generateRoutSettings(settings);
         },

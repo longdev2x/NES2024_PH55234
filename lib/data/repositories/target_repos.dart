@@ -25,8 +25,36 @@ class TargetRepos {
         .get();
 
     if(querySnap.docs.isEmpty) {
-      print('Ok come err');
-      return TargetEntity(userId: userId, type: type, target: 10);
+      double target = 100;
+      switch(type) {
+        case AppConstants.typeStepDaily:
+          target = 1000;
+          break;
+        case AppConstants.typeStepCounter:
+          target = 2000;
+          break;
+        case AppConstants.typeCaloDaily:
+          target = 50;
+          break;
+        case AppConstants.typeCaloCounter:
+          target = 100;
+          break;
+        case AppConstants.typeMetreDaily:
+          target = 500;
+          break;
+        case AppConstants.typeMetreCounter:
+          target = 500;
+          break;
+        case AppConstants.typeMinuteDaily:
+          target = 20;
+          break;
+        case AppConstants.typeMinuteCounter:
+          target = 30;
+          break;
+      }
+      TargetEntity objTarget = TargetEntity(userId: userId, type: type, target: target);
+      updateTargetIfExistsOrAdd(objTarget);
+      return objTarget;
     }
 
     return querySnap.docs

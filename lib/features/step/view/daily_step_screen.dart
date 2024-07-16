@@ -21,13 +21,14 @@ class _DailyStepScreenState extends ConsumerState<DailyStepScreen> {
     super.initState();
     // _requestPermission();
   }
-  
+
   Future<void> _requestPermission() async {
     PermissionStatus status = await Permission.activityRecognition.request();
     if (status.isGranted) {
       ref.read(dailyStepProvider.notifier).initPlatformState();
     } else if (status.isDenied) {
-      AppToast.showToast("Không thể phát hiện bước chân khi bạn từ chối", length: Toast.LENGTH_LONG);
+      AppToast.showToast("Không thể phát hiện bước chân khi bạn từ chối",
+          length: Toast.LENGTH_LONG);
     } else if (status.isPermanentlyDenied) {
       // Mở cài đặt để người dùng cấp quyền
       openAppSettings();
@@ -43,14 +44,16 @@ class _DailyStepScreenState extends ConsumerState<DailyStepScreen> {
             const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
         child: fetchList.when(
           data: (listStep) {
-            return Column(children: [
-              SizedBox(height: 30.h),
-              StepMainCircle(objStep: listStep.last),
-              SizedBox(height: 35.h),
-              StepRowMoreInfor(objStep: listStep.last),
-              SizedBox(height: 20.h),
-              const StepLineChart(),
-            ]);
+            return SingleChildScrollView(
+              child: Column(children: [
+                SizedBox(height: 30.h),
+                StepMainCircle(objStep: listStep.last),
+                SizedBox(height: 35.h),
+                StepRowMoreInfor(objStep: listStep.last),
+                SizedBox(height: 20.h),
+                const StepLineChart(),
+              ]),
+            );
           },
           error: (error, stackTrace) => Center(
             child: Text(error.toString()),

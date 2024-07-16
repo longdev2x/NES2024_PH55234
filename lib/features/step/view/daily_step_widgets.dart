@@ -16,7 +16,7 @@ class StepMainCircle extends StatelessWidget {
       step: objStep.step,
       targetStep: 1500,
       date: 'Hôm qua',
-      iconPath: ImageRes.clap,
+      iconPath: ImageRes.icWalk,
     );
   }
 }
@@ -41,17 +41,17 @@ class StepRowMoreInfor extends StatelessWidget {
         children: [
           AppCircularProgressIcon(
             percent: percentMetre,
-            iconPath: ImageRes.icBirth,
+            iconPath: ImageRes.icCalo,
             title: '${objStep.metre} m',
           ),
           AppCircularProgressIcon(
             percent: percentKacl,
-            iconPath: ImageRes.icWork,
+            iconPath: ImageRes.icCalo,
             title: '${objStep.calo} kcal',
           ),
           AppCircularProgressIcon(
             percent: percentMinute,
-            iconPath: ImageRes.icAlarm,
+            iconPath: ImageRes.icTime,
             title: '${objStep.minute} phút',
           ),
         ],

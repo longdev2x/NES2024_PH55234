@@ -37,6 +37,7 @@ class StepCounterMainCircle extends ConsumerWidget {
         step: objStep.step,
         targetStep: 1500,
         iconPath: ImageRes.clap,
+        btnStart: () {},
       ),
     );
   }

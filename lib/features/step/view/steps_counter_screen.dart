@@ -54,15 +54,17 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
     final StepEntity objSteps = ref.watch(stepCounterProvider);
     final bool isStarted = ref.watch(onOffStepCounterProvider);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
-      child: Column(
-        children: [
-          SizedBox(height: 30.h),
-          isStarted
-              ? StepCounterMainCircle(objStep: objSteps)
-              : const StepCounterMainCircleHolder(),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
+        child: Column(
+          children: [
+            SizedBox(height: 30.h),
+            isStarted
+                ? StepCounterMainCircle(objStep: objSteps)
+                : const StepCounterMainCircleHolder(),
+          ],
+        ),
       ),
     );
   }

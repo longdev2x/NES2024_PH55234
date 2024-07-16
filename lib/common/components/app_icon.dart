@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
+import 'package:nes24_ph55234/main.dart';
 
 class AppIcon extends StatelessWidget {
   final String path;
@@ -20,7 +21,7 @@ class AppIcon extends StatelessWidget {
       width: size!.w,
       child: Image.asset(
         path,
-        color: iconColor,
+        color: isDarkGlobal ? Colors.white : Colors.black,
       ),
     );
   }
