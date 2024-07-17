@@ -1,11 +1,4 @@
-// import 'package:flutter/foundation.dart';
-// import 'package:riverpod_annotation/riverpod_annotation.dart';
-// import 'package:ulearning_app/common/models/lesson_entities.dart';
-// import 'package:ulearning_app/common/utils/constants.dart';
-// import 'package:ulearning_app/features/lesson_detail/repo/lesson_detail_repo.dart';
-// import 'package:video_player/video_player.dart';
 
-// part 'lesson_detail_provider.g.dart';
 
 // VideoPlayerController? videoPlayerController;
 // @riverpod

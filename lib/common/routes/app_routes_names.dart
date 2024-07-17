@@ -9,6 +9,7 @@
   static const String grateful = '/grateful';
   static const String bmi = '/bmi';
   static const String yoga = '/yoga';
+  static const String yogaDetail = '/yoga_detail';
   static const String advise = '/advise';
 }
 

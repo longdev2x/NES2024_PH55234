@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/components/app_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
+import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 
 class YogaMenu extends StatelessWidget {
@@ -59,6 +60,7 @@ class CourseItemGrid extends ConsumerWidget {
           width: 40,
           height: 40,
           onTap: () async {
+            Navigator.of(context).pushNamed(AppRoutesNames.yogaDetail);
             AppToast.showToast("Vào màn hình detail");
           },
           imagePath: listImage[index],
