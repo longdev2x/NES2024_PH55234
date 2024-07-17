@@ -1,26 +1,29 @@
+import 'package:nes24_ph55234/common/components/app_icon.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+//Cần set Width khi đặt trong 1 row
 class AppButton extends StatelessWidget {
   final double? height;
   final double? width;
   final String? name;
+  final double? radius;
   final Color? bgColor;
   final Color? textColor;
   final double? fontSize;
   final Function()? ontap;
 
-  const AppButton({
-    super.key,
-    this.ontap,
-    this.height = 45,
-    this.width = double.infinity,
-    this.name = "",
-    this.bgColor = AppColors.bgButton,
-    this.textColor = Colors.white,
-    this.fontSize = 19
-  });
+  const AppButton(
+      {super.key,
+      this.ontap,
+      this.radius = 26,
+      this.height = 45,
+      this.width = double.infinity,
+      this.name = "",
+      this.bgColor = AppColors.bgButton,
+      this.textColor = Colors.white,
+      this.fontSize = 19});
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +34,73 @@ class AppButton extends StatelessWidget {
         height: height!.h,
         width: width!.w,
         decoration: BoxDecoration(
-          color: bgColor!,
-          borderRadius: BorderRadius.circular(26)
-        ),
+            color: bgColor!, borderRadius: BorderRadius.circular(radius!)),
         child: Text(
           name!,
           style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: fontSize!.sp
-          ),
+              color: textColor,
+              fontWeight: FontWeight.bold,
+              fontSize: fontSize!.sp),
         ),
       ),
     );
   }
 }
 
+//Cần set Width khi đặt trong 1 row
+class AppButtonWithIcon extends StatelessWidget {
+  final String iconPath;
+  final double? height;
+  final double? width;
+  final String? name;
+  final double? radius;
+  final Color? bgColor;
+  final Color? textColor;
+  final double? fontSize;
+  final Function()? ontap;
+
+  const AppButtonWithIcon(
+      {super.key,
+      required this.iconPath,
+      this.ontap,
+      this.radius = 26,
+      this.height = 45,
+      this.width = double.infinity,
+      this.name = "",
+      this.bgColor = AppColors.bgButton,
+      this.textColor = Colors.white,
+      this.fontSize = 19});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: ontap,
+      child: Container(
+        alignment: Alignment.center,
+        height: height!.h,
+        width: width!.w,
+        decoration: BoxDecoration(
+            color: bgColor!, borderRadius: BorderRadius.circular(radius!)),
+        child: Row(
+          children: [
+            SizedBox(width: 12.w),
+            AppIcon(path: iconPath),
+            const Spacer(),
+            Text(
+              name!,
+              style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontSize: fontSize!.sp,
+              ),
+            ),
+            const Spacer(),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class AppElevatedButton extends StatelessWidget {
   final Function()? onTap;
@@ -80,11 +134,10 @@ class AppElevatedButton extends StatelessWidget {
         height: height!.h,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          // gradient: LinearGradient(colors: [color!.withOpacity(0.85), color!]),
-          color: bgColor,
-          borderRadius: BorderRadius.circular(radius!),
-          border: Border.all(color: borderColor!)
-        ),
+            // gradient: LinearGradient(colors: [color!.withOpacity(0.85), color!]),
+            color: bgColor,
+            borderRadius: BorderRadius.circular(radius!),
+            border: Border.all(color: borderColor!)),
         child: Text(text,
             style: TextStyle(
                 fontWeight: fontWeight,

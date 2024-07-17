@@ -11,6 +11,7 @@ class AppConstants {
   static const String cAuth = 'auth';
   static const String cTarget = 'target';
   static const String cStep = 'steps';
+  static const String cStepCounter = 'steps_counter';
   //Type Target
   static const String typeStepDaily = 'type_step_daily';
   static const String typeMetreDaily = 'type_metre_daily';

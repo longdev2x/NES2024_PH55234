@@ -19,7 +19,7 @@ class _DailyStepScreenState extends ConsumerState<DailyStepScreen> {
   @override
   void initState() {
     super.initState();
-    // _requestPermission();
+    _requestPermission();
   }
 
   Future<void> _requestPermission() async {
@@ -46,9 +46,9 @@ class _DailyStepScreenState extends ConsumerState<DailyStepScreen> {
           data: (listStep) {
             return SingleChildScrollView(
               child: Column(children: [
-                SizedBox(height: 30.h),
-                StepMainCircle(objStep: listStep.last),
                 SizedBox(height: 35.h),
+                StepMainCircle(objStep: listStep.last),
+                SizedBox(height: 40.h),
                 StepRowMoreInfor(objStep: listStep.last),
                 SizedBox(height: 20.h),
                 const StepLineChart(),

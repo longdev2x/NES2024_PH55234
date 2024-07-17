@@ -22,7 +22,7 @@ class AppCircularProgressIcon extends StatelessWidget {
     this.percent = 80.0,
     this.iconPath,
     this.title,
-    this.radius = 25.0,
+    this.radius = 30.0,
   });
 
   @override
@@ -42,7 +42,7 @@ class AppCircularProgressIcon extends StatelessWidget {
         SizedBox(height: 5.h),
         Text(
           title ?? '',
-          style: const TextStyle(fontWeight: FontWeight.w700),
+          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.sp),
         ),
       ],
     );
@@ -106,12 +106,16 @@ class AppCircularProgressContent extends ConsumerWidget {
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 40.h),
                 btnTarget,
-                SizedBox(height: 20.h),
+                SizedBox(height: 40.h),
                 AppButton(
                   ontap: btnStart,
-                  name: 'Đi Thôi',
-                  width: 160,
+                  name: 'Let Go',
+                  fontSize: 30,
+                  width: 180,
+                  radius: 100,
+                  height: 60,
                 ),
               ],
             )
@@ -124,7 +128,8 @@ class AppCircularProgressContent extends ConsumerWidget {
                   style:
                   TextStyle(fontWeight: FontWeight.bold, fontSize: 80.sp),
                 ),
-                Text(date ?? '', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w400),),
+                // btnStart != null ? 
+                btnStart == null ? Text(date ?? '', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w400),) : const SizedBox(),
                 btnStart == null ? btnTarget : const SizedBox(),
               ],
             ),

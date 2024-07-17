@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
+import 'package:nes24_ph55234/data/repositories/step_repos.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'package:pedometer/pedometer.dart';
 
@@ -10,6 +11,7 @@ class StepCounterNotifier extends StateNotifier<StepEntity> {
       : super(StepEntity(
           userId: Global.storageService.getUserProfile().id,
           date: DateTime.now(),
+          step: -1
         ));
 
   Stream<StepCount>? _stepCountStream;
@@ -17,7 +19,7 @@ class StepCounterNotifier extends StateNotifier<StepEntity> {
   StreamSubscription<StepCount>? _stepCountSubscription;
   StreamSubscription<PedestrianStatus>? _pedestrianStatusSubscription;
 
-  void initPlatformState() {
+  void _initPlatformState() {
     _stepCountStream = Pedometer.stepCountStream;
     _pedestrianStatusStream = Pedometer.pedestrianStatusStream;
     // Huỷ đăng ký nếu đã tồn tại
@@ -32,6 +34,36 @@ class StepCounterNotifier extends StateNotifier<StepEntity> {
       onPedestrianStatusChanged,
       onError: onPedestrianStatusError,
     );
+  }
+
+  Future<void> pause(bool isPause) async {
+    if (isPause) {
+      await _stepCountSubscription?.cancel();
+      await _pedestrianStatusSubscription?.cancel();
+      return;
+    }
+    _stepCountSubscription = _stepCountStream?.listen(
+      onStepCount,
+      onError: onStepCountError,
+    );
+    _pedestrianStatusSubscription = _pedestrianStatusStream?.listen(
+      onPedestrianStatusChanged,
+      onError: onPedestrianStatusError,
+    );
+  }
+
+  Future<void> restartAndSave(StepEntity objStep) async {
+    await StepCounterRepos.addStepCounter(objStep: objStep);
+    await _stepCountSubscription?.cancel();
+    await _pedestrianStatusSubscription?.cancel();
+    state = StepEntity(
+      userId: Global.storageService.getUserProfile().id,
+      date: DateTime.now(),
+    );
+  }
+
+  void startNew() {
+    _initPlatformState();
   }
 
   void onStepCount(StepCount event) {
@@ -87,4 +119,5 @@ final stepCounterProvider =
     StateNotifierProvider.autoDispose<StepCounterNotifier, StepEntity>(
         (ref) => StepCounterNotifier());
 
-final onOffStepCounterProvider = StateProvider.autoDispose<bool>((ref) => false);
+final onOffStepCounterProvider =
+    StateProvider.autoDispose<bool>((ref) => false);

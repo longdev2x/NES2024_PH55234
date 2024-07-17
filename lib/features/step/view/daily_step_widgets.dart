@@ -1,10 +1,13 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_circular_progress.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
+import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
+import 'package:nes24_ph55234/features/step/controller/target_provider.dart';
 
 class StepMainCircle extends StatelessWidget {
   final StepEntity objStep;
@@ -21,38 +24,75 @@ class StepMainCircle extends StatelessWidget {
   }
 }
 
-class StepRowMoreInfor extends StatelessWidget {
+class StepRowMoreInfor extends ConsumerWidget {
   final StepEntity objStep;
-  //Giả định target
-  final int targetMetre = 1100;
   final int targetCaloreis = 100;
-  final int targetMinute = 150;
+  final int targetMinute = 100;
   const StepRowMoreInfor({super.key, required this.objStep});
 
   @override
-  Widget build(BuildContext context) {
-    final percentMetre = ( objStep.metre / targetMetre ).clamp(0.0, 1.0);
-    final percentKacl = (objStep.calo / targetCaloreis).clamp(0.0, 1.0);
-    final percentMinute = (objStep.minute / targetMinute).clamp(0.0, 1.0);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final fetchTargetMetree =
+        ref.watch(targetAsyncFamilyProvider(AppConstants.typeCaloDaily));
+    final fetchTargeCalo =
+        ref.watch(targetAsyncFamilyProvider(AppConstants.typeCaloDaily));
+    final fetchTargetMinute =
+        ref.watch(targetAsyncFamilyProvider(AppConstants.typeCaloDaily));
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 36.r),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppCircularProgressIcon(
-            percent: percentMetre,
-            iconPath: ImageRes.icCalo,
-            title: '${objStep.metre} m',
+          fetchTargetMetree.when(
+            data: (data) {
+              final percentMetre =
+                  (objStep.metre / (data?.target ?? 100)).clamp(0.0, 1.0);
+              return AppCircularProgressIcon(
+                percent: percentMetre,
+                iconPath: ImageRes.icArrowRight,
+                title: '${objStep.metre} m',
+              );
+            },
+            error: (error, stackTrace) => const Text('Error'),
+            loading: () => AppCircularProgressIcon(
+              iconPath: ImageRes.icArrowRight,
+              title: '${objStep.metre} m',
+              percent: 0,
+            ),
           ),
-          AppCircularProgressIcon(
-            percent: percentKacl,
-            iconPath: ImageRes.icCalo,
-            title: '${objStep.calo} kcal',
-          ),
-          AppCircularProgressIcon(
-            percent: percentMinute,
-            iconPath: ImageRes.icTime,
-            title: '${objStep.minute} phút',
+          fetchTargeCalo.when(
+              data: (data) {
+                final percentKacl =
+                    (objStep.calo / (data?.target ?? 100)).clamp(0.0, 1.0);
+                return AppCircularProgressIcon(
+                  percent: percentKacl,
+                  iconPath: ImageRes.icCalo,
+                  title: '${objStep.calo} kcal',
+                );
+              },
+              error: (error, stackTrace) => const Text('Error'),
+              loading: () => AppCircularProgressIcon(
+                    iconPath: ImageRes.icCalo,
+                    title: '${objStep.calo} kcal',
+                    percent: 0,
+                  )),
+          fetchTargetMinute.when(
+            data: (data) {
+              final percentMinute =
+                  (objStep.minute / (data?.target ?? 100)).clamp(0.0, 1.0);
+              return AppCircularProgressIcon(
+                percent: percentMinute,
+                iconPath: ImageRes.icTime,
+                title: '${objStep.minute} phút',
+              );
+            },
+            error: (error, stackTrace) => const Text('Error'),
+            loading: () => AppCircularProgressIcon(
+              iconPath: ImageRes.icTime,
+              title: '${objStep.minute} phút',
+              percent: 0,
+            ),
           ),
         ],
       ),
@@ -69,21 +109,22 @@ class StepLineChart extends StatelessWidget {
       height: 170.h,
       child: LineChart(
         LineChartData(
+          borderData: FlBorderData(show: false),
           minX: 0,
           maxX: 6,
           minY: 0,
           maxY: 10,
-          backgroundColor: Colors.black,
+          // backgroundColor: Colors.black
           lineBarsData: [
             LineChartBarData(
               spots: [
                 const FlSpot(0, 2),
-                const FlSpot(1, 3),
+                const FlSpot(1, 4),
                 const FlSpot(2, 3),
-                const FlSpot(3, 3.4),
-                const FlSpot(4, 3),
-                const FlSpot(5, 3),
-                const FlSpot(6, 5),
+                const FlSpot(3, 2),
+                const FlSpot(4, 5),
+                const FlSpot(5, 9),
+                const FlSpot(6, 7),
               ],
               isCurved: true,
               gradient: const LinearGradient(colors: [
@@ -98,17 +139,24 @@ class StepLineChart extends StatelessWidget {
                   Colors.pink.withOpacity(0.2),
                 ]),
               ),
-              dotData: const FlDotData(show: false),
+              dotData: FlDotData(
+                show: true,
+                getDotPainter: (spot, percent, barData, index) {
+                  return FlDotCirclePainter(
+                    radius: 0.r,
+                    color: Colors.white,
+                    strokeWidth: 5.r,
+                    strokeColor: Colors.black,
+                  );
+                },
+              ),
             ),
           ],
           gridData: FlGridData(
             show: true,
             drawHorizontalLine: false,
             getDrawingVerticalLine: (value) {
-              return FlLine(
-                color: Colors.grey.shade800,
-                strokeWidth: 0.8,
-              );
+              return const FlLine(color: Colors.transparent);
             },
           ),
           titlesData: FlTitlesData(

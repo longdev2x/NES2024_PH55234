@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
-import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/features/step/controller/step_counter_provider.dart';
 import 'package:nes24_ph55234/features/step/view/set_target_step_widget.dart';
@@ -18,6 +18,7 @@ class StepsCounterScreen extends ConsumerStatefulWidget {
 }
 
 class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
+  bool _havePermission = false;
   @override
   void initState() {
     super.initState();
@@ -39,7 +40,7 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
   Future<void> _requestPermission() async {
     PermissionStatus status = await Permission.activityRecognition.request();
     if (status.isGranted) {
-      ref.read(stepCounterProvider.notifier).initPlatformState();
+      _havePermission = true;
     } else if (status.isDenied) {
       AppToast.showToast("Không thể phát hiện bước chân khi bạn từ chối",
           length: Toast.LENGTH_LONG);
@@ -56,13 +57,23 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
+        padding:
+            EdgeInsets.symmetric(horizontal: 5.r),
         child: Column(
           children: [
+            if(!_havePermission)
+              const Text('Không thể chạy nếu bạn không cấp quyền'),
             SizedBox(height: 30.h),
             isStarted
                 ? StepCounterMainCircle(objStep: objSteps)
                 : const StepCounterMainCircleHolder(),
+            SizedBox(height: 40.h),
+            CounterRowInfo(objSteps),
+            SizedBox(height: 40.h),
+            isStarted
+                ? CounterRowButton(objSteps)
+                : const AppButton(name: 'Lịch Sử Đi Bộ'),
+
           ],
         ),
       ),

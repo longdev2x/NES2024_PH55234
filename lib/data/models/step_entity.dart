@@ -8,10 +8,6 @@ class StepEntity {
   final int calo;
   final int metre;
   final int minute;
-  final int targetStep;
-  final int targetCalo;
-  final int targetMetre;
-  final int targetMinute;
 
   StepEntity({
     String? id,
@@ -21,10 +17,6 @@ class StepEntity {
     this.calo = 0,
     this.metre = 0,
     this.minute = 0,
-    this.targetStep = 1,
-    this.targetCalo = 1,
-    this.targetMetre = 1,
-    this.targetMinute = 1,
   }) : id = id ?? const Uuid().v4();
 
   StepEntity copyWith({
@@ -33,10 +25,6 @@ class StepEntity {
     int? calo,
     int? metre,
     int? minute,
-    int? targetStep,
-    int? targetCalo,
-    int? targetMetre,
-    int? targetMinute,
   }) =>
       StepEntity(
         id: id,
@@ -46,10 +34,6 @@ class StepEntity {
         calo: calo ?? this.calo,
         metre: metre ?? this.metre,
         minute: minute ?? this.minute,
-        targetStep: targetStep ?? this.targetStep, 
-        targetCalo: targetCalo ?? this.calo,
-        targetMetre: targetMetre ?? this.targetMetre,
-        targetMinute: targetMinute ?? this.targetMinute,
       );
 
   Map<String, dynamic> toJson() => {

@@ -9,7 +9,6 @@ import 'package:nes24_ph55234/global.dart';
 import 'firebase_options.dart';
 
 final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
-bool isDarkGlobal = false;
 
 void main() async {
   await Global.init();
@@ -24,7 +23,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    isDarkGlobal = ref.watch(isDarkThemeProvider);
+    final isDark = ref.watch(isDarkThemeProvider);
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) => MaterialApp(
@@ -33,7 +32,7 @@ class MyApp extends ConsumerWidget {
         title: 'NES24 PH55234 Hoàng Nhật Long',
         theme: AppThemeDatas.lightTheme,
         darkTheme: AppThemeDatas.darkTheme,
-        themeMode: isDarkGlobal ? ThemeMode.dark : ThemeMode.light,
+        themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
         onGenerateRoute: (settings) {
           return AppRoutes.generateRoutSettings(settings);
         },

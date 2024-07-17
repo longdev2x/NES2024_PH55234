@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
-import 'package:nes24_ph55234/main.dart';
 
 class AppIcon extends StatelessWidget {
   final String path;
@@ -17,16 +16,16 @@ class AppIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return SizedBox(
       width: size!.w,
       child: Image.asset(
         path,
-        color: isDarkGlobal ? Colors.white : Colors.black,
+        color: isDark ? Colors.white : Colors.black,
       ),
     );
   }
 }
-
 
 class AppIconWithBgColor extends StatelessWidget {
   const AppIconWithBgColor(
