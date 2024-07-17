@@ -13,7 +13,7 @@ class AppDrawerWidget extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            padding: EdgeInsets.only(top: 60.h, left: 10.w),
+            padding: EdgeInsets.only(top: 70.h, left: 20.w),
             child: Text(
               "Nes2024 PH55234",
               style: TextStyle(
@@ -24,42 +24,52 @@ class AppDrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
+              _pop(context);
               Navigator.of(context).pushNamed(AppRoutesNames.steps);
             },
-            leading: const Icon(Icons.star),
+            leading: const Icon(Icons.directions_walk),
             title: const Text('Đếm số bước chân'),
           ),
           ListTile(
-            onTap: () {},
-            leading: const Icon(Icons.one_k),
+            onTap: () {
+              _pop(context);
+            },
+            leading: const Icon(Icons.heart_broken),
             title: const Text('Viết lòng biết ơn'),
           ),
           ListTile(
-            onTap: () {},
-            leading: const Icon(Icons.category),
+            onTap: () {
+              _pop(context);
+            },
+            leading: const Icon(Icons.alarm),
             title: const Text('Đo lường giấc ngủ'),
           ),
           ListTile(
             onTap: () {
+              _pop(context);
               Navigator.of(context).pushNamed(AppRoutesNames.yoga);
             },
-            leading: const Icon(Icons.mode),
+            leading: const Icon(Icons.video_collection_outlined),
             title: const Text('Video Thiền và Yoga'),
           ),
           ListTile(
             onTap: () {},
-            leading: const Icon(Icons.u_turn_right),
+            leading: const Icon(Icons.call),
             title: const Text('Tư vấn bí mật'),
           ),
           ListTile(
             onTap: () {
               AuthRepos.signOut();
             },
-            leading: const Icon(Icons.outbox),
+            leading: const Icon(Icons.logout),
             title: const Text('LogOut'),
           ),
         ],
       ),
     );
+  }
+
+  void _pop(BuildContext context) {
+    Navigator.pop(context);
   }
 }

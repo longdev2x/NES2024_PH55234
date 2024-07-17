@@ -9,10 +9,9 @@ import 'package:pedometer/pedometer.dart';
 class StepCounterNotifier extends StateNotifier<StepEntity> {
   StepCounterNotifier()
       : super(StepEntity(
-          userId: Global.storageService.getUserProfile().id,
-          date: DateTime.now(),
-          step: -1
-        ));
+            userId: Global.storageService.getUserProfile().id,
+            date: DateTime.now(),
+            step: -1));
 
   Stream<StepCount>? _stepCountStream;
   Stream<PedestrianStatus>? _pedestrianStatusStream;
@@ -38,18 +37,12 @@ class StepCounterNotifier extends StateNotifier<StepEntity> {
 
   Future<void> pause(bool isPause) async {
     if (isPause) {
-      await _stepCountSubscription?.cancel();
-      await _pedestrianStatusSubscription?.cancel();
+      _stepCountSubscription?.pause();
+      _pedestrianStatusSubscription?.pause();
       return;
     }
-    _stepCountSubscription = _stepCountStream?.listen(
-      onStepCount,
-      onError: onStepCountError,
-    );
-    _pedestrianStatusSubscription = _pedestrianStatusStream?.listen(
-      onPedestrianStatusChanged,
-      onError: onPedestrianStatusError,
-    );
+    _stepCountSubscription?.resume();
+    _pedestrianStatusSubscription?.resume();
   }
 
   Future<void> restartAndSave(StepEntity objStep) async {
@@ -57,9 +50,9 @@ class StepCounterNotifier extends StateNotifier<StepEntity> {
     await _stepCountSubscription?.cancel();
     await _pedestrianStatusSubscription?.cancel();
     state = StepEntity(
-      userId: Global.storageService.getUserProfile().id,
-      date: DateTime.now(),
-    );
+        userId: Global.storageService.getUserProfile().id,
+        date: DateTime.now(),
+        step: -1);
   }
 
   void startNew() {
@@ -83,19 +76,19 @@ class StepCounterNotifier extends StateNotifier<StepEntity> {
   void onPedestrianStatusChanged(PedestrianStatus event) {
     final status = event.status;
     if (kDebugMode) {
-      print('Trạng thái: $status');
+      print('Trạng thái(Counter): $status');
     }
   }
 
   void onPedestrianStatusError(error) {
     if (kDebugMode) {
-      print('Trạng thái lỗi: $error');
+      print('Trạng thái lỗi(Counter): $error');
     }
   }
 
   void onStepCountError(error) {
     if (kDebugMode) {
-      print('Step Count Error: $error');
+      print('Step Count Error(Counter): $error');
     }
   }
 
@@ -113,6 +106,13 @@ class StepCounterNotifier extends StateNotifier<StepEntity> {
   int calculateMinute(int step) {
     return step ~/ 100;
   }
+
+  @override
+  void dispose() {
+    _pedestrianStatusSubscription?.cancel();
+    _stepCountSubscription?.cancel();
+    super.dispose();
+  }
 }
 
 final stepCounterProvider =
@@ -121,3 +121,12 @@ final stepCounterProvider =
 
 final onOffStepCounterProvider =
     StateProvider.autoDispose<bool>((ref) => false);
+
+final pauseStepCounterProvider =
+    StateProvider.autoDispose<bool>((ref) => false);
+
+
+final historyStepCounterProvier = AutoDisposeFutureProvider<List<StepEntity>?>((ref) {
+  final String userId = Global.storageService.getUserProfile().id;
+  return StepCounterRepos.getAllStepCounter(userId);
+});

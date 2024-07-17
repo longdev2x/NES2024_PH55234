@@ -12,6 +12,7 @@ class DailyStepAsyncNotifier
   FutureOr<List<StepEntity>> build() {
     return _getValueFromApi();
   }
+
   UserEntity objUser = Global.storageService.getUserProfile();
   Stream<StepCount>? _stepCountStream;
   Stream<PedestrianStatus>? _pedestrianStatusStream;
@@ -48,6 +49,7 @@ class DailyStepAsyncNotifier
       onError: onPedestrianStatusError,
     );
   }
+  
 
   void onStepCount(StepCount event) {
     final today = DateTime.now();
@@ -78,19 +80,19 @@ class DailyStepAsyncNotifier
   void onPedestrianStatusChanged(PedestrianStatus event) {
     final status = event.status;
     if (kDebugMode) {
-      print('Trạng thái: $status');
+      print('Trạng thái(daily): $status');
     }
   }
 
   void onPedestrianStatusError(error) {
     if (kDebugMode) {
-      print('Trạng thái lỗi: $error');
+      print('Trạng thái lỗi(daily): $error');
     }
   }
 
   void onStepCountError(error) {
     if (kDebugMode) {
-      print('Step Count Error: $error');
+      print('Step Count Error(daily): $error');
     }
   }
 
@@ -107,6 +109,11 @@ class DailyStepAsyncNotifier
   // Giả định mất 1 phút để đi 100 bước
   int calculateMinute(int step) {
     return step ~/ 100;
+  }
+
+  void disposeStream() {
+    _pedestrianStatusSubscription?.cancel();
+    _stepCountSubscription?.cancel();
   }
 }
 

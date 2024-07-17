@@ -17,9 +17,14 @@ class DailyStepScreen extends ConsumerStatefulWidget {
 
 class _DailyStepScreenState extends ConsumerState<DailyStepScreen> {
   @override
+  void dispose() {
+    ref.read(dailyStepProvider.notifier).disposeStream();
+    super.dispose();
+  }
+  @override
   void initState() {
     super.initState();
-    _requestPermission();
+    // _requestPermission();
   }
 
   Future<void> _requestPermission() async {

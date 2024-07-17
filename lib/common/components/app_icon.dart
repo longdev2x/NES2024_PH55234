@@ -7,16 +7,19 @@ class AppIcon extends StatelessWidget {
   final String path;
   final double? size;
   final Color? iconColor;
+  final bool onButton;
   const AppIcon({
     super.key,
     required this.path,
     this.size = 22,
     this.iconColor,
+    this.onButton = false
   });
 
   @override
   Widget build(BuildContext context) {
-    final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    bool isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    if(onButton) isDark = !isDark;
     return SizedBox(
       width: size!.w,
       child: Image.asset(

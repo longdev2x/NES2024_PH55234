@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
+import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/features/step/controller/step_counter_provider.dart';
 import 'package:nes24_ph55234/features/step/view/set_target_step_widget.dart';
@@ -22,7 +23,7 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
   @override
   void initState() {
     super.initState();
-    _requestPermission();
+    // _requestPermission();
   }
 
   @override
@@ -72,7 +73,9 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
             SizedBox(height: 40.h),
             isStarted
                 ? CounterRowButton(objSteps)
-                : const AppButton(name: 'Lịch Sử Đi Bộ'),
+                : AppButton(name: 'Lịch Sử Đi Bộ', ontap: () {
+                  Navigator.of(context).pushNamed(AppRoutesNames.historyStep);
+                },),
 
           ],
         ),

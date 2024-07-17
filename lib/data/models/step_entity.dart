@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class StepEntity {
@@ -46,13 +48,20 @@ class StepEntity {
         'minute': minute,
       };
 
-  factory StepEntity.fromJson(Map<String, dynamic> json) => StepEntity(
-        id: json['id'],
-        userId: json['user_id'],
-        date: json['date'],
-        step: json['step'],
-        calo: json['calo'],
-        metre: json['metre'],
-        minute: json['minute'],
-      );
+  factory StepEntity.fromJson(Map<String, dynamic> json) {
+    return StepEntity(
+      id: json['id'],
+      userId: json['user_id'],
+      date: (json['date'] as Timestamp).toDate(), //
+      step: json['step'],
+      calo: json['calo'],
+      metre: json['metre'],
+      minute: json['minute'],
+    );
+  }
+
+    String get formatDate {
+    DateFormat format = DateFormat('dd/MM/yyyy');
+    return format.format(date);
+  }
 }

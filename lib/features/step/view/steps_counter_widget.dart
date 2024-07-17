@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_circular_progress.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
+import 'package:nes24_ph55234/common/components/app_icon.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
@@ -186,6 +187,7 @@ class CounterRowButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isPaused = ref.watch(pauseStepCounterProvider);
     return SizedBox(
       height: 50.h,
       child: Padding(
@@ -195,27 +197,39 @@ class CounterRowButton extends ConsumerWidget {
           children: [
             AppButtonWithIcon(
               ontap: () {
-                ref.read(stepCounterProvider.notifier).pause(true);
+                ref.read(stepCounterProvider.notifier).pause(!isPaused);
+                ref.read(pauseStepCounterProvider.notifier).state = !isPaused;
               },
-              iconPath: ImageRes.icCalo,
-              name: 'Tạm ngưng',
+              iconPath: isPaused ? ImageRes.icPause : ImageRes.icResume,
+              name: isPaused ? 'Tiếp tục' : 'Tạm ngưng',
               width: 170,
               radius: 20,
             ),
             const Spacer(),
             AppButtonWithIcon(
               ontap: () {
-                AppConfirm(
-                  title: 'Bạn chắc chứ',
-                  onConfirm: () {
-                    ref.read(onOffStepCounterProvider.notifier).state = false;
-                    ref
-                        .read(stepCounterProvider.notifier)
-                        .restartAndSave(objStep);
-                  },
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AppConfirm(
+                    title: 'Bạn chắc chứ',
+                    onConfirm: () {
+                      ref.read(onOffStepCounterProvider.notifier).state = false;
+                      ref
+                          .read(stepCounterProvider.notifier)
+                          .restartAndSave(objStep);
+                      Navigator.pop(context);
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (ctx) => _bottomShetShowResult(
+                            context: ctx, objStep: objStep),
+                        useSafeArea: true,
+                        isScrollControlled: true,
+                      );
+                    },
+                  ),
                 );
               },
-              iconPath: ImageRes.icCalo,
+              iconPath: ImageRes.icStop,
               name: 'Kết thúc',
               width: 170,
               radius: 20,
@@ -226,3 +240,79 @@ class CounterRowButton extends ConsumerWidget {
     );
   }
 }
+
+Widget _bottomShetShowResult(
+    {required BuildContext context, required StepEntity objStep}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(
+      horizontal: AppConstants.marginHori,
+      vertical: 12.h,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AppBar(
+          title: const Text('Kết quả'),
+          elevation: 0,
+          leading: const SizedBox(),
+          backgroundColor: Colors.transparent,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.close),
+            ),
+          ],
+        ),
+        SizedBox(height: 50.h),
+        Card(
+          child: ListTile(
+            leading: AppText40(
+              objStep.step.toString(),
+            ),
+            subtitle: const Text('bước'),
+            trailing: _radiusIcon(ImageRes.icWalk),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            leading: AppText40(
+              objStep.calo.toString(),
+            ),
+            subtitle: const Text('calo'),
+            trailing: _radiusIcon(ImageRes.icCalo),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            leading: AppText40(
+              objStep.step.toString(),
+            ),
+            subtitle: const Text('met'),
+            trailing: _radiusIcon(ImageRes.icArrowRight),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            leading: AppText40(
+              objStep.step.toString(),
+            ),
+            subtitle: const Text('phút'),
+            trailing: _radiusIcon(ImageRes.icTime),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _radiusIcon(String iconPath) => Container(
+      height: 60,
+      width: 60,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(width: 1)),
+      child: AppIcon(path: iconPath),
+    );

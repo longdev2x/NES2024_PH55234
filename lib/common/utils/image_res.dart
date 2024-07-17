@@ -23,4 +23,7 @@ class ImageRes {
   static const String icCalo = '${_baseIcon}ic_calo.png';
   static const String icArrowRight = '${_baseIcon}ic_arrow_right.png';
   static const String icTime = '${_baseIcon}ic_time.png';
+  static const String icPause = '${_baseIcon}ic_pause.png';
+  static const String icResume = '${_baseIcon}ic_resume.png';
+  static const String icStop = '${_baseIcon}ic_stop.png';
 }
