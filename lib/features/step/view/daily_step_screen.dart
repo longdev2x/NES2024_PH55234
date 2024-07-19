@@ -24,7 +24,7 @@ class _DailyStepScreenState extends ConsumerState<DailyStepScreen> {
   @override
   void initState() {
     super.initState();
-    // _requestPermission();
+    _requestPermission();
   }
 
   Future<void> _requestPermission() async {

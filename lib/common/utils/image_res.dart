@@ -13,6 +13,9 @@ class ImageRes {
   static const String gratefulBanner = '${_baseImage}grateful_banner.png';
   static const String sleepBanner = '${_baseImage}sleep_banner.png';
   static const String yogaBanner = '${_baseImage}yoga_banner.png';
+  static const String imgError = '${_baseImage}img_error.jpg';
+  static const String imgDefaultYoga = '${_baseImage}img_default_banner_yoga.webp';
+  static const String imgDefaultThien = '${_baseImage}img_default_banner_thien.jpg';
 
   static const String _baseIcon = "assets/icons/";
   static const String clap = '${_baseIcon}clapping.png';
@@ -26,4 +29,6 @@ class ImageRes {
   static const String icPause = '${_baseIcon}ic_pause.png';
   static const String icResume = '${_baseIcon}ic_resume.png';
   static const String icStop = '${_baseIcon}ic_stop.png';
+  static const String icPlayVideo = '${_baseIcon}ic_play_video.png';
+  static const String icPauseVideo = '${_baseIcon}ic_pause_video.png';
 }

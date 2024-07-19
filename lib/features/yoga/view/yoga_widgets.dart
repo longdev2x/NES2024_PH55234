@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/components/app_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
-import 'package:nes24_ph55234/common/utils/image_res.dart';
+import 'package:nes24_ph55234/common/utils/app_constants.dart';
+import 'package:nes24_ph55234/data/models/video_entity.dart';
+import 'package:nes24_ph55234/features/yoga/controller/video_provider.dart';
 
 class YogaMenu extends StatelessWidget {
   final String name;
@@ -32,23 +33,19 @@ class YogaMenu extends StatelessWidget {
 
 
 class CourseItemGrid extends ConsumerWidget {
-  const CourseItemGrid({super.key});
+  final List<VideoEntity> listVideo;
+  const CourseItemGrid(this.listVideo, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final listImage = [
-      ImageRes.sleepBanner,
-      ImageRes.bmiBanner,
-      ImageRes.gratefulBanner,
-      ImageRes.yogaBanner,
-      ImageRes.stepCounterBanner,
-      ImageRes.adviseBanner
-    ];
+    final String imageDefault = listVideo.isEmpty || listVideo[0].type == AppConstants.typeVideoYoga
+    ? 'https://cdn.hellobacsi.com/wp-content/uploads/2019/07/ch%C3%B3.png'
+    : 'https://cdn.hellobacsi.com/wp-content/uploads/2019/12/tu-the-ngoi-thien-e1576037454765.jpg?w=1200&q=75';
 
     return GridView.builder(
       physics: const ScrollPhysics(),
       shrinkWrap: true,
-      itemCount: listImage.length,
+      itemCount: listVideo.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 15,
@@ -56,14 +53,15 @@ class CourseItemGrid extends ConsumerWidget {
         childAspectRatio: 1.6,
       ),
       itemBuilder: (ctx, index) {
-        return AppImageWithColor(
+        return AppCachedNetworkImage(
           width: 40,
           height: 40,
+          title: listVideo[index].title,
           onTap: () async {
-            Navigator.of(context).pushNamed(AppRoutesNames.yogaDetail);
-            AppToast.showToast("Vào màn hình detail");
+            Navigator.of(context).pushNamed(AppRoutesNames.yogaDetail, arguments: listVideo[index]);
+            ref.read(videoControlProvider.notifier).state = listVideo[index];
           },
-          imagePath: listImage[index],
+          imagePath: listVideo[index].thumbnail ?? imageDefault,
           boxFit: BoxFit.fitWidth,
         );
       },

@@ -50,5 +50,13 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<!-- Cấp quyền cam - kho ảnh -mic -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Cần quyền truy cập vào thư viện ảnh để upload</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Cần quyền truy cập vào camera để chụp ảnh</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Cần quyền truy cập vào mic để thu âm khi quay video</string>
+	<!-- Phần khoá chiều dọc -->
 </dict>
 </plist>

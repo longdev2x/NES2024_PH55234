@@ -23,7 +23,7 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
   @override
   void initState() {
     super.initState();
-    // _requestPermission();
+    _requestPermission();
   }
 
   @override

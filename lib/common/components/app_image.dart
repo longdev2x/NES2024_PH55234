@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
@@ -88,57 +89,62 @@ class AppImageWithColor extends StatelessWidget {
   }
 }
 
-// class AppCachedNetworkImage extends StatelessWidget {
-//   final double width;
-//   final double height;
-//   final String imagePath;
-//   final BoxFit boxFit;
-//   final void Function()? voidFunction;
 
-//   const AppCachedNetworkImage(
-//       {super.key,
-//       this.width = 40,
-//       this.height = 40,
-//       this.boxFit = BoxFit.fitWidth,
-//       this.voidFunction,
-//       required this.imagePath});
+class AppCachedNetworkImage extends StatelessWidget {
+  final double width;
+  final double height;
+  final String imagePath;
+  final BoxFit boxFit;
+  final String? title;
+  final String? subTitle;
+  final void Function()? onTap;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: voidFunction,
-//       child: CachedNetworkImage(
-//         imageUrl: imagePath,
-//         imageBuilder: (context, imageProvider) {
-//           return Container(
-//             height: height.h,
-//             width: width.w,
-//             decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(20.w),
-//               image: DecorationImage(fit: boxFit, image: imageProvider),
-//             ),
-//             child: Padding(
-//                     padding: EdgeInsets.only(left: 20.w, bottom: 30.h),
-//                     child: Column(
-//                       mainAxisAlignment: MainAxisAlignment.end,
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         const FadeText(text: '......'),
-//                         FadeText(
-//                             text: "..... lesson",
-//                             color: AppColors.primaryFourElementText,
-//                             fontSize: 8.sp),
-//                       ],
-//                     ),
-//                   ),
-//           );
-//         },
-//         placeholder: (context, url) => SizedBox(
-//         height: 20.h,
-//         width: 20.h,
-//         child: const CircularProgressIndicator()),
-//         errorWidget: (context, url, error) => Image.asset(ImageRes.avatarDefault),
-//       ),
-//     );
-//   }
-// }
+  const AppCachedNetworkImage(
+      {super.key,
+      this.width = 40,
+      this.height = 40,
+      this.boxFit = BoxFit.fitWidth,
+      this.onTap,
+      this.title,
+      this.subTitle,
+      required this.imagePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: CachedNetworkImage(
+        imageUrl: imagePath,
+        imageBuilder: (context, imageProvider) {
+          return Container(
+            height: height.h,
+            width: width.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.w),
+              image: DecorationImage(fit: boxFit, image: imageProvider),
+            ),
+            child: Padding(
+                    padding: EdgeInsets.only(left: 14.w, bottom: 60.h),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FadeText(text: title ?? '',fontSize: 12,),
+                        FadeText(
+                            text: subTitle ?? '',
+                            color: AppColors.primaryFourElementText,
+                            fontSize: 8.sp),
+                      ],
+                    ),
+                  ),
+          );
+        },
+        placeholder: (context, url) => SizedBox(
+        height: 20.h,
+        width: 20.h,
+        child: const Center(child: CircularProgressIndicator())),
+        errorWidget: (context, url, error) => Image.asset(ImageRes.imgError),
+      ),
+    );
+  }
+}
