@@ -15,8 +15,10 @@ class AppConstants {
   static const String cStepCounter = 'steps_counter';
   static const String cVideo = 'videos';
   static const String cMusic = 'musics';
+  static const String cPost = 'musics';
   //Folder Storage Name
   static const String fbStorageAllVideo = 'storageAllVideo';
+  static const String fbStoragePost = 'storagePosts';
   //Type Video
   static const String typeVideoThien = 'type_video_thien';
   static const String typeVideoYoga = 'type_video_yoga';
@@ -25,9 +27,8 @@ class AppConstants {
   static const String typeMetreDaily = 'type_metre_daily';
   static const String typeCaloDaily = 'type_calo_daily';
   static const String typeMinuteDaily = 'type_minute_daily';
-
   static const String typeStepCounter = 'type_step_counter';
   static const String typeMetreCounter = 'type_metre_counter';
   static const String typeCaloCounter = 'type_calo_counter';
-  static const String typeMinuteCounter = 'type_minute_counter';
+  static const String typeMinuteCounter = 'type_minute_counter';  
 }

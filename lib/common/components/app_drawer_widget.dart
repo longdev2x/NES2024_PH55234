@@ -33,6 +33,7 @@ class AppDrawerWidget extends StatelessWidget {
           ListTile(
             onTap: () {
               _pop(context);
+              Navigator.pushNamed(context, AppRoutesNames.grateful);
             },
             leading: const Icon(Icons.heart_broken),
             title: const Text('Viết lòng biết ơn'),

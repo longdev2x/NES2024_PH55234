@@ -8,6 +8,7 @@ import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/components/app_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_theme_switcher.dart';
+import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/features/home/controller/banner_dots_provider.dart';
@@ -20,7 +21,9 @@ AppBar homeAppBar(WidgetRef ref, BuildContext context) {
   return AppBar(
     actions: [
       const AppThemeSwitcher(),
-      IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+      IconButton(onPressed: () {
+        Navigator.pushNamed(context, AppRoutesNames.search);
+      }, icon: const Icon(Icons.search)),
       GestureDetector(
         onTap: () {},
         child: Row(

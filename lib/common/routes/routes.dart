@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/features/application/view/application.dart';
 import 'package:nes24_ph55234/features/auth/view/auth_screen.dart';
+import 'package:nes24_ph55234/features/grateful/view/grateful_screen.dart';
 import 'package:nes24_ph55234/features/onboarding/view/onboarding.dart';
+import 'package:nes24_ph55234/features/search/view/search_screen.dart';
 import 'package:nes24_ph55234/features/step/view/history_step_counter_screen.dart';
 import 'package:nes24_ph55234/features/step/view/main_tab_step.dart';
 import 'package:nes24_ph55234/features/yoga/view/yoga_detail_screen.dart';
@@ -26,8 +28,8 @@ class AppRoutes {
         page: ApplicationScreen(),
       ),
       const RouteEntity(
-        path: AppRoutesNames.application,
-        page: ApplicationScreen(),
+        path: AppRoutesNames.search,
+        page: SearchScreen(),
       ),
       const RouteEntity(
         path: AppRoutesNames.steps,
@@ -44,6 +46,10 @@ class AppRoutes {
       const RouteEntity(
         path: AppRoutesNames.yogaDetail,
         page: YogaDetailScreen(),
+      ),
+      const RouteEntity(
+        path: AppRoutesNames.grateful,
+        page: GratefulScreen(),
       ),
     ];
   }
