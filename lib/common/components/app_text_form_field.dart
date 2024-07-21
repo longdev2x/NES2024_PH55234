@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
@@ -64,32 +65,52 @@ class AppTextFormField extends StatelessWidget {
 class AppTextFieldNoborder extends StatelessWidget {
   final double? height;
   final double? width;
+  final int? maxLines;
+  final int? maxLength;
+  final Function()? onTap;
+  final Function(String)? onChanged;
+  final TextInputType? inputType;
   final TextInputAction? action;
   final TextEditingController? controller;
   final String? hintText;
+  final EdgeInsets? paddingContent;
   final double? fontSize;
   final FontWeight? fontWeight;
   const AppTextFieldNoborder(
       {super.key,
-      this.height = 55,
+      this.onTap,
+      this.onChanged,
+      this.height,
       this.width = 280,
       this.action = TextInputAction.none,
+      this.maxLines,
+      this.maxLength,
       this.controller,
+      this.inputType,
       this.hintText,
+      this.paddingContent,
       this.fontSize,
       this.fontWeight});
   @override
   Widget build(context) {
     return SizedBox(
       width: width!.w,
-      height: height!.h,
+      height: height,
       child: TextField(
         textAlignVertical: TextAlignVertical.bottom,
         controller: controller,
         textInputAction: action,
+        keyboardType: inputType,
+        maxLines: maxLines,
+        minLines: 1,
+        onTap: onTap,
+        onChanged: onChanged,
+        maxLength: maxLength,
+        maxLengthEnforcement: MaxLengthEnforcement.enforced,
         style: TextStyle(fontSize: fontSize, fontWeight: fontWeight),
         decoration: InputDecoration(
           hintText: hintText,
+          contentPadding: paddingContent,
           border: _outlineInputBorder(),
           errorBorder: _outlineInputBorder(),
           enabledBorder: _outlineInputBorder(),

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
@@ -32,22 +30,33 @@ class PostRepos {
     }
   }
 
-  Future<void> createPost(PostEntity objPost, List<File> imagesFile) async {
+  static Future<void> createPost(PostEntity objPost) async {
     final docRef = _firestore.collection(_c).doc(objPost.id);
     //Upload images and get link
-    final List<String> imgPaths = await _uploadImages(imagesFile, objPost.id);
-    objPost.copyWith(images: imgPaths);
+    objPost = objPost.copyWith(
+        contentItems: await _uploadImages(objPost.contentItems, objPost.id));
     await docRef.set(objPost.toJson());
   }
 
-  Future<List<String>> _uploadImages(List<File> images, String idPost) async {
-    List<String> imagePaths = [];
-    for (File img in images) {
-      //_storage.ref() là root của fbStorage, child sau là folder tổng, sau có thể tạo thêm folder không thì id
-      final ref = _storage.ref().child(AppConstants.fbStoragePost).child(idPost);
-      await ref.putFile(img);
-      imagePaths.add(await ref.getDownloadURL());
+  static Future<List<ContentItem>> _uploadImages(
+    List<ContentItem> items,
+    String idPost,
+  ) async {
+    List<ContentItem> newItems = [];
+
+    for (ContentItem item in items) {
+      if (item.type == 'image') {
+        //_storage.ref() là root của fbStorage, child sau là folder tổng, sau có thể tạo thêm folder không thì id
+        final ref =
+            _storage.ref().child(AppConstants.fbStoragePost).child(idPost);
+        if (item.imageFile != null) {
+          await ref.putFile(item.imageFile!);
+          String url = await ref.getDownloadURL();
+          item = item.copyWith(content: url);
+        }
+      }
+      newItems.add(item);
     }
-    return imagePaths;
+    return newItems;
   }
 }

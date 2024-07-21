@@ -31,4 +31,13 @@ class ImageRes {
   static const String icStop = '${_baseIcon}ic_stop.png';
   static const String icPlayVideo = '${_baseIcon}ic_play_video.png';
   static const String icPauseVideo = '${_baseIcon}ic_pause_video.png';
+  static const String icAddImage = '${_baseIcon}ic_add_image.png';
+  //
+  static const String icAngry = '${_baseIcon}ic_feel_angry.png';
+  static const String icCry = '${_baseIcon}ic_feel_cry.png';
+  static const String icHaha = '${_baseIcon}ic_feel_haha.png';
+  static const String icHappy= '${_baseIcon}ic_feel_happy.png';
+  static const String icNormar = '${_baseIcon}ic_feel_normal.png';
+  static const String icSad = '${_baseIcon}ic_feel_sad.png';
+
 }

@@ -6,7 +6,7 @@ import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 
 class AppImage extends StatelessWidget {
-  final String imagePath;
+  final String? imagePath;
   final double width;
   final double height;
   final Function()? onTap;
@@ -27,7 +27,7 @@ class AppImage extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Image.asset(
-        imagePath,
+        imagePath ?? ImageRes.avatarDefault,
         width: width.w,
         height: height.h,
         fit: boxFit,

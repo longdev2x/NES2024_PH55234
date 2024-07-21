@@ -4,7 +4,7 @@ import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 
 class AppIcon extends StatelessWidget {
-  final String path;
+  final String? path;
   final double? size;
   final Color? iconColor;
   final bool onButton;
@@ -23,7 +23,7 @@ class AppIcon extends StatelessWidget {
     return SizedBox(
       width: size!.w,
       child: Image.asset(
-        path,
+        path ?? ImageRes.avatarDefault,
         color: isDark ? Colors.white : Colors.black,
       ),
     );

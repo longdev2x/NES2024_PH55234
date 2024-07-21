@@ -15,7 +15,7 @@ class AppConstants {
   static const String cStepCounter = 'steps_counter';
   static const String cVideo = 'videos';
   static const String cMusic = 'musics';
-  static const String cPost = 'musics';
+  static const String cPost = 'posts';
   //Folder Storage Name
   static const String fbStorageAllVideo = 'storageAllVideo';
   static const String fbStoragePost = 'storagePosts';

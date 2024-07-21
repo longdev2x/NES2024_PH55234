@@ -16,16 +16,20 @@ class GratefulScreen extends StatelessWidget {
             },
             icon: const Icon(Icons.search)),
       ]),
-      body: Center(
-        child: FloatingActionButton(
-          child: const Text('POST'),
-          onPressed: () => showModalBottomSheet(
-            context: context,
-            useSafeArea: true,
-            isScrollControlled: true,
-            builder: (ctx) => const PostBottomScreen(),
+      body: Column(
+        children: [
+          Center(
+            child: FloatingActionButton(
+              child: const Text('POST'),
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                useSafeArea: false,
+                isScrollControlled: true,
+                builder: (ctx) => const PostBottomScreen(),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
