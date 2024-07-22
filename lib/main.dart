@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/routes/routes.dart';
-import 'package:nes24_ph55234/common/utils/app_theme_datas.dart';
 import 'package:nes24_ph55234/common/provider_global/is_dark_theme_provider.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'firebase_options.dart';
@@ -30,8 +29,8 @@ class MyApp extends ConsumerWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: navKey,
         title: 'NES24 PH55234 Hoàng Nhật Long',
-        theme: AppThemeDatas.lightTheme,
-        darkTheme: AppThemeDatas.darkTheme,
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
         themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
         onGenerateRoute: (settings) {
           return AppRoutes.generateRoutSettings(settings);
