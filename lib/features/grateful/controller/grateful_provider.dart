@@ -13,8 +13,8 @@ class GratefulNotifier extends AutoDisposeAsyncNotifier<List<PostEntity>> {
     return PostRepos.getPostsType(PostType.gratetul);
   }
 
-  Future<void> createPost(PostEntity objPost) async {
-    PostRepos.createPost(objPost);
+  Future<void> createOrUpdatePost(PostEntity objPost) async {
+    PostRepos.createOrUpdatePost(objPost);
   }
 }
 

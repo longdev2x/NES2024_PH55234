@@ -2,14 +2,14 @@ class AppConstants {
   static const String storageUserProfileKey = 'user_profile';
   static const String storageDeviceOpenFirstKey = 'first_time';
   static const String isRemember = 'is_remember';
-  static const double marginHori = 16;
+  static const double marginHori = 20;
   static const double marginVeti = 16;
   //Role
   static const String roleUser = 'role_user';
   static const String roleAdmin = 'role_admin';
   static const String roleExpert = 'role_expert';
   //Colection
-  static const String cAuth = 'auth';
+  static const String cUser = 'user';
   static const String cTarget = 'target';
   static const String cStep = 'steps';
   static const String cStepCounter = 'steps_counter';

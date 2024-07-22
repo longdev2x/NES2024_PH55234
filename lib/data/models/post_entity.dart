@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:uuid/uuid.dart';
 
@@ -59,7 +60,7 @@ class PostEntity {
     required this.type,
     required this.date,
     required this.feel,
-  }) : id = const Uuid().v4();
+  }) : id = id ?? const Uuid().v4();
 
   PostEntity copyWith({
     PostLimit? limit,
@@ -103,4 +104,9 @@ class PostEntity {
         'title': title,
         'date': date
       };
+
+  String get formatDate {
+    final fomart = DateFormat("dd/MM");
+    return fomart.format(date ?? DateTime.now());
+  }
 }

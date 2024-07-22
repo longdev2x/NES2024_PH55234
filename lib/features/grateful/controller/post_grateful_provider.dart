@@ -27,7 +27,23 @@ class CreatePostNotifer extends StateNotifier<PostEntity> {
       feel: feel,
     );
   }
+
+  void reset() {
+    state = PostEntity(
+        userId: Global.storageService.getUserProfile().id,
+        limit: PostLimit.private,
+        title: '',
+        contentItems: [],
+        date: DateTime.now(),
+        feel: PostFeel.normal,
+        type: PostType.gratetul);
+  }
+  
+  void initEdit(PostEntity objPost) {
+    state = objPost;
+  }
 }
 
-final createPostGratefulProvider = StateNotifierProvider<CreatePostNotifer, PostEntity>(
-    (ref) => CreatePostNotifer());
+final createPostGratefulProvider =
+    StateNotifierProvider<CreatePostNotifer, PostEntity>(
+        (ref) => CreatePostNotifer());

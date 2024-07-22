@@ -30,8 +30,13 @@ class PostRepos {
     }
   }
 
-  static Future<void> createPost(PostEntity objPost) async {
+  static Future<void> createOrUpdatePost(PostEntity objPost) async {
     final docRef = _firestore.collection(_c).doc(objPost.id);
+    final snapShot = await docRef.get();
+    if(snapShot.exists) {
+      docRef.update(objPost.toJson());
+      return;
+    }
     //Upload images and get link
     objPost = objPost.copyWith(
         contentItems: await _uploadImages(objPost.contentItems, objPost.id));

@@ -151,9 +151,11 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
           contentItems: _items.map((e) {
             if (e is File) {
               return ContentItem(type: 'image', imageFile: e);
-            } else {
+            } else if(e is TextEditingController) {
               return ContentItem(
-                  type: 'text', content: (e as TextEditingController).text);
+                  type: 'text', content: e.text);
+            } else {
+              return ContentItem(type: 'image', content: e);
             }
           }).toList(),
           title: _titleController.text,
@@ -163,7 +165,7 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
   void _post() {
     _saveLocalProvider();
     PostEntity objPost = ref.read(createPostGratefulProvider);
-    ref.read(gratefulProvider.notifier).createPost(objPost);
+    ref.read(gratefulProvider.notifier).createOrUpdatePost(objPost);
   }
 
   @override
@@ -201,6 +203,8 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
             onPressed: () {
               _saveLocalProvider();
               _post();
+              ref.read(createPostGratefulProvider.notifier).reset();
+              Navigator.pop(context);
             },
             child: const AppText20('Lưu'),
           ),

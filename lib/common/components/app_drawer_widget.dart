@@ -54,6 +54,14 @@ class AppDrawerWidget extends StatelessWidget {
             title: const Text('Video Thiền và Yoga'),
           ),
           ListTile(
+            onTap: () {
+              _pop(context);
+              Navigator.of(context).pushNamed(AppRoutesNames.bmi);
+            },
+            leading: const Icon(Icons.east),
+            title: const Text('BMI'),
+          ),
+          ListTile(
             onTap: () {},
             leading: const Icon(Icons.call),
             title: const Text('Tư vấn bí mật'),

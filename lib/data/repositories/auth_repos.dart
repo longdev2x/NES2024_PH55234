@@ -8,7 +8,7 @@ import 'package:nes24_ph55234/main.dart';
 class AuthRepos {
   static final FirebaseAuth _instanceAuth = FirebaseAuth.instance;
   static final FirebaseFirestore _instanceStore = FirebaseFirestore.instance;
-  static const String c = AppConstants.cAuth;
+  static const String c = AppConstants.cUser;
 
   static Future<UserCredential> signUpWithFirebase({
     required String email,
@@ -42,6 +42,6 @@ class AuthRepos {
   }
 
   static Future<void> setUserInfor(UserEntity objUser) async {
-    await _instanceStore.collection(c).add(objUser.toJson());
+    await _instanceStore.collection(c).doc(objUser.id).set(objUser.toJson());
   }
 }

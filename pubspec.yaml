@@ -60,6 +60,7 @@ dependencies:
   firebase_storage: ^11.6.9
   cached_network_image: ^3.3.1
   flick_video_player: ^0.8.0
+  flex_color_scheme: ^7.3.1
 
 dev_dependencies:
   flutter_test:

@@ -32,6 +32,11 @@ class ImageRes {
   static const String icPlayVideo = '${_baseIcon}ic_play_video.png';
   static const String icPauseVideo = '${_baseIcon}ic_pause_video.png';
   static const String icAddImage = '${_baseIcon}ic_add_image.png';
+  static const String icCalculate = '${_baseIcon}ic_calculate.png';
+  static const String icBMI = '${_baseIcon}ic_bmi.png';
+  static const String icCheckTick = '${_baseIcon}ic_check_tick.png';
+  static const String icGenderMan= '${_baseIcon}ic_gender_man.png';
+  static const String icGenderWoman = '${_baseIcon}ic_gender_woman.png';
   //
   static const String icAngry = '${_baseIcon}ic_feel_angry.png';
   static const String icCry = '${_baseIcon}ic_feel_cry.png';
