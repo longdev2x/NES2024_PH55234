@@ -230,6 +230,29 @@ class AppText40 extends StatelessWidget {
   }
 }
 
+class AppText55 extends StatelessWidget {
+  final String? text;
+  final FontWeight? fontWeight;
+  final int? maxLines;
+  final TextAlign? textAlign;
+  final Color? color;
+  const AppText55(this.text,
+      {super.key,
+      this.fontWeight = FontWeight.bold,
+      this.maxLines = 1,
+      this.textAlign,
+      this.color});
+  @override
+  Widget build(context) {
+    return Text(
+      text!,
+      style: TextStyle(fontSize: 55.sp, fontWeight: fontWeight, color: color),
+      maxLines: maxLines,
+      textAlign: textAlign,
+    );
+  }
+}
+
 class AppTextSpan extends StatelessWidget {
   final String? text;
   final String? textButton;

@@ -8,9 +8,11 @@ import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
+import 'package:nes24_ph55234/data/models/bmi_entity.dart';
 import 'package:nes24_ph55234/data/models/user_entity.dart';
+import 'package:nes24_ph55234/features/profile/controller/bmi_provider.dart';
 import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
-import 'package:nes24_ph55234/features/profile/view/BMI/bmi_result_screen.dart';
+import 'package:nes24_ph55234/features/profile/view/BMI/bmi_quick_result_screen.dart';
 
 class BMICalculateScreen extends ConsumerStatefulWidget {
   const BMICalculateScreen({super.key});
@@ -25,14 +27,14 @@ class _BMICalculateScreenState extends ConsumerState<BMICalculateScreen> {
   final _ageController = TextEditingController();
 
   void _init(UserEntity objUser) {
-    if(_weightController.text.isEmpty) {
-    _weightController.text = objUser.weight?.toString() ?? '';
+    if (_weightController.text.isEmpty) {
+      _weightController.text = objUser.weight?.toString() ?? '';
     }
-    if(_heightController.text.isEmpty) {
-    _heightController.text = objUser.height?.toString() ?? '';
+    if (_heightController.text.isEmpty) {
+      _heightController.text = objUser.height?.toString() ?? '';
     }
-    if(_ageController.text.isEmpty) {
-    _ageController.text = objUser.age?.toString() ?? '';
+    if (_ageController.text.isEmpty) {
+      _ageController.text = objUser.age?.toString() ?? '';
     }
   }
 
@@ -119,10 +121,10 @@ class _BMICalculateScreenState extends ConsumerState<BMICalculateScreen> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              _calculateBMI();
+              _calculateBMI(objUser);
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const BMIResultScreen(isNav: false),
+                  builder: (context) => const BmiQuickResultScreen(),
                 ),
               );
             },
@@ -133,12 +135,26 @@ class _BMICalculateScreenState extends ConsumerState<BMICalculateScreen> {
     );
   }
 
-  void _calculateBMI() {
+  void _calculateBMI(UserEntity objUser) {
     final weight = double.tryParse(_weightController.text);
     final height = double.tryParse(_heightController.text);
     final age = int.tryParse(_ageController.text);
     if (weight != null && height != null && age != null) {
-      ref.read(profileProvider.notifier).updateBMI(weight, height, age);
+      final bmi = weight / ((height / 100) * (height / 100));
+
+      ref.read(profileProvider.notifier).updateUserProfile(
+            weight: weight,
+            height: height,
+            age: age,
+          );
+      ref.read(bmiLocalProvider.notifier).state = BMIEntity(
+          userId: objUser.id,
+          date: DateTime.now(),
+          bmi: bmi,
+          age: age,
+          height: height,
+          weight: weight,
+          gender: objUser.gender);
     }
   }
 

@@ -106,7 +106,7 @@ class PostEntity {
       };
 
   String get formatDate {
-    final fomart = DateFormat("dd/MM");
+    final fomart = DateFormat("dd/MM/yyyy");
     return fomart.format(date ?? DateTime.now());
   }
 }

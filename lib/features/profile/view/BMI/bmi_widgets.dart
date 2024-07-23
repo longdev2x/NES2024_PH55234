@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
-import 'package:nes24_ph55234/data/models/user_entity.dart';
+import 'package:nes24_ph55234/data/models/bmi_entity.dart';
 
 class AdViseWidget extends StatelessWidget {
   final String advise;
@@ -34,42 +34,75 @@ class MoreBMIWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(age == null || currentBMI == null) {
+    if (age == null || currentBMI == null) {
       return Container();
     }
 
     final List<BMICategory> categories =
         age! < 20 ? childCategories : adultCategories;
 
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: categories.length,
-      itemBuilder: (context, index) {
-        final category = categories[index];
-        final isCurrentCategory = category.isInRange(currentBMI!);
+    return Padding(
+      padding: EdgeInsets.only(top: 16.h),
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          final category = categories[index];
+          final isCurrentCategory = category.isInRange(currentBMI!);
 
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 8.h),
-          padding: EdgeInsets.all(12.w),
-          decoration: BoxDecoration(
-            color: isCurrentCategory ? Colors.blue.withOpacity(0.2) : null,
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: category.color,
-                radius: 24.r,
-              ),
-              SizedBox(width: 16.w),
-              AppText16(category.status, fontWeight: FontWeight.bold),
-              const Spacer(),
-              AppText14('${category.minBMI} - ${category.maxBMI}'),
-            ],
-          ),
-        );
-      },
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 2.h),
+            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+            decoration: BoxDecoration(
+              color: isCurrentCategory
+                  ? const Color.fromARGB(255, 64, 128, 30).withOpacity(0.8)
+                  : null,
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: category.color,
+                  radius: 6.r,
+                ),
+                SizedBox(width: 12.w),
+                AppText16(
+                  category.status,
+                  fontWeight:
+                      isCurrentCategory ? FontWeight.w900 : FontWeight.w500,
+                  color: isCurrentCategory ? Colors.white : null,
+                ),
+                const Spacer(),
+                AppText14('${category.minBMI} - ${category.maxBMI}'),
+              ],
+            ),
+          );
+        },
+      ),
     );
+  }
+}
+
+class BMIHelper {
+  static BMICategory getBMICategory(double? bmi, int? age) {
+    if (bmi == null || age == null) {
+      return BMICategory(
+          status: 'Không đủ dữ kiện',
+          minBMI: 0,
+          maxBMI: 0,
+          color: Colors.black,
+          advise:
+              'Vui lòng thêm cân nặng, chiều cao và tuổi tác để tính toán chỉ số');
+    }
+    if (age >= 20) {
+      BMICategory category =
+          adultCategories.firstWhere((category) => category.isInRange(bmi));
+      return category;
+    } else {
+      BMICategory category =
+          childCategories.firstWhere((category) => category.isInRange(bmi));
+      return category;
+    }
   }
 }

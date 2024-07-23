@@ -16,6 +16,7 @@ class AppConstants {
   static const String cVideo = 'videos';
   static const String cMusic = 'musics';
   static const String cPost = 'posts';
+  static const String cBMI = 'bmis';
   //Folder Storage Name
   static const String fbStorageAllVideo = 'storageAllVideo';
   static const String fbStoragePost = 'storagePosts';

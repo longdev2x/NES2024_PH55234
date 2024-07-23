@@ -20,14 +20,14 @@ class CategoryHoriItem extends StatelessWidget {
           onPressed: onPressed,
           style: ButtonStyle(
             textStyle: isChose
-                ? const MaterialStatePropertyAll(TextStyle(color: Colors.white))
-                : const MaterialStatePropertyAll(
+                ? const WidgetStatePropertyAll(TextStyle(color: Colors.white))
+                : const WidgetStatePropertyAll(
                     TextStyle(color: Colors.black),
                   ),
             backgroundColor:
-                isChose ? const MaterialStatePropertyAll(Colors.black) : null,
+                isChose ? const WidgetStatePropertyAll(Colors.black) : null,
             foregroundColor:
-                isChose ? const MaterialStatePropertyAll(Colors.white) : null,
+                isChose ? const WidgetStatePropertyAll(Colors.white) : null,
           ),
           child: Text(name),
         ),

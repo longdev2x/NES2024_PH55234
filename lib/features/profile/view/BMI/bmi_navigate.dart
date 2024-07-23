@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/common/components/app_icon.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
+import 'package:nes24_ph55234/features/profile/controller/bmi_provider.dart';
 import 'package:nes24_ph55234/features/profile/view/BMI/bmi_calculate_screen.dart';
-import 'package:nes24_ph55234/features/profile/view/BMI/bmi_result_screen.dart';
+import 'package:nes24_ph55234/features/profile/view/BMI/bmi_profile_screen.dart';
 
-class BMINavigate extends StatefulWidget {
+final List<Widget> screens = [
+  const BMICalculateScreen(),
+  const BmiProfileScreen(),
+];
+
+class BMINavigate extends ConsumerWidget {
   const BMINavigate({super.key});
 
   @override
-  State<BMINavigate> createState() => _BMINavigateState();
-}
-
-class _BMINavigateState extends State<BMINavigate> {
-  final List<Widget> screens = [
-    const BMICalculateScreen(),
-    const BMIResultScreen(isNav: true),
-  ];
-  int _currentIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(indexScreenBMI);
     return Scaffold(
-      body: screens[_currentIndex],
+      body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -30,17 +27,14 @@ class _BMINavigateState extends State<BMINavigate> {
               ),
               label: 'Tính toán'),
           BottomNavigationBarItem(
-            icon: AppIcon(
-              path: ImageRes.icBMI,
-            ),
-            label: 'BMI gần nhất'
-          ),
+              icon: AppIcon(
+                path: ImageRes.icBMI,
+              ),
+              label: 'BMI gần nhất'),
         ],
-        currentIndex: _currentIndex,
+        currentIndex: currentIndex,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+          ref.read(indexScreenBMI.notifier).state = index;
         },
       ),
     );

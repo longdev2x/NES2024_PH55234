@@ -48,11 +48,6 @@ class ProfileNotifier extends AsyncNotifier<UserEntity> {
       state = await AsyncValue.guard(() async => await _loadUserProfile());
     }
   }
-
-  Future<void> updateBMI(double weight, double height, int age) async {
-    final bmi = weight / ((height / 100) * (height / 100));
-    await updateUserProfile(weight: weight, height: height, bmi: bmi, age: age);
-  }
 }
 
 
