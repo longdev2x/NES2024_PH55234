@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/data/models/bmi_entity.dart';
 import 'package:nes24_ph55234/data/repositories/bmi_repos.dart';
 
-final indexScreenBMI = StateProvider<int>((ref) => 0);
+final indexScreenBMI = StateProvider.autoDispose<int>((ref) => 0);
 
 final bmiLocalProvider = StateProvider<BMIEntity?>((ref) => null,);
 

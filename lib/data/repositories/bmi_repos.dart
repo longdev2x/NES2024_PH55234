@@ -1,15 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/bmi_entity.dart';
+import 'package:nes24_ph55234/global.dart';
 
 class BMIRepos {
   static const String _c = AppConstants.cBMI;
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  static String userId = Global.storageService.getUserProfile().id;
 
   static Future<BMIEntity?> getLatestBMI() async {
     try {
       final QuerySnapshot querySnapshot = await _firestore
           .collection(_c)
+          .where('user_id', isEqualTo: userId)
           .orderBy('date', descending: true)
           .limit(1)
           .get();
@@ -26,7 +29,7 @@ class BMIRepos {
   }
 
   static Future<List<BMIEntity>> getAllBMI() async {
-    final snapshot = await _firestore.collection(_c).get();
+    final snapshot = await _firestore.collection(_c).where('user_id', isEqualTo: userId).get();
     return snapshot.docs.map((e) => BMIEntity.fromJson(e.data())).toList();
   }
 

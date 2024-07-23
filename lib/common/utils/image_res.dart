@@ -37,6 +37,7 @@ class ImageRes {
   static const String icCheckTick = '${_baseIcon}ic_check_tick.png';
   static const String icGenderMan= '${_baseIcon}ic_gender_man.png';
   static const String icGenderWoman = '${_baseIcon}ic_gender_woman.png';
+  static const String icCalandar = '${_baseIcon}ic_calandar.png';
   //
   static const String icAngry = '${_baseIcon}ic_feel_angry.png';
   static const String icCry = '${_baseIcon}ic_feel_cry.png';

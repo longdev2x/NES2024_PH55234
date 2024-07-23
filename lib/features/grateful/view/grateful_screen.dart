@@ -35,10 +35,9 @@ class GratefulScreen extends ConsumerWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                          decoration: const BoxDecoration(color: Colors.amber),
-                          child: const AppText34(
-                            'Phần mục tiêu',
+                        const SizedBox(
+                          child: AppText34(
+                            'Phần mục tiêu...',
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -65,16 +64,21 @@ class GratefulScreen extends ConsumerWidget {
           ),
         ),
         Positioned(
-          left: 150.w,
-          right: 150.w,
+          left: 100.w,
+          right: 100.w,
           bottom: 20.h,
-          child: FloatingActionButton(
-            child: const Text('POST'),
-            onPressed: () => showModalBottomSheet(
-              context: context,
-              useSafeArea: false,
-              isScrollControlled: true,
-              builder: (ctx) => const PostBottomScreen(),
+          child: SizedBox(
+            height: 60,
+            child: ElevatedButton.icon(
+              style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.amber),),
+              icon: const Icon(Icons.post_add),
+              label: Text('Viết biết ơn', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.sp),),
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                useSafeArea: false,
+                isScrollControlled: true,
+                builder: (ctx) => const PostBottomScreen(),
+              ),
             ),
           ),
         ),

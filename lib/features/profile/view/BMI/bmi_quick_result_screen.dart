@@ -45,7 +45,7 @@ class BmiQuickResultScreen extends ConsumerWidget {
                           ontap: () {
                             ref.read(bmiAsyncProvider.notifier).addBMI(
                                   BMIEntity(
-                                      userId: objBMI.id,
+                                      userId: objBMI.userId,
                                       date: objBMI.date,
                                       bmi: objBMI.bmi,
                                       age: objBMI.age,

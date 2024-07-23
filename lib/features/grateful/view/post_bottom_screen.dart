@@ -151,9 +151,8 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
           contentItems: _items.map((e) {
             if (e is File) {
               return ContentItem(type: 'image', imageFile: e);
-            } else if(e is TextEditingController) {
-              return ContentItem(
-                  type: 'text', content: e.text);
+            } else if (e is TextEditingController) {
+              return ContentItem(type: 'text', content: e.text);
             } else {
               return ContentItem(type: 'image', content: e);
             }
@@ -221,24 +220,13 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    DropdownButton<String>(
-                      iconSize: 30.r,
-                      value: objPost.limit!.name,
-                      items: PostLimit.values
-                          .map((e) => DropdownMenuItem(
-                              value: e.name,
-                              child: Text(e == PostLimit.private
-                                  ? 'Chỉ mình tôi'
-                                  : 'Công khai')))
-                          .toList(),
-                      onChanged: (value) {
-                        notifier.updateState(
-                          limit: PostLimit.values.firstWhere(
-                            (e) => e.name == value,
-                          ),
-                        );
-                      },
-                    ),
+                    ElevatedButton.icon(
+                        onPressed: _showDatePicker,
+                        icon: const AppIcon(
+                          path: ImageRes.icCalandar,
+                          size: 19,
+                        ),
+                        label: Text(objPost.formatDate)),
                     GestureDetector(
                       onTap: () {
                         showDialog(
@@ -302,7 +290,7 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 10,
           left: 10.w,
           right: 10.w,
         ),
@@ -314,11 +302,22 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
                 onPressed: _addImage,
                 icon: const AppIcon(path: ImageRes.icAddImage),
               ),
-              // Thêm các nút chức năng khác ở đây
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _showDatePicker() async {
+    DateTime? date = await showDatePicker(
+      context: context,
+      firstDate: DateTime.now().subtract(const Duration(days: 2000)),
+      lastDate: DateTime.now().add(const Duration(days: 5)),
+      initialDate: objPost.date,
+    );
+    if(date!= null) {
+      ref.read(createPostGratefulProvider.notifier).updateState(date: date);
+    }
   }
 }

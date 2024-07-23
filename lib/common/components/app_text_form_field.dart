@@ -9,19 +9,23 @@ class AppTextFormField extends StatelessWidget {
   final String? lable;
   final bool? isPass;
   final bool? autofocus;
+  final bool? readOnly;
   final String? initialValue;
   final TextInputType? inputType;
   final String? Function(String? value)? validator;
   final void Function(String? value)? onSaved;
   final Function(String? value)? onChanged;
+  final Function()? onTap;
   final TextEditingController? controller;
   const AppTextFormField(
       {super.key,
       this.hintText = "",
       this.lable = '',
       this.isPass = false,
+      this.readOnly = false,
       this.validator,
       this.onChanged,
+      this.onTap,
       this.initialValue,
       this.inputType,
       this.autofocus = false,
@@ -37,7 +41,9 @@ class AppTextFormField extends StatelessWidget {
       obscureText: isPass!,
       initialValue: initialValue,
       autofocus: autofocus ?? false,
+      readOnly: readOnly!,
       controller: controller,
+      onTap: onTap,
       keyboardType: inputType,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),

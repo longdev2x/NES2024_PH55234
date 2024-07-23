@@ -38,7 +38,7 @@ class GratefulPostItem extends ConsumerWidget {
             builder: (ctx) => const PostBottomScreen());
       },
       child: Card(
-        color: Colors.amber,
+        margin: EdgeInsets.only(bottom: 20.h),
         child: Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: AppConstants.marginHori,
@@ -48,7 +48,7 @@ class GratefulPostItem extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  AppText20(objPost.formatDate),
+                  AppText20(objPost.formatDate, fontWeight: FontWeight.bold,),
                   const Spacer(),
                   AppImage(
                     imagePath: emoijMap[objPost.feel],

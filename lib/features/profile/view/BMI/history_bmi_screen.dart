@@ -67,7 +67,7 @@ class HistoryBmiScreen extends ConsumerWidget {
                         backgroundColor: category.color,
                         radius: 10.r,
                       ),
-                      SizedBox(width: 5.w),
+                      SizedBox(width: 8.w),
                       AppText16(category.status),
                       const Spacer(),
                     ],

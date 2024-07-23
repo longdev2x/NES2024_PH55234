@@ -19,12 +19,14 @@ class CreatePostNotifer extends StateNotifier<PostEntity> {
     String? title,
     List<ContentItem>? contentItems,
     PostFeel? feel,
+    DateTime? date,
   }) {
     state = state.copyWith(
       limit: limit,
       title: title,
       contentItems: contentItems,
       feel: feel,
+      date: date,
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_global_app_bar.dart';
 import 'package:nes24_ph55234/common/components/app_icon.dart';
 import 'package:nes24_ph55234/common/components/app_image.dart';
@@ -54,6 +55,7 @@ class _BMICalculateScreenState extends ConsumerState<BMICalculateScreen> {
       appBar: appGlobalAppBar('BMI'),
       body: userAsyncValue.when(
         data: (objUser) {
+          print(objUser.id);
           _init(objUser);
           return _buildContent(context, objUser);
         },
@@ -65,72 +67,77 @@ class _BMICalculateScreenState extends ConsumerState<BMICalculateScreen> {
 
   Widget _buildContent(BuildContext context, UserEntity objUser) {
     final notifier = ref.read(profileProvider.notifier);
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppConstants.marginHori,
-          vertical: AppConstants.marginVeti),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 160.w,
-                child: AppTextFormField(
-                  lable: 'Cân nặng (kg)',
-                  controller: _weightController,
-                  inputType: TextInputType.number,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.marginHori,
+            vertical: AppConstants.marginVeti),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const AppText40('Chỉ số hiện tại'),
+            SizedBox(height: 60.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 160.w,
+                  child: AppTextFormField(
+                    lable: 'Cân nặng (kg)',
+                    controller: _weightController,
+                    inputType: TextInputType.number,
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 160.w,
-                child: AppTextFormField(
-                  controller: _heightController,
-                  lable: 'Chiều cao (cm)',
-                  inputType: TextInputType.number,
+                SizedBox(
+                  width: 160.w,
+                  child: AppTextFormField(
+                    controller: _heightController,
+                    lable: 'Chiều cao (cm)',
+                    inputType: TextInputType.number,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 15.h),
-          AppTextFormField(
-            controller: _ageController,
-            lable: 'Tuổi',
-            inputType: TextInputType.number,
-          ),
-          SizedBox(height: 15.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _genderPicker(
-                  onTap: () {
-                    notifier.updateUserProfile(gender: 'Nam');
-                  },
-                  iconPath: ImageRes.icGenderMan,
-                  text: 'Nam',
-                  isChose: objUser.gender == 'Nam'),
-              _genderPicker(
-                  onTap: () {
-                    notifier.updateUserProfile(gender: 'Nữ');
-                  },
-                  iconPath: ImageRes.icGenderWoman,
-                  text: 'Nữ',
-                  isChose: objUser.gender == 'Nữ'),
-            ],
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              _calculateBMI(objUser);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const BmiQuickResultScreen(),
-                ),
-              );
-            },
-            child: const Text('TÍNH TOÁN'),
-          ),
-        ],
+              ],
+            ),
+            SizedBox(height: 20.h),
+            AppTextFormField(
+              controller: _ageController,
+              lable: 'Tuổi',
+              inputType: TextInputType.number,
+            ),
+            SizedBox(height: 50.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _genderPicker(
+                    onTap: () {
+                      notifier.updateUserProfile(gender: 'Nam');
+                    },
+                    iconPath: ImageRes.icGenderMan,
+                    text: 'Nam',
+                    isChose: objUser.gender == 'Nam'),
+                _genderPicker(
+                    onTap: () {
+                      notifier.updateUserProfile(gender: 'Nữ');
+                    },
+                    iconPath: ImageRes.icGenderWoman,
+                    text: 'Nữ',
+                    isChose: objUser.gender == 'Nữ'),
+              ],
+            ),
+            const SizedBox(height: 60),
+            AppButton(
+              ontap: () {
+                _calculateBMI(objUser);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const BmiQuickResultScreen(),
+                  ),
+                );
+              },
+              name: 'Tính BMI',
+            ),
+          ],
+        ),
       ),
     );
   }
