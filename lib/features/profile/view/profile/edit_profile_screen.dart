@@ -62,7 +62,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       body: fetchUser.when(
         data: (objUser) {
           init(objUser);
-          return _buildContent(context, objUser);
+          return _buildContent(context, objUser, _usernameController,
+              weightController, heightController);
         },
         error: (error, stackTrace) => Center(child: Text('Error-$error')),
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -70,7 +71,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 
-  Widget _buildContent(BuildContext context, UserEntity objUser) {
+  Widget _buildContent(
+    BuildContext context,
+    UserEntity objUser,
+    TextEditingController userController,
+    TextEditingController weightController,
+    TextEditingController heightController,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
       child: SingleChildScrollView(
@@ -97,10 +104,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 heightController: heightController,
                 weightController: weightController,
               ),
-              SizedBox(height: 25.h),
+              SizedBox(height: 65.h),
               AppButton(
                 ontap: () {
                   if (!_formkey.currentState!.validate()) return;
+                  String username = userController.text;
+                  double weight = double.tryParse(weightController.text)!;
+                  double height = double.tryParse(heightController.text)!;
+                  ref.read(profileProvider.notifier).updateUserProfile(
+                      username: username, weight: weight, height: height);
+                  Navigator.pop(context);
                 },
                 name: 'Lưu Thông Tin',
                 height: 50,
