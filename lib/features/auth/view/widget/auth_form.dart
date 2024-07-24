@@ -21,18 +21,20 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
   late final TextEditingController emailController;
   late final TextEditingController passController;
   late final TextEditingController confirmPassController;
-  UserEntity? userInit;
+  RememberPassEntity? objRemember;
   @override
   void initState() {
+    super.initState();
+
     emailController = TextEditingController();
     passController = TextEditingController();
     confirmPassController = TextEditingController();
-    if (Global.storageService.isRemember()) {
-      userInit = Global.storageService.getUserProfile();
-      emailController.text = userInit != null ? userInit!.email : '';
-      passController.text = userInit != null ? userInit!.password : '';
+
+    objRemember = Global.storageService.getRemember();
+    if (objRemember != null && objRemember!.isRemember) {
+      emailController.text = objRemember != null ? objRemember!.email : '';
+      passController.text = objRemember != null ? objRemember!.password : '';
     }
-    super.initState();
   }
 
   @override
@@ -73,7 +75,7 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
             ),
           SizedBox(height: isLogin ? 180.h : 80.h),
           AppTextFormField(
-            hintText: "Email",
+            lable: "Email",
             controller: emailController,
             validator: (value) {
               if (value == null || !value.contains("@")) {
@@ -84,7 +86,7 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
           ),
           SizedBox(height: 20.h),
           AppTextFormField(
-            hintText: "Mật khẩu",
+            lable: "Mật khẩu",
             controller: passController,
             isPass: true,
             validator: (value) {

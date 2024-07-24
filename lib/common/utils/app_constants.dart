@@ -1,5 +1,6 @@
 class AppConstants {
-  static const String storageUserProfileKey = 'user_profile';
+  static const String storageUserId = 'user_id';
+  static const String strageRemember = 'remember_pass';
   static const String storageDeviceOpenFirstKey = 'first_time';
   static const String isRemember = 'is_remember';
   static const double marginHori = 20;
@@ -10,6 +11,7 @@ class AppConstants {
   static const String roleExpert = 'role_expert';
   //Colection
   static const String cUser = 'user';
+  static const String cFriendships = 'friendships';
   static const String cTarget = 'target';
   static const String cStep = 'steps';
   static const String cStepCounter = 'steps_counter';

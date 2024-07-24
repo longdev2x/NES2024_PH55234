@@ -4,7 +4,7 @@ import 'package:nes24_ph55234/data/repositories/profile_repos.dart';
 import 'package:nes24_ph55234/global.dart';
 
 class ProfileNotifier extends AsyncNotifier<UserEntity> {
-  static final String _userId = Global.storageService.getUserProfile().id;
+  static final String _userId = Global.storageService.getUserId();
 
   @override
   Future<UserEntity> build() async {
@@ -30,7 +30,6 @@ class ProfileNotifier extends AsyncNotifier<UserEntity> {
     // Cập nhật state ngay lập tức để UI phản hồi nhanh
     state = AsyncData(state.value!.copyWith(
       email: email ?? state.value!.email,
-      password: password ?? state.value!.password,
       name: name ?? state.value!.name,
       role: role ?? state.value!.role,
       avatar: avatar ?? state.value!.avatar,

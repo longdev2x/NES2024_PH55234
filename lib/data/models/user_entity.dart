@@ -6,16 +6,37 @@ const List<Role> listRoles = [
   Role(value: AppConstants.roleExpert, name: 'Chuyên gia'),
   Role(value: AppConstants.roleAdmin, name: 'Admin'),
 ];
+
 class Role {
   final String value;
   final String name;
   const Role({required this.value, required this.name});
 }
 
+class RememberPassEntity {
+  final String email;
+  final String password;
+  final bool isRemember;
+  const RememberPassEntity(
+      {required this.email, required this.password, required this.isRemember});
+
+  Map<String, dynamic> toJson() => {
+        'email': email,
+        'password': password,
+        'is_remember': isRemember,
+      };
+
+  factory RememberPassEntity.fromJson(Map<String, dynamic> json) =>
+      RememberPassEntity(
+        email: json['email'],
+        password: json['password'],
+        isRemember: json['is_remember'],
+      );
+}
+
 class UserEntity {
   final String id;
   final String email;
-  final String password;
   final String role;
   final String? name;
   final String? avatar;
@@ -24,11 +45,11 @@ class UserEntity {
   final double? weight;
   final int? age;
   final double? bmi;
+  List<String> friendIds;
 
   UserEntity({
     String? id,
     required this.email,
-    required this.password,
     required this.role,
     this.name,
     this.avatar,
@@ -37,11 +58,11 @@ class UserEntity {
     this.weight,
     this.bmi,
     this.age,
+    required this.friendIds,
   }) : id = id ?? const Uuid().v4();
 
   UserEntity copyWith({
     String? email,
-    String? password,
     String? name,
     String? role,
     String? avatar,
@@ -50,11 +71,11 @@ class UserEntity {
     double? weight,
     double? bmi,
     int? age,
+    List<String>? friendIds,
   }) =>
       UserEntity(
         id: id,
         email: email ?? this.email,
-        password: password ?? this.password,
         role: role ?? this.role,
         name: name ?? this.name,
         avatar: avatar ?? this.avatar,
@@ -63,27 +84,27 @@ class UserEntity {
         height: height ?? this.height,
         weight: weight ?? this.weight,
         bmi: bmi ?? this.bmi,
+        friendIds: friendIds ?? this.friendIds,
       );
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'email' : email,
-    'password' : password,
-    'role' : role,
-    'name' : name,
-    'avatar' : avatar,
-    'gender' : gender,
-    'height' : height,
-    'weight' : weight,
-    'bmi' : bmi,
-    'age' : age,
-  };
+        'id': id,
+        'email': email,
+        'role': role,
+        'name': name,
+        'avatar': avatar,
+        'gender': gender,
+        'height': height,
+        'weight': weight,
+        'bmi': bmi,
+        'age': age,
+        'friend_ids': friendIds,
+      };
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
     return UserEntity(
       id: json['id'],
       email: json['email'],
-      password: json['password'],
       role: json['role'],
       name: json['name'],
       avatar: json['avatar'],
@@ -91,7 +112,8 @@ class UserEntity {
       gender: json['gender'],
       weight: json['weight'],
       height: json['height'],
-      bmi: json['bmi']
+      bmi: json['bmi'],
+      friendIds: json['friend_ids'],
     );
   }
 }

@@ -41,20 +41,26 @@ class SharedPreferencesHelper {
     return _pref.getBool(AppConstants.storageDeviceOpenFirstKey) ?? true;
   }
 
-  bool isRemember() {
-    return _pref.getBool(AppConstants.isRemember) ?? false;
+  Future<bool> setRemember({String email = '', String password = '', bool isRemember = false}) {
+    final String json = jsonEncode(RememberPassEntity(email: email, password: password, isRemember: isRemember).toJson());
+    return _pref.setString(AppConstants.strageRemember, json);
   }
 
-  Future<bool> setUserProfile(UserEntity objUser) {
-    var profileJson = jsonEncode(objUser);
-    return _pref.setString(AppConstants.storageUserProfileKey, profileJson);
+  RememberPassEntity getRemember() {
+    final String json = _pref.getString(AppConstants.strageRemember) ?? '';
+    if(json.isEmpty) {
+      return const RememberPassEntity(email: '', password: '', isRemember: false);
+    }
+    RememberPassEntity objRemember = RememberPassEntity.fromJson(jsonDecode(json) as Map<String, dynamic>);
+    return objRemember;
   }
 
-  UserEntity getUserProfile() {
-    var profile = _pref.getString(AppConstants.storageUserProfileKey) ?? '';
-    var profileJson = jsonDecode(profile);
-    var userProfile = UserEntity.fromJson(profileJson);
-    return userProfile;
+  Future<bool> setUserId(String uid) {
+    return _pref.setString(AppConstants.storageUserId, uid);
+  }
+
+  String getUserId() {
+    return _pref.getString(AppConstants.storageUserId) ?? '';
   }
 
   Future<bool> removeKey(String key, int seconds) async {

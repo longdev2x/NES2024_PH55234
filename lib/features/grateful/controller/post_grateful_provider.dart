@@ -6,7 +6,7 @@ class CreatePostNotifer extends StateNotifier<PostEntity> {
   CreatePostNotifer()
       : super(
           PostEntity(
-              userId: Global.storageService.getUserProfile().id,
+              userId: Global.storageService.getUserId(),
               limit: PostLimit.private,
               title: '',
               contentItems: [],
@@ -32,7 +32,7 @@ class CreatePostNotifer extends StateNotifier<PostEntity> {
 
   void reset() {
     state = PostEntity(
-        userId: Global.storageService.getUserProfile().id,
+        userId: Global.storageService.getUserId(),
         limit: PostLimit.private,
         title: '',
         contentItems: [],

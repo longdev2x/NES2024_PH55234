@@ -19,8 +19,8 @@ class AppTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   const AppTextFormField(
       {super.key,
-      this.hintText = "",
-      this.lable = '',
+      this.hintText,
+      this.lable,
       this.isPass = false,
       this.readOnly = false,
       this.validator,

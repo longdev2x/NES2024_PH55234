@@ -12,7 +12,7 @@ class TargetAsyncNotifier extends FamilyAsyncNotifier<TargetEntity?, String> {
 
   @override
   FutureOr<TargetEntity?> build(String arg) async {
-    userId = Global.storageService.getUserProfile().id;
+    userId = Global.storageService.getUserId();
     return await _getTarget(arg);
   }
 

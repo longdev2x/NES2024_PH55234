@@ -9,7 +9,7 @@ import 'package:pedometer/pedometer.dart';
 class StepCounterNotifier extends StateNotifier<StepEntity> {
   StepCounterNotifier()
       : super(StepEntity(
-            userId: Global.storageService.getUserProfile().id,
+            userId: Global.storageService.getUserId(),
             date: DateTime.now(),
             step: -1));
 
@@ -50,7 +50,7 @@ class StepCounterNotifier extends StateNotifier<StepEntity> {
     await _stepCountSubscription?.cancel();
     await _pedestrianStatusSubscription?.cancel();
     state = StepEntity(
-        userId: Global.storageService.getUserProfile().id,
+        userId: Global.storageService.getUserId(),
         date: DateTime.now(),
         step: -1);
   }
@@ -127,6 +127,6 @@ final pauseStepCounterProvider =
 
 
 final historyStepCounterProvier = AutoDisposeFutureProvider<List<StepEntity>?>((ref) {
-  final String userId = Global.storageService.getUserProfile().id;
+  final String userId = Global.storageService.getUserId();
   return StepCounterRepos.getAllStepCounter(userId);
 });

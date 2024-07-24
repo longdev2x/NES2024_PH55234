@@ -1,6 +1,6 @@
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/provider_global/loader_provider.dart';
-import 'package:nes24_ph55234/common/utils/app_constants.dart';
+import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:nes24_ph55234/data/repositories/auth_repos.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,13 +24,13 @@ class AuthController {
         password: password,
       );
       userCredential.user!.sendEmailVerification();
-      UserEntity objUser = UserEntity(email: email, password: password, role: role);
+      UserEntity objUser = UserEntity(email: email, role: role, friendIds: []);
       await AuthRepos.setUserInfor(objUser);
-      await Global.storageService.setUserProfile(objUser);
+      await Global.storageService.setUserId(objUser.id);
       ref.read(loaderProvider.notifier).updateLoader(false);
       AppToast.showToast("Thành công, vui lòng xác thực email");
       navKey.currentState!
-          .pushNamedAndRemoveUntil('/application', (route) => false);
+          .pushNamedAndRemoveUntil(AppRoutesNames.application, (route) => false);
     } on FirebaseAuthException catch (e) {
       ref.read(loaderProvider.notifier).updateLoader(false);
       switch (e.code) {
@@ -74,15 +74,20 @@ class AuthController {
       }
       UserEntity? objUser = await AuthRepos.getUserInfor(user.uid);
       if(objUser == null) {
-        await AuthRepos.setUserInfor(UserEntity(email: email, password: password, role: listRoles[0].value));
+        await AuthRepos.setUserInfor(UserEntity(email: email, role: listRoles[0].value, friendIds: []));
+        objUser = await AuthRepos.getUserInfor(user.uid);
       }
-      await Global.storageService.setUserProfile(objUser!);
-      await  Global.storageService.setBool(AppConstants.isRemember, isRemember);
+      await Global.storageService.setUserId(objUser!.id);
+      if(isRemember) {
+        await Global.storageService.setRemember(email: email, password: password, isRemember: isRemember);
+      } else {
+        await Global.storageService.setRemember(email: '', password: '', isRemember: isRemember);
+      }
       
       ref.read(loaderProvider.notifier).updateLoader(false);
       //Save user token to local, sharedpreferences ...
       navKey.currentState!
-          .pushNamedAndRemoveUntil('/application', (route) => false);
+          .pushNamedAndRemoveUntil(AppRoutesNames.application, (route) => false);
     } on FirebaseAuthException catch (e) {
       ref.read(loaderProvider.notifier).updateLoader(false);
       switch (e.code) {

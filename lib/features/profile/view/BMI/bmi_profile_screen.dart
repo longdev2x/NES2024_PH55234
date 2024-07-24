@@ -45,7 +45,6 @@ class BmiProfileScreen extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) {
-          print(error);
           return Center(child: Text('Error-$error'));
         },
         loading: () =>

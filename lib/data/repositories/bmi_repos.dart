@@ -6,7 +6,7 @@ import 'package:nes24_ph55234/global.dart';
 class BMIRepos {
   static const String _c = AppConstants.cBMI;
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  static String userId = Global.storageService.getUserProfile().id;
+  static String userId = Global.storageService.getUserId();
 
   static Future<BMIEntity?> getLatestBMI() async {
     try {

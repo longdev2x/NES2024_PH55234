@@ -55,7 +55,6 @@ class _BMICalculateScreenState extends ConsumerState<BMICalculateScreen> {
       appBar: appGlobalAppBar('BMI'),
       body: userAsyncValue.when(
         data: (objUser) {
-          print(objUser.id);
           _init(objUser);
           return _buildContent(context, objUser);
         },
