@@ -1,3 +1,4 @@
+
 import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
@@ -50,7 +51,7 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
     final bool isLogin = ref.watch(isLoginProvider);
     final bool isLoader = ref.watch(loaderProvider);
     final bool? isRemember = ref.watch(isRememberProvider);
-    final String? role = ref.watch(roleProvider);
+    final Role? role = ref.watch(roleProvider);
     final GlobalKey<FormState> keyForm = GlobalKey();
 
     return Form(
@@ -64,13 +65,13 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
           if (!isLogin)
             DropdownButton<String>(
               underline: const SizedBox(),
-              value: role,
+              value: role?.value,
               items: listRoles
                   .map((role) => DropdownMenuItem<String>(
                       value: role.value, child: Text(role.name)))
                   .toList(),
               onChanged: (role) {
-                ref.read(roleProvider.notifier).state = role;
+                ref.read(roleProvider.notifier).state = listRoles.firstWhere((e) => e.value == role);
               },
             ),
           SizedBox(height: isLogin ? 180.h : 80.h),
@@ -151,7 +152,7 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
                           : AuthController.signUp(
                               email: email,
                               password: password,
-                              role: role ?? listRoles[0].value,
+                              role: role ?? listRoles[0],
                               ref: ref,
                             );
                     }

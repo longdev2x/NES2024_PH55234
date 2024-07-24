@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/data/models/friend_entity.dart';
 import 'package:nes24_ph55234/data/repositories/friend_repos.dart';
 import 'package:nes24_ph55234/features/friend/controller/friend_provider.dart';
-import 'package:nes24_ph55234/global.dart';
 
 class FriendScreen extends ConsumerStatefulWidget {
   const FriendScreen({super.key});
@@ -18,8 +17,6 @@ class _FriendScreenState extends ConsumerState<FriendScreen> {
 
   @override
   Widget build(BuildContext context) {
-      print('zzzz11${Global.storageService.getUserId()}');
-
     final friendRequests = ref.watch(friendRequestsProvider);
 
     return Scaffold(

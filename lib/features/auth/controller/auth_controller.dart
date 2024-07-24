@@ -13,7 +13,7 @@ class AuthController {
   static void signUp({
     required String email,
     required String password,
-    required String role,
+    required Role role,
     required WidgetRef ref,
   }) async {
     //validate firebase (first validate in textformfield of Form)
@@ -23,14 +23,25 @@ class AuthController {
         email: email,
         password: password,
       );
-      userCredential.user!.sendEmailVerification();
-      UserEntity objUser = UserEntity(email: email, role: role, friendIds: []);
-      await AuthRepos.setUserInfor(objUser);
+      User? user = userCredential.user;
+      if (user == null) return;
+
+      UserEntity objUser = UserEntity(id: user.uid, email: email, role: role, friendIds: []);
+
+      try {
+        await AuthRepos.setUserInfor(objUser);
+      } catch (e) {
+        AppToast.showToast('Hãy đăng ký lại');
+        await user.delete(); 
+        throw Exception("Lỗi khi lưu thông tin người dùng: $e");
+      }
+
       await Global.storageService.setUserId(objUser.id);
       ref.read(loaderProvider.notifier).updateLoader(false);
-      AppToast.showToast("Thành công, vui lòng xác thực email");
-      navKey.currentState!
-          .pushNamedAndRemoveUntil(AppRoutesNames.application, (route) => false);
+
+      AppToast.showToast("Đăng ký thành công!");
+      navKey.currentState!.pushNamedAndRemoveUntil(
+          AppRoutesNames.application, (route) => false);
     } on FirebaseAuthException catch (e) {
       ref.read(loaderProvider.notifier).updateLoader(false);
       switch (e.code) {
@@ -68,26 +79,24 @@ class AuthController {
         password: password,
       );
       User? user = userCredential.user;
-      if(user == null) {
-        AppToast.showToast('Có lỗi, vui lòng đăng nhập lại');
+      if (user == null) {
+        AppToast.showToast('Kiểm tra lại tài khoản');
         return;
       }
-      UserEntity? objUser = await AuthRepos.getUserInfor(user.uid);
-      if(objUser == null) {
-        await AuthRepos.setUserInfor(UserEntity(email: email, role: listRoles[0].value, friendIds: []));
-        objUser = await AuthRepos.getUserInfor(user.uid);
-      }
-      await Global.storageService.setUserId(objUser!.id);
-      if(isRemember) {
-        await Global.storageService.setRemember(email: email, password: password, isRemember: isRemember);
+
+      await Global.storageService.setUserId(user.uid);
+      if (isRemember) {
+        await Global.storageService.setRemember(
+            email: email, password: password, isRemember: isRemember);
       } else {
-        await Global.storageService.setRemember(email: '', password: '', isRemember: isRemember);
+        await Global.storageService
+            .setRemember(email: '', password: '', isRemember: isRemember);
       }
-      
+
       ref.read(loaderProvider.notifier).updateLoader(false);
       //Save user token to local, sharedpreferences ...
-      navKey.currentState!
-          .pushNamedAndRemoveUntil(AppRoutesNames.application, (route) => false);
+      navKey.currentState!.pushNamedAndRemoveUntil(
+          AppRoutesNames.application, (route) => false);
     } on FirebaseAuthException catch (e) {
       ref.read(loaderProvider.notifier).updateLoader(false);
       switch (e.code) {

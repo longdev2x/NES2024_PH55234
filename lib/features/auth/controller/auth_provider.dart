@@ -5,4 +5,4 @@ final isLoginProvider = StateProvider.autoDispose<bool>((ref) => true);
 
 final isRememberProvider = StateProvider.autoDispose<bool?>((ref) => false);
 
-final roleProvider = StateProvider.autoDispose<String?>((ref) => listRoles[0].value);
+final roleProvider = StateProvider.autoDispose<Role?>((ref) => listRoles[0]);

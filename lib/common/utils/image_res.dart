@@ -38,6 +38,11 @@ class ImageRes {
   static const String icGenderMan= '${_baseIcon}ic_gender_man.png';
   static const String icGenderWoman = '${_baseIcon}ic_gender_woman.png';
   static const String icCalandar = '${_baseIcon}ic_calandar.png';
+  static const String icEdit = '${_baseIcon}ic_edit.png';
+  static const String icCamera = '${_baseIcon}ic_camera.png';
+  static const String icSettings = '${_baseIcon}ic_settings.png';
+  static const String icChangPass = '${_baseIcon}ic_change_pass.png';
+  static const String icLogout = '${_baseIcon}ic_logout.png';
   //
   static const String icAngry = '${_baseIcon}ic_feel_angry.png';
   static const String icCry = '${_baseIcon}ic_feel_cry.png';

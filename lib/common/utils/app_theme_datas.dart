@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 class ThemeClass {
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: const Color.fromRGBO(253, 248, 242, 1),

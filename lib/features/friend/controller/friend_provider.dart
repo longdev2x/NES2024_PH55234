@@ -10,13 +10,8 @@ final userSearchProvider =
 });
 
 final friendRequestsProvider = StreamProvider<List<FriendshipEntity>>((ref) {
-  print('zzzz${Global.storageService.getUserId()}');
   final stream = FriendRepos.getFriendRequests(
       Global.storageService.getUserId());
-      print('zzzz${stream}');
-      print('zzzz${stream.first}');
-      print('zzzz${stream.toString()}');
-      print('zzzz${stream.length}');
   return stream;
 });
 

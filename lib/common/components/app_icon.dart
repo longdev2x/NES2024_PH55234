@@ -46,7 +46,7 @@ class AppIconWithBgColor extends StatelessWidget {
     return Image.asset(
       imagePath,
       width: width.w,
-      height: height.h,
+      height: height.w,
       color: color,
     );
   }

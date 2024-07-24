@@ -19,7 +19,7 @@ class ProfileNotifier extends AsyncNotifier<UserEntity> {
     String? email,
     String? password,
     String? name,
-    String? role,
+    Role? role,
     String? avatar,
     String? gender,
     double? height,

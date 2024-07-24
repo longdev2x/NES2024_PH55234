@@ -1,5 +1,4 @@
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
-import 'package:uuid/uuid.dart';
 
 const List<Role> listRoles = [
   Role(value: AppConstants.roleUser, name: 'Người dùng'),
@@ -37,7 +36,7 @@ class RememberPassEntity {
 class UserEntity {
   final String id;
   final String email;
-  final String role;
+  final Role role;
   final String? name;
   final String? avatar;
   final String? gender;
@@ -48,7 +47,7 @@ class UserEntity {
   List<String> friendIds;
 
   UserEntity({
-    String? id,
+    required this.id,
     required this.email,
     required this.role,
     this.name,
@@ -59,12 +58,12 @@ class UserEntity {
     this.bmi,
     this.age,
     required this.friendIds,
-  }) : id = id ?? const Uuid().v4();
+  });
 
   UserEntity copyWith({
     String? email,
     String? name,
-    String? role,
+    Role? role,
     String? avatar,
     String? gender,
     double? height,
@@ -90,7 +89,7 @@ class UserEntity {
   Map<String, dynamic> toJson() => {
         'id': id,
         'email': email,
-        'role': role,
+        'role': role.value,
         'name': name,
         'avatar': avatar,
         'gender': gender,
@@ -105,7 +104,7 @@ class UserEntity {
     return UserEntity(
       id: json['id'],
       email: json['email'],
-      role: json['role'],
+      role: listRoles.firstWhere((e) => e.value == json['role']),
       name: json['name'],
       avatar: json['avatar'],
       age: json['age'],
@@ -113,7 +112,7 @@ class UserEntity {
       weight: json['weight'],
       height: json['height'],
       bmi: json['bmi'],
-      friendIds: json['friend_ids'],
+      friendIds: (json['friend_ids'] as List<dynamic>).map((e) => e.toString()).toList(),
     );
   }
 }
