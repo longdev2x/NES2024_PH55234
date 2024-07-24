@@ -1,15 +1,18 @@
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 
 const List<Role> listRoles = [
-  Role(value: AppConstants.roleUser, name: 'Người dùng'),
-  Role(value: AppConstants.roleExpert, name: 'Chuyên gia'),
-  Role(value: AppConstants.roleAdmin, name: 'Admin'),
+  Role(value: AppConstants.roleUser, username: 'Người dùng'),
+  Role(value: AppConstants.roleExpert, username: 'Chuyên gia'),
+  Role(value: AppConstants.roleAdmin, username: 'Admin'),
 ];
 
 class Role {
   final String value;
-  final String name;
-  const Role({required this.value, required this.name});
+  final String username;
+  const Role({required this.value, required this.username});
 }
 
 class RememberPassEntity {
@@ -37,48 +40,48 @@ class UserEntity {
   final String id;
   final String email;
   final Role role;
-  final String? name;
+  final DateTime bith;
+  final String username;
+  final String gender;
+  List<String> friendIds;
   final String? avatar;
-  final String? gender;
   final double? height;
   final double? weight;
-  final int? age;
   final double? bmi;
-  List<String> friendIds;
 
   UserEntity({
     required this.id,
     required this.email,
     required this.role,
-    this.name,
+    required this.bith,
+    String? username,
+    required this.gender,
     this.avatar,
-    this.gender,
     this.height,
     this.weight,
     this.bmi,
-    this.age,
     required this.friendIds,
-  });
+  }) : username = username ?? 'User${Random(100000).nextInt(1000000)}';
 
   UserEntity copyWith({
     String? email,
-    String? name,
+    String? username,
     Role? role,
     String? avatar,
     String? gender,
     double? height,
     double? weight,
     double? bmi,
-    int? age,
+    DateTime? bith,
     List<String>? friendIds,
   }) =>
       UserEntity(
         id: id,
         email: email ?? this.email,
         role: role ?? this.role,
-        name: name ?? this.name,
+        username: username ?? this.username,
         avatar: avatar ?? this.avatar,
-        age: age ?? this.age,
+        bith: bith ?? this.bith,
         gender: gender ?? this.gender,
         height: height ?? this.height,
         weight: weight ?? this.weight,
@@ -90,13 +93,13 @@ class UserEntity {
         'id': id,
         'email': email,
         'role': role.value,
-        'name': name,
+        'username': username,
         'avatar': avatar,
         'gender': gender,
         'height': height,
         'weight': weight,
         'bmi': bmi,
-        'age': age,
+        'bith': bith,
         'friend_ids': friendIds,
       };
 
@@ -105,14 +108,31 @@ class UserEntity {
       id: json['id'],
       email: json['email'],
       role: listRoles.firstWhere((e) => e.value == json['role']),
-      name: json['name'],
+      username: json['username'],
       avatar: json['avatar'],
-      age: json['age'],
-      gender: json['gender'],
+      bith: (json['bith'] as Timestamp).toDate(),
+      gender: json['gender'] ?? 'Nam',
       weight: json['weight'],
       height: json['height'],
       bmi: json['bmi'],
-      friendIds: (json['friend_ids'] as List<dynamic>).map((e) => e.toString()).toList(),
+      friendIds: (json['friend_ids'] as List<dynamic>)
+          .map((e) => e.toString())
+          .toList(),
     );
+  }
+  String get bithFormat {
+    var formatDate = DateFormat('dd-MM-yyyy');
+    return formatDate.format(bith);
+  }
+
+  int? cacularAge() {
+    DateTime today = DateTime.now();
+    int age = today.year - bith.year;
+
+    if (today.month < bith.month ||
+        today.month == bith.month && today.day < bith.day) {
+      age--;
+    }
+    return age;
   }
 }

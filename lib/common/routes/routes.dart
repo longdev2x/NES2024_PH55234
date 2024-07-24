@@ -6,6 +6,7 @@ import 'package:nes24_ph55234/features/auth/view/auth_screen.dart';
 import 'package:nes24_ph55234/features/grateful/view/grateful_screen.dart';
 import 'package:nes24_ph55234/features/onboarding/view/onboarding.dart';
 import 'package:nes24_ph55234/features/profile/view/BMI/bmi_navigate.dart';
+import 'package:nes24_ph55234/features/profile/view/profile/edit_profile_screen.dart';
 import 'package:nes24_ph55234/features/search/view/search_screen.dart';
 import 'package:nes24_ph55234/features/step/view/history_step_counter_screen.dart';
 import 'package:nes24_ph55234/features/step/view/main_tab_step.dart';
@@ -55,6 +56,10 @@ class AppRoutes {
       const RouteEntity(
         path: AppRoutesNames.bmi,
         page: BMINavigate(),
+      ),
+      const RouteEntity(
+        path: AppRoutesNames.editProfile,
+        page: EditProfileScreen(),
       ),
     ];
   }

@@ -17,7 +17,7 @@ class AuthController {
     required WidgetRef ref,
   }) async {
     //validate firebase (first validate in textformfield of Form)
-    ref.read(loaderProvider.notifier).updateLoader(true);
+    ref.read(loaderProvider.notifier).state = true;
     try {
       UserCredential userCredential = await AuthRepos.signUpWithFirebase(
         email: email,
@@ -26,24 +26,29 @@ class AuthController {
       User? user = userCredential.user;
       if (user == null) return;
 
-      UserEntity objUser = UserEntity(id: user.uid, email: email, role: role, friendIds: []);
+      UserEntity objUser = UserEntity(
+        id: user.uid,
+        email: email,
+        role: role,
+        bith: DateTime.now().subtract(const Duration(days: 7300)),
+        gender: 'Nam',
+        friendIds: [],
+      );
 
       try {
         await AuthRepos.setUserInfor(objUser);
       } catch (e) {
         AppToast.showToast('Hãy đăng ký lại');
-        await user.delete(); 
+        await user.delete();
         throw Exception("Lỗi khi lưu thông tin người dùng: $e");
       }
 
       await Global.storageService.setUserId(objUser.id);
-      ref.read(loaderProvider.notifier).updateLoader(false);
 
       AppToast.showToast("Đăng ký thành công!");
       navKey.currentState!.pushNamedAndRemoveUntil(
           AppRoutesNames.application, (route) => false);
     } on FirebaseAuthException catch (e) {
-      ref.read(loaderProvider.notifier).updateLoader(false);
       switch (e.code) {
         case "email-already-in-use":
           AppToast.showToast("Email đã được sử dụng");
@@ -62,6 +67,8 @@ class AuthController {
         default:
           AppToast.showToast("Có lỗi gì đó");
       }
+    } finally {
+      ref.read(loaderProvider.notifier).state = false;
     }
   }
 
@@ -72,7 +79,7 @@ class AuthController {
     required WidgetRef ref,
   }) async {
     //Validate Firebase (first validate in Form)
-    ref.read(loaderProvider.notifier).updateLoader(true);
+    ref.read(loaderProvider.notifier).state = true;
     try {
       UserCredential userCredential = await AuthRepos.loginWithFirebase(
         email: email,
@@ -83,7 +90,6 @@ class AuthController {
         AppToast.showToast('Kiểm tra lại tài khoản');
         return;
       }
-
       await Global.storageService.setUserId(user.uid);
       if (isRemember) {
         await Global.storageService.setRemember(
@@ -92,13 +98,10 @@ class AuthController {
         await Global.storageService
             .setRemember(email: '', password: '', isRemember: isRemember);
       }
-
-      ref.read(loaderProvider.notifier).updateLoader(false);
       //Save user token to local, sharedpreferences ...
       navKey.currentState!.pushNamedAndRemoveUntil(
           AppRoutesNames.application, (route) => false);
     } on FirebaseAuthException catch (e) {
-      ref.read(loaderProvider.notifier).updateLoader(false);
       switch (e.code) {
         case "user-disabled":
           AppToast.showToast("Tài khoản bị vô hiệu hoá");
@@ -115,6 +118,8 @@ class AuthController {
         default:
           AppToast.showToast("Vui lòng kiểm tra lại");
       }
+    } finally {
+      ref.read(loaderProvider.notifier).state = false;
     }
   }
 }

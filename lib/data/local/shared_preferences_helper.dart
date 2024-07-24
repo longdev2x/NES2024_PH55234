@@ -55,12 +55,13 @@ class SharedPreferencesHelper {
     return objRemember;
   }
 
-  Future<bool> setUserId(String uid) {
-    return _pref.setString(AppConstants.storageUserId, uid);
+  Future<bool> setUserId(String uid) async {
+    return await _pref.setString(AppConstants.storageUserId, uid);
   }
 
   String getUserId() {
-    return _pref.getString(AppConstants.storageUserId) ?? '';
+    String value = _pref.getString(AppConstants.storageUserId) ?? '';
+    return value;
   }
 
   Future<bool> removeKey(String key, int seconds) async {

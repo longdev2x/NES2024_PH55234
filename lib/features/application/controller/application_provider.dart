@@ -1,3 +1,3 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final bottomTabsProvider = StateProvider<int>((ref) => 0);
+final bottomTabsProvider = StateProvider.autoDispose<int>((ref) => 0);

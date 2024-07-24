@@ -24,7 +24,7 @@ class BmiProfileScreen extends ConsumerWidget {
                   builder: (context) => const HistoryBmiScreen(),
                 ));
               },
-              child: const Text('Xemm thêm')),
+              child: const Text('Xem thêm')),
         ],
       ),
       body: fetchBMI.when(

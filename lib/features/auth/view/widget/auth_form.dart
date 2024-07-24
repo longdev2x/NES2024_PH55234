@@ -1,4 +1,3 @@
-
 import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
@@ -50,7 +49,7 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
   Widget build(BuildContext context) {
     final bool isLogin = ref.watch(isLoginProvider);
     final bool isLoader = ref.watch(loaderProvider);
-    final bool? isRemember = ref.watch(isRememberProvider);
+    final bool? isRemember = ref.watch(isRememberProvider(objRemember?.isRemember));
     final Role? role = ref.watch(roleProvider);
     final GlobalKey<FormState> keyForm = GlobalKey();
 
@@ -68,10 +67,11 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
               value: role?.value,
               items: listRoles
                   .map((role) => DropdownMenuItem<String>(
-                      value: role.value, child: Text(role.name)))
+                      value: role.value, child: Text(role.username)))
                   .toList(),
               onChanged: (role) {
-                ref.read(roleProvider.notifier).state = listRoles.firstWhere((e) => e.value == role);
+                ref.read(roleProvider.notifier).state =
+                    listRoles.firstWhere((e) => e.value == role);
               },
             ),
           SizedBox(height: isLogin ? 180.h : 80.h),
@@ -124,7 +124,7 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
                   Checkbox(
                     value: isRemember,
                     onChanged: (value) =>
-                        ref.read(isRememberProvider.notifier).state = value,
+                        ref.read(isRememberProvider(isRemember).notifier).state = value,
                   ),
                   Text(
                     'Ghi nhớ tài khoản?',

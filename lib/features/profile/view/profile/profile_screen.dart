@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
-import 'package:nes24_ph55234/common/components/app_icon.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
@@ -40,43 +39,22 @@ class ProfileScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 30.h),
-          SizedBox(
-            height: 100.w,
-            width: 100.w,
-            child: Stack(
-              children: [
-                CircleAvatar(
-                  radius: 100.r,
-                  backgroundImage: objUser.avatar != null
-                      ? NetworkImage(objUser.avatar!)
-                      : const AssetImage(ImageRes.avatarDefault)
-                          as ImageProvider,
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    height: 30.w,
-                    width: 30.w,
-                    padding: EdgeInsets.all(8.r),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onSecondary,
-                        shape: BoxShape.circle),
-                    child: const AppIcon(path: ImageRes.icCamera),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          ProfileAvatarWidget(avatar: objUser.avatar),
           SizedBox(height: 20.h),
-          AppText20('${objUser.name} (${objUser.role.name})',
+          AppText20('${objUser.username} (${objUser.role.username})',
               fontWeight: FontWeight.bold),
           SizedBox(height: 5.h),
           AppText16(objUser.email),
           SizedBox(height: 10.h),
-          ProfileRowInforWidgets(objUser: objUser),
+          ProfileRowInforWidget(objUser: objUser),
           SizedBox(height: 20.h),
-          AppButton(ontap: () {}, name: 'Cập nhật hồ sơ', width: 250),
-          SizedBox(height: 100.h),
+          AppButton(
+              ontap: () {
+                Navigator.pushNamed(context, AppRoutesNames.editProfile);
+              },
+              name: 'Cập nhật hồ sơ',
+              width: 250),
+          SizedBox(height: 40.h),
           Expanded(
             child: ListView(
               children: [
@@ -87,12 +65,15 @@ class ProfileScreen extends ConsumerWidget {
                     text: 'Đổi mật khẩu',
                     icon: ImageRes.icChangPass),
                 ProfileListItem(
-                  isRight: false,
+                    isRight: false,
                     onTap: () {
                       FirebaseAuth.instance.signOut();
                       Global.storageService.setUserId('');
-                      Navigator.pushNamedAndRemoveUntil(context, AppRoutesNames.auth, (route) => false);
-                    }, text: 'Đăng xuất', icon: ImageRes.icLogout),
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, AppRoutesNames.auth, (route) => false);
+                    },
+                    text: 'Đăng xuất',
+                    icon: ImageRes.icLogout),
               ],
             ),
           ),

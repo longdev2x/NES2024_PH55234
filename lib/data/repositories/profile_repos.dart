@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/user_entity.dart';
 
@@ -21,5 +24,11 @@ class ProfileRepos {
     } catch (e) {
       throw Exception('Lỗi get User: $e');
     }
+  }
+
+  static Future<String> uploadAvatar(String userId, File imageFile) async {
+    final ref = FirebaseStorage.instance.ref().child('avatars/$userId.jpg');
+    await ref.putFile(imageFile);
+    return await ref.getDownloadURL();
   }
 }

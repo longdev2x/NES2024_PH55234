@@ -1,7 +1,211 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nes24_ph55234/common/components/app_button.dart';
+import 'package:nes24_ph55234/common/components/app_icon.dart';
+import 'package:nes24_ph55234/common/components/app_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
+import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
+import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/bmi_entity.dart';
+import 'package:nes24_ph55234/data/models/user_entity.dart';
+import 'package:nes24_ph55234/features/profile/controller/bmi_provider.dart';
+import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
+import 'package:nes24_ph55234/features/profile/view/BMI/bmi_quick_result_screen.dart';
+
+class ProfileBMIInputWidget extends ConsumerWidget {
+  final bool isBMI;
+  final UserEntity objUser;
+  final TextEditingController weightController;
+  final TextEditingController heightController;
+  final TextEditingController bithController;
+
+  const ProfileBMIInputWidget({
+    super.key,
+    required this.objUser,
+    this.isBMI = false,
+    required this.weightController,
+    required this.heightController,
+    required this.bithController,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(profileProvider.notifier);
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 160.w,
+              child: AppTextFormField(
+                lable: 'Cân nặng (kg)',
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Chỉ nhập số cân';
+                  }
+                  double? weight = double.tryParse(value);
+                  if (weight == null || weight > 200 || weight < 5) {
+                    return 'Không hợp lệ';
+                  }
+                  return null;
+                },
+                controller: weightController,
+                inputType: TextInputType.number,
+              ),
+            ),
+            SizedBox(
+              width: 160.w,
+              child: AppTextFormField(
+                controller: heightController,
+                lable: 'Chiều cao (cm)',
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Chỉ nhập số chiều cao(cm)';
+                  }
+                  double? height = double.tryParse(value);
+                  if (height == null || height > 300 || height < 30) {
+                    return 'Không hợp lệ';
+                  }
+                  return null;
+                },
+                inputType: TextInputType.number,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 20.h),
+        AppTextFormField(
+          lable: 'Ngày sinh (${objUser.cacularAge()} tuổi)',
+          validator: (value) {
+            if (objUser.cacularAge() == null || objUser.cacularAge()! < 5) {
+              return 'Ứng dụng cho trẻ từ 5 tuổi';
+            }
+            return null;
+          },
+          controller: bithController,
+          readOnly: true,
+          onTap: () {
+            _showDatePicker(context, objUser, ref);
+          },
+        ),
+        SizedBox(height: 50.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _genderPicker(
+                onTap: () {
+                  notifier.updateUserProfile(gender: 'Nam');
+                },
+                iconPath: ImageRes.icGenderMan,
+                text: 'Nam',
+                isChose: objUser.gender == 'Nam'),
+            _genderPicker(
+                onTap: () {
+                  notifier.updateUserProfile(gender: 'Nữ');
+                },
+                iconPath: ImageRes.icGenderWoman,
+                text: 'Nữ',
+                isChose: objUser.gender == 'Nữ'),
+          ],
+        ),
+        if (isBMI)
+          Padding(
+            padding: EdgeInsets.only(top: 60.h),
+            child: AppButton(
+              ontap: () {
+                _calculateBMI(objUser, ref);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const BmiQuickResultScreen(),
+                  ),
+                );
+              },
+              name: 'Tính BMI',
+            ),
+          ),
+      ],
+    );
+  }
+
+  void _showDatePicker(
+      BuildContext context, UserEntity objUser, WidgetRef ref) async {
+    DateTime? bith = await showDatePicker(
+      context: context,
+      firstDate: DateTime.now().subtract(const Duration(days: 36500)),
+      lastDate: DateTime.now(),
+      initialDate: DateTime.now().subtract(const Duration(days: 7300)),
+    );
+    ref.read(profileProvider.notifier).updateUserProfile(bith: bith);
+  }
+
+  Widget _genderPicker({
+    required Function() onTap,
+    bool isChose = false,
+    required String iconPath,
+    required String text,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        children: [
+          Container(
+            height: 85.h,
+            width: 160.w,
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            decoration: BoxDecoration(
+                color: isChose ? Colors.grey : Colors.white,
+                borderRadius: BorderRadius.circular(16.r)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AppIcon(
+                  path: iconPath,
+                  iconColor: isChose ? Colors.grey : Colors.white,
+                  size: 35,
+                ),
+                AppText16(text)
+              ],
+            ),
+          ),
+          isChose
+              ? Positioned(
+                  top: 5.h,
+                  right: 5.w,
+                  child: const AppImage(
+                    imagePath: ImageRes.icCheckTick,
+                    height: 30,
+                    width: 30,
+                  ),
+                )
+              : const SizedBox(),
+        ],
+      ),
+    );
+  }
+
+  void _calculateBMI(UserEntity objUser, WidgetRef ref) {
+    final weight = double.tryParse(weightController.text);
+    final height = double.tryParse(heightController.text);
+    final age = objUser.cacularAge();
+
+    if (weight != null && height != null && age != null) {
+      final bmi = weight / ((height / 100) * (height / 100));
+
+      ref.read(profileProvider.notifier).updateUserProfile(
+          weight: weight, height: height, bith: objUser.bith, bmi: bmi);
+      ref.read(bmiLocalProvider.notifier).state = BMIEntity(
+          userId: objUser.id,
+          date: DateTime.now(),
+          bmi: bmi,
+          age: age,
+          height: height,
+          weight: weight,
+          gender: objUser.gender);
+    }
+  }
+}
 
 class AdViseWidget extends StatelessWidget {
   final String advise;
