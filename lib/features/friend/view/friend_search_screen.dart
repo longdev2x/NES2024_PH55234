@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/components/app_search_bar.dart';
+import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/friend_entity.dart';
 import 'package:nes24_ph55234/features/friend/controller/friend_provider.dart';
@@ -59,7 +59,7 @@ class FriendSearchScreen extends ConsumerWidget {
         return ItemListFriend(
           objFriend: listFriends[index],
           onTapRow: () {
-            AppToast.showToast('Go to profile');
+            Navigator.pushNamed(context, AppRoutesNames.friendProfile, arguments: listFriends[index].username);
           },
           onTapAdd: () {
             _sendFriendRequest(ref, listFriends[index].friendId);
@@ -76,6 +76,6 @@ class FriendSearchScreen extends ConsumerWidget {
   }
 
   void _sendFriendRequest(WidgetRef ref,String friendId) {
-    ref.read(friendshipProvider.notifier).sendFriendRequest(friendId);
+    ref.read(friendshipProvider.notifier).sendFriendRequest(friendId, ref);
   }
 }

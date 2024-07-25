@@ -2,20 +2,20 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/data/models/post_entity.dart';
-import 'package:nes24_ph55234/data/repositories/post_repos.dart';
+import 'package:nes24_ph55234/data/repositories/post_grateful_repos.dart';
 
-class GratefulNotifier extends AsyncNotifier<List<PostEntity>> {
+class GratefulNotifier extends AsyncNotifier<List<PostGratefulEntity>> {
   @override
-  FutureOr<List<PostEntity>> build() {
+  FutureOr<List<PostGratefulEntity>> build() {
     return _loadList();
   }
 
-  Future<List<PostEntity>> _loadList() async {
-    return await PostRepos.getPostsType(PostType.gratetul);
+  Future<List<PostGratefulEntity>> _loadList() async {
+    return await PostGratefulRepos.getAllPosts();
   }
 
-  Future<void> createOrUpdatePost(PostEntity objPost) async {
-    PostEntity? newPost;
+  Future<void> createOrUpdatePost(PostGratefulEntity objPost) async {
+    PostGratefulEntity? newPost;
     state = state.whenData(
       (listPost) {
         listPost = listPost.map((post) {
@@ -28,12 +28,12 @@ class GratefulNotifier extends AsyncNotifier<List<PostEntity>> {
         return listPost;
       },
     );
-    await PostRepos.createOrUpdatePost(newPost ?? objPost);
+    await PostGratefulRepos.createOrUpdatePost(newPost ?? objPost);
     state = await AsyncValue.guard(() async => await _loadList());
   }
 }
 
 final gratefulProvider =
-    AsyncNotifierProvider<GratefulNotifier, List<PostEntity>>(
+    AsyncNotifierProvider<GratefulNotifier, List<PostGratefulEntity>>(
   () => GratefulNotifier(),
 );

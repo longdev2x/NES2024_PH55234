@@ -41,7 +41,7 @@ Map<PostFeel, String> emoijMap = {
   PostFeel.happy: ImageRes.icHappy,
 };
 
-class PostEntity {
+class PostGratefulEntity {
   final String id;
   final String userId;
   final List<ContentItem> contentItems;
@@ -51,7 +51,7 @@ class PostEntity {
   final String? title;
   final DateTime? date;
 
-  PostEntity({
+  PostGratefulEntity({
     String? id,
     required this.contentItems,
     required this.userId,
@@ -62,14 +62,14 @@ class PostEntity {
     required this.feel,
   }) : id = id ?? const Uuid().v4();
 
-  PostEntity copyWith({
+  PostGratefulEntity copyWith({
     PostLimit? limit,
     PostFeel? feel,
     String? title,
     DateTime? date,
     List<ContentItem>? contentItems,
   }) =>
-      PostEntity(
+      PostGratefulEntity(
         contentItems: contentItems ?? this.contentItems,
         id: id,
         userId: userId,
@@ -80,7 +80,8 @@ class PostEntity {
         date: date ?? this.date,
       );
 
-  factory PostEntity.fromJson(Map<String, dynamic> json) => PostEntity(
+  factory PostGratefulEntity.fromJson(Map<String, dynamic> json) =>
+      PostGratefulEntity(
         id: json['id'],
         userId: json['user_id'],
         contentItems: (json['content_items'] as List)
@@ -108,5 +109,101 @@ class PostEntity {
   String get formatDate {
     final fomart = DateFormat("dd/MM/yyyy");
     return fomart.format(date ?? DateTime.now());
+  }
+}
+
+class PostFriendEntity {
+  final String id;
+  final String userId;
+  final String username;
+  final String? avatar;
+  final String content;
+  final PostLimit limit;
+  final List<String?> images;
+  final List<File?> imageFiles;
+  final PostFeel? feel;
+  final PostType? type;
+  final DateTime date;
+
+  PostFriendEntity({
+    String? id,
+    required this.userId,
+    required this.username,
+    required this.avatar,
+    required this.images,
+    required this.imageFiles,
+    required this.limit,
+    required this.content,
+    required this.type,
+    required this.date,
+    required this.feel,
+  }) : id = id ?? const Uuid().v4();
+
+  PostFriendEntity copyWith({
+    String? content,
+    PostLimit? limit,
+    List<String?>? images,
+    List<File?>? imageFiles,
+    PostFeel? feel,
+  }) =>
+      PostFriendEntity(
+        id: id,
+        userId: userId,
+        username: username,
+        avatar: avatar,
+        limit: limit ?? this.limit,
+        content: content ?? this.content,
+        feel: feel ?? this.feel,
+        type: type,
+        date: date,
+        images: images ?? this.images,
+        imageFiles: imageFiles ?? this.imageFiles,
+      );
+
+  factory PostFriendEntity.fromJson(Map<String, dynamic> json) {
+    return PostFriendEntity(
+      id: json['id'],
+      userId: json['user_id'],
+      username: json['username'],
+      avatar: json['avatar'],
+      content: json['content'],
+      limit: PostLimit.values.firstWhere(
+        (e) => e.name == json['limit'],
+        orElse: () => PostLimit.public, // Default value if not found
+      ),
+      images: List<String?>.from(json['images'] ?? []),
+      imageFiles: [], // Cannot be stored in JSON, initialize as empty
+      type: PostType.values.firstWhere(
+        (e) => e.name == json['type'],
+        orElse: () => PostType.normal, // Default value if not found
+      ),
+      date: (json['date'] as Timestamp).toDate(),
+      feel: json['feel'] != null
+          ? PostFeel.values.firstWhere(
+              (e) => e.name == json['feel'],
+              orElse: () => PostFeel.normal, // Default value if not found
+            )
+          : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'user_id': userId,
+      'username': username,
+      'avatar': avatar,
+      'content': content,
+      'limit': limit.name,
+      'images': images,
+      'type': type?.name,
+      'date': Timestamp.fromDate(date),
+      'feel': feel?.name,
+    };
+  }
+
+  String get formatDate {
+    final fomart = DateFormat("dd/MM/yyyy");
+    return fomart.format(date);
   }
 }

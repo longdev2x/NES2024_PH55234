@@ -9,6 +9,7 @@ import 'package:nes24_ph55234/common/utils/image_res.dart';
 class AppSearchBar extends StatelessWidget {
   final Function()? onTap;
   final Function(String value)? onChanged;
+  final double width;
   final bool haveIcon;
   final bool? readOnly;
   final bool? focus;
@@ -19,6 +20,7 @@ class AppSearchBar extends StatelessWidget {
     this.onChanged,
     this.readOnly = false,
     this.focus,
+    this.width = 280,
     this.hintText = 'Tính năng bạn cần...',
     this.haveIcon = true,
   });
@@ -32,7 +34,7 @@ class AppSearchBar extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.only(left: 17.h),
-            width: 280.w,
+            width: width.w,
             height: 40.h,
             decoration: appBoxShadow(
                 color: AppColors.primaryBackground,

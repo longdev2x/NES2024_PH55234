@@ -1,7 +1,7 @@
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/common/components/app_icon.dart';
-import 'package:nes24_ph55234/features/friend/view/friend_screen.dart';
+import 'package:nes24_ph55234/features/friend/view/main_friend_screen.dart';
 import 'package:nes24_ph55234/features/home/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:nes24_ph55234/features/profile/view/profile/profile_screen.dart';
@@ -56,8 +56,8 @@ Widget appScreens({int index = 0}) {
 
 List<Widget> screens = [
   const HomeScreen(),
+  const MainFriendScreen(),
   const SearchScreen(),
-  const FriendScreen(),
   const Center(
       child: Text('Tin nhắn + Tư vấn bí mật',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),

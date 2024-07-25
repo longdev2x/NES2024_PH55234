@@ -3,34 +3,27 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/post_entity.dart';
 
-class PostRepos {
-  static const String _c = AppConstants.cPost;
+class PostGratefulRepos {
+  static const String _c = AppConstants.cPostGrateful;
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  static Future<List<PostEntity>> getPostsType(PostType type) async {
-    final snapshot = await _firestore
-        .collection(_c)
-        .where('type', isEqualTo: type.toString().split('.').last)
-        .get();
-    return snapshot.docs.map((e) => PostEntity.fromJson(e.data())).toList();
-  }
 
-  static Future<List<PostEntity>> getAllPosts() async {
+  static Future<List<PostGratefulEntity>> getAllPosts() async {
     final snapshot = await _firestore.collection(_c).get();
-    return snapshot.docs.map((e) => PostEntity.fromJson(e.data())).toList();
+    return snapshot.docs.map((e) => PostGratefulEntity.fromJson(e.data())).toList();
   }
 
-  static Future<PostEntity> getPost(String id) async {
+  static Future<PostGratefulEntity> getPost(String id) async {
     final docRef = await _firestore.collection(_c).doc(id).get();
     if (docRef.exists) {
-      return PostEntity.fromJson(docRef.data()!);
+      return PostGratefulEntity.fromJson(docRef.data()!);
     } else {
       throw Exception('Post Not Found');
     }
   }
 
-  static Future<void> createOrUpdatePost(PostEntity objPost) async {
+  static Future<void> createOrUpdatePost(PostGratefulEntity objPost) async {
     final docRef = _firestore.collection(_c).doc(objPost.id);
     final snapShot = await docRef.get();
     if(snapShot.exists) {

@@ -12,7 +12,9 @@ import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart'
 
 class ProfileAvatarWidget extends ConsumerWidget {
   final String? avatar;
-  const ProfileAvatarWidget({super.key, required this.avatar});
+  final bool isMyProfile;
+  const ProfileAvatarWidget(
+      {super.key, required this.avatar, this.isMyProfile = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,29 +30,30 @@ class ProfileAvatarWidget extends ConsumerWidget {
                 ? NetworkImage(avatar!)
                 : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
           ),
-          GestureDetector(
-            onTap: () async {
-              ImagePicker picker = ImagePicker();
-              XFile? xFile =
-                  await picker.pickImage(source: ImageSource.gallery);
-              if (xFile == null) return;
-              ref
-                  .read(profileProvider.notifier)
-                  .updateUserProfile(avatarFile: File(xFile.path));
-            },
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                height: 40.w,
-                width: 40.w,
-                padding: EdgeInsets.all(8.r),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSecondary,
-                    shape: BoxShape.circle),
-                child: const AppIcon(path: ImageRes.icCamera),
+          if (isMyProfile)
+            GestureDetector(
+              onTap: () async {
+                ImagePicker picker = ImagePicker();
+                XFile? xFile =
+                    await picker.pickImage(source: ImageSource.gallery);
+                if (xFile == null) return;
+                ref
+                    .read(profileProvider.notifier)
+                    .updateUserProfile(avatarFile: File(xFile.path));
+              },
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  height: 40.w,
+                  width: 40.w,
+                  padding: EdgeInsets.all(8.r),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onSecondary,
+                      shape: BoxShape.circle),
+                  child: const AppIcon(path: ImageRes.icCamera),
+                ),
               ),
             ),
-          ),
           if (isLoader)
             const Align(
               alignment: Alignment.center,

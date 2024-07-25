@@ -2,10 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/data/models/post_entity.dart';
 import 'package:nes24_ph55234/global.dart';
 
-class CreatePostNotifer extends StateNotifier<PostEntity> {
+class CreatePostNotifer extends StateNotifier<PostGratefulEntity> {
   CreatePostNotifer()
       : super(
-          PostEntity(
+          PostGratefulEntity(
               userId: Global.storageService.getUserId(),
               limit: PostLimit.private,
               title: '',
@@ -31,7 +31,7 @@ class CreatePostNotifer extends StateNotifier<PostEntity> {
   }
 
   void reset() {
-    state = PostEntity(
+    state = PostGratefulEntity(
         userId: Global.storageService.getUserId(),
         limit: PostLimit.private,
         title: '',
@@ -41,11 +41,11 @@ class CreatePostNotifer extends StateNotifier<PostEntity> {
         type: PostType.gratetul);
   }
   
-  void initEdit(PostEntity objPost) {
+  void initEdit(PostGratefulEntity objPost) {
     state = objPost;
   }
 }
 
 final createPostGratefulProvider =
-    StateNotifierProvider<CreatePostNotifer, PostEntity>(
+    StateNotifierProvider<CreatePostNotifer, PostGratefulEntity>(
         (ref) => CreatePostNotifer());

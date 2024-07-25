@@ -46,16 +46,14 @@ class FriendRepos {
       }
 
       final data = friendshipDoc.data() as Map<String, dynamic>;
-      final userId = data['userId'] as String;
-      final friendId = data['friendId'] as String;
+      final userId = data['user_id'] as String;
+      final friendId = data['friend_id'] as String;
 
       transaction.update(friendshipRef, {'status': 'accepted'});
-
       //thêm các phần tử vào một mảng mà không tạo ra bản sao, thêm bạn bè vào user của 2 người
       transaction.update(_firestore.collection(_cUsers).doc(userId), {
         'friend_ids': FieldValue.arrayUnion([friendId])
       });
-
       transaction.update(_firestore.collection(_cUsers).doc(friendId), {
         'friend_ids': FieldValue.arrayUnion([userId])
       });
@@ -73,13 +71,15 @@ class FriendRepos {
     return _firestore
         .collection(_cFriendships)
         //friendId == userId(xem có dc nhận lời mời k, trạng thái pending)
-        .where('friendId', isEqualTo: userId)
+        .where('friend_id', isEqualTo: userId)
         .where('status', isEqualTo: 'pending')
         //Tạo luồng stream
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => FriendshipEntity.fromJson(doc.data()))
-            .toList());
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return FriendshipEntity.fromJson(doc.data());
+      }).toList();
+    });
   }
 
   static Stream<List<FriendEntity>> getFriends(String userId) {
@@ -89,7 +89,7 @@ class FriendRepos {
         .snapshots()
         .asyncMap((snapshot) async {
       final data = snapshot.data() as Map<String, dynamic>;
-      final friendIds = List<String>.from(data['friendIds'] ?? []);
+      final friendIds = List<String>.from(data['friend_ids'] ?? []);
       if (friendIds.isEmpty) {
         return [];
       }
@@ -97,7 +97,7 @@ class FriendRepos {
           .collection(_cUsers)
           //FieldPath.documentId là ID của document.
           //whereIn là xem phía bên trái ( id doc ) có nằm trong list bên phải k ( friendIds)
-          //... Lấy tất cả các document trong collection '_cUsers' 
+          //... Lấy tất cả các document trong collection '_cUsers'
           //mà có ID nằm trong danh sách friendIds."
           .where(FieldPath.documentId, whereIn: friendIds)
           .get();

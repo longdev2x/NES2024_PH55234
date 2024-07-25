@@ -49,7 +49,7 @@ class GratefulScreen extends ConsumerWidget {
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (ctx, index) {
-                                  PostEntity objPost = listPost[index];
+                                  PostGratefulEntity objPost = listPost[index];
                                   return GratefulPostItem(objPost: objPost);
                                 },
                               )
@@ -76,6 +76,7 @@ class GratefulScreen extends ConsumerWidget {
               onPressed: () => showModalBottomSheet(
                 context: context,
                 useSafeArea: false,
+                enableDrag: false,
                 isScrollControlled: true,
                 builder: (ctx) => const PostBottomScreen(),
               ),

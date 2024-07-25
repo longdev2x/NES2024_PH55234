@@ -24,7 +24,7 @@ class PostBottomScreen extends ConsumerStatefulWidget {
 class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
   late final List<dynamic> _items = [];
   final ImagePicker _picker = ImagePicker();
-  late PostEntity objPost;
+  late PostGratefulEntity objPost;
   late final TextEditingController _titleController;
   int _currentFocusIndex = 0;
   @override
@@ -50,121 +50,6 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
     if (_items.isEmpty || _items.last is File) {
       _items.add(TextEditingController());
     }
-  }
-
-  Widget _buildImageWidget(dynamic item) {
-    if (item is File) {
-      return Image.file(
-        item,
-        width: double.infinity,
-        fit: BoxFit.fitWidth,
-      );
-    } else if (item is String) {
-      return Image.network(
-        item,
-        width: double.infinity,
-        fit: BoxFit.fitWidth,
-      );
-    }
-    return const SizedBox();
-  }
-
-  void _handleTextChange(String value, int index) {
-    if (value.isEmpty && _items.length > 1) {
-      if (_items[index - 1] is File) return;
-      setState(() {
-        _items.removeAt(index);
-        if (index > 0) {
-          _currentFocusIndex = index - 1;
-        }
-      });
-      if (index > 0) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          FocusScope.of(context).previousFocus();
-        });
-      }
-    } else if (value.endsWith('\n')) {
-      setState(() {
-        _items.insert(index + 1, TextEditingController());
-        _currentFocusIndex = index + 1;
-        _items[index].text = _items[index].text.trimRight();
-      });
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        FocusScope.of(context).nextFocus();
-      });
-    }
-  }
-
-  Widget _emojiDialog(BuildContext context,
-          {required CreatePostNotifer notifier}) =>
-      Dialog(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const AppText16(
-                'Ngày hôm nay của bạn thế nào?',
-                fontWeight: FontWeight.bold,
-              ),
-              SizedBox(height: 15.h),
-              SizedBox(
-                height: 150.h,
-                width: 300.w,
-                child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        childAspectRatio: 1.5,
-                        crossAxisSpacing: 10.w,
-                        mainAxisSpacing: 10.h),
-                    itemCount: PostFeel.values.length,
-                    itemBuilder: (ctx, index) {
-                      return AppImage(
-                          onTap: () {
-                            notifier.updateState(feel: PostFeel.values[index]);
-                            Navigator.pop(context);
-                          },
-                          imagePath: emoijMap[PostFeel.values[index]]);
-                    }),
-              ),
-            ],
-          ),
-        ),
-      );
-
-  void _addImage() async {
-    final List<XFile> images = await _picker.pickMultiImage();
-    setState(() {
-      for (var xFile in images) {
-        _items.insert(_currentFocusIndex + 1, File(xFile.path));
-        _currentFocusIndex++;
-      }
-      if (_currentFocusIndex == _items.length - 1) {
-        _items.insert(_currentFocusIndex + 1, TextEditingController());
-        _currentFocusIndex++;
-      }
-    });
-  }
-
-  void _saveLocalProvider() {
-    ref.read(createPostGratefulProvider.notifier).updateState(
-          contentItems: _items.map((e) {
-            if (e is File) {
-              return ContentItem(type: 'image', imageFile: e);
-            } else if (e is TextEditingController) {
-              return ContentItem(type: 'text', content: e.text);
-            } else {
-              return ContentItem(type: 'image', content: e);
-            }
-          }).toList(),
-          title: _titleController.text,
-        );
-  }
-
-  void _post() {
-    _saveLocalProvider();
-    PostEntity objPost = ref.read(createPostGratefulProvider);
-    ref.read(gratefulProvider.notifier).createOrUpdatePost(objPost);
   }
 
   @override
@@ -319,5 +204,120 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
     if(date!= null) {
       ref.read(createPostGratefulProvider.notifier).updateState(date: date);
     }
+  }
+
+  Widget _buildImageWidget(dynamic item) {
+    if (item is File) {
+      return Image.file(
+        item,
+        width: double.infinity,
+        fit: BoxFit.fitWidth,
+      );
+    } else if (item is String) {
+      return Image.network(
+        item,
+        width: double.infinity,
+        fit: BoxFit.fitWidth,
+      );
+    }
+    return const SizedBox();
+  }
+
+  void _handleTextChange(String value, int index) {
+    if (value.isEmpty && _items.length > 1) {
+      if (_items[index - 1] is File) return;
+      setState(() {
+        _items.removeAt(index);
+        if (index > 0) {
+          _currentFocusIndex = index - 1;
+        }
+      });
+      if (index > 0) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          FocusScope.of(context).previousFocus();
+        });
+      }
+    } else if (value.endsWith('\n')) {
+      setState(() {
+        _items.insert(index + 1, TextEditingController());
+        _currentFocusIndex = index + 1;
+        _items[index].text = _items[index].text.trimRight();
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        FocusScope.of(context).nextFocus();
+      });
+    }
+  }
+
+  Widget _emojiDialog(BuildContext context,
+          {required CreatePostNotifer notifier}) =>
+      Dialog(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const AppText16(
+                'Ngày hôm nay của bạn thế nào?',
+                fontWeight: FontWeight.bold,
+              ),
+              SizedBox(height: 15.h),
+              SizedBox(
+                height: 150.h,
+                width: 300.w,
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 1.5,
+                        crossAxisSpacing: 10.w,
+                        mainAxisSpacing: 10.h),
+                    itemCount: PostFeel.values.length,
+                    itemBuilder: (ctx, index) {
+                      return AppImage(
+                          onTap: () {
+                            notifier.updateState(feel: PostFeel.values[index]);
+                            Navigator.pop(context);
+                          },
+                          imagePath: emoijMap[PostFeel.values[index]]);
+                    }),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  void _addImage() async {
+    final List<XFile> images = await _picker.pickMultiImage();
+    setState(() {
+      for (var xFile in images) {
+        _items.insert(_currentFocusIndex + 1, File(xFile.path));
+        _currentFocusIndex++;
+      }
+      if (_currentFocusIndex == _items.length - 1) {
+        _items.insert(_currentFocusIndex + 1, TextEditingController());
+        _currentFocusIndex++;
+      }
+    });
+  }
+
+  void _saveLocalProvider() {
+    ref.read(createPostGratefulProvider.notifier).updateState(
+          contentItems: _items.map((e) {
+            if (e is File) {
+              return ContentItem(type: 'image', imageFile: e);
+            } else if (e is TextEditingController) {
+              return ContentItem(type: 'text', content: e.text);
+            } else {
+              return ContentItem(type: 'image', content: e);
+            }
+          }).toList(),
+          title: _titleController.text,
+        );
+  }
+
+  void _post() {
+    _saveLocalProvider();
+    PostGratefulEntity objPost = ref.read(createPostGratefulProvider);
+    ref.read(gratefulProvider.notifier).createOrUpdatePost(objPost);
   }
 }

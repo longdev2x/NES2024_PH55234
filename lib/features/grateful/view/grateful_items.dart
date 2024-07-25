@@ -11,7 +11,7 @@ import 'package:nes24_ph55234/features/grateful/controller/post_grateful_provide
 import 'package:nes24_ph55234/features/grateful/view/post_bottom_screen.dart';
 
 class GratefulPostItem extends ConsumerWidget {
-  final PostEntity objPost;
+  final PostGratefulEntity objPost;
   const GratefulPostItem({super.key, required this.objPost});
 
   @override
