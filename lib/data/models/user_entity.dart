@@ -4,15 +4,15 @@ import 'package:intl/intl.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 
 const List<Role> listRoles = [
-  Role(value: AppConstants.roleUser, username: 'Người dùng'),
-  Role(value: AppConstants.roleExpert, username: 'Chuyên gia'),
-  Role(value: AppConstants.roleAdmin, username: 'Admin'),
+  Role(value: AppConstants.roleUser, name: 'Người dùng'),
+  Role(value: AppConstants.roleExpert, name: 'Chuyên gia'),
+  Role(value: AppConstants.roleAdmin, name: 'Admin'),
 ];
 
 class Role {
   final String value;
-  final String username;
-  const Role({required this.value, required this.username});
+  final String name;
+  const Role({required this.value, required this.name});
 }
 
 class RememberPassEntity {

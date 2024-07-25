@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/features/application/view/application.dart';
 import 'package:nes24_ph55234/features/auth/view/auth_screen.dart';
+import 'package:nes24_ph55234/features/friend/view/friend_search_screen.dart';
 import 'package:nes24_ph55234/features/grateful/view/grateful_screen.dart';
 import 'package:nes24_ph55234/features/onboarding/view/onboarding.dart';
 import 'package:nes24_ph55234/features/profile/view/BMI/bmi_navigate.dart';
@@ -60,6 +61,10 @@ class AppRoutes {
       const RouteEntity(
         path: AppRoutesNames.editProfile,
         page: EditProfileScreen(),
+      ),
+      const RouteEntity(
+        path: AppRoutesNames.friendSearch,
+        page: FriendSearchScreen(),
       ),
     ];
   }

@@ -43,6 +43,7 @@ class ImageRes {
   static const String icSettings = '${_baseIcon}ic_settings.png';
   static const String icChangPass = '${_baseIcon}ic_change_pass.png';
   static const String icLogout = '${_baseIcon}ic_logout.png';
+  static const String icSMS = '${_baseIcon}ic_sms.png';
   //
   static const String icAngry = '${_baseIcon}ic_feel_angry.png';
   static const String icCry = '${_baseIcon}ic_feel_cry.png';

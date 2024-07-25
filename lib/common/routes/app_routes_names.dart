@@ -12,5 +12,6 @@
   static const String yogaDetail = '/yoga_detail';
   static const String advise = '/advise';
   static const String editProfile = '/editProfile';
+  static const String friendSearch = '/friendSreach';
 }
 

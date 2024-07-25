@@ -67,7 +67,7 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
               value: role?.value,
               items: listRoles
                   .map((role) => DropdownMenuItem<String>(
-                      value: role.value, child: Text(role.username)))
+                      value: role.value, child: Text(role.name)))
                   .toList(),
               onChanged: (role) {
                 ref.read(roleProvider.notifier).state =

@@ -9,6 +9,7 @@ class FriendRepos {
 
   static Future<List<FriendEntity>> searchUsers(String query,
       {bool isEmail = false}) async {
+        print('zzzz5-$query');
     QuerySnapshot snapshot;
     if (isEmail) {
       snapshot = await _firestore
@@ -16,13 +17,15 @@ class FriendRepos {
           .where('email', isEqualTo: query)
           .get();
     } else {
+      print('zzzz6-$query');
       snapshot = await _firestore
           .collection(_cUsers)
           //Bắt đầu bằng query...
-          .where('name', isGreaterThanOrEqualTo: query)
-          .where('name', isLessThan: '${query}z')
+          .where('username', isGreaterThanOrEqualTo: query)
+          .where('username', isLessThan: '${query}z')
           .get();
     }
+    print('zzzz7-$query');
     return snapshot.docs
         .map((doc) => FriendEntity.fromJson(doc.data() as Map<String, dynamic>))
         .toList();

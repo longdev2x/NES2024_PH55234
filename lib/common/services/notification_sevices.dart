@@ -10,17 +10,22 @@ class NotificationServices {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+  Future<void> initialize() async {
+    //request Permission from User
+    requestNotificationPermission();
+    //Fetch the FCM token for this device
+    final fCMtoken = await getDeviceToken();
+    //print the token
+    print('Token: $fCMtoken');
+  }
+
   // hàm yêu cầu cấp quyền
   Future<void> requestNotificationPermission() async {
     NotificationSettings settings = await messaging.requestPermission(
-        alert: true,
-        announcement: true,
-        badge: true,
-        carPlay: true,
-        criticalAlert: true,
-        provisional: true,
-        sound: true);
-
+      alert: true,
+      sound: true,
+      badge: true,
+    );
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       if (kDebugMode) {
         print("user granted permission");
@@ -37,11 +42,18 @@ class NotificationServices {
     }
   }
 
-  void initLocalNotifications({required BuildContext context,required RemoteMessage msg}) async {
+  Future<String?> getDeviceToken() async {
+    return await messaging.getToken();
+  }
+
+  //Khởi tạo cài đặt cho thông báo cục bộ .
+  //Cấu hình biểu tượng cho Android và các cài đặt cho iOS.
+  void initLocalNotifications(
+      {required BuildContext context, required RemoteMessage msg}) async {
     var androidInitlization =
         const AndroidInitializationSettings('@mipmap/ic_launcher.png');
-    var iosInitlization = const DarwinInitializationSettings();
 
+    var iosInitlization = const DarwinInitializationSettings();
     var initializationSettings = InitializationSettings(
       android: androidInitlization,
       iOS: iosInitlization,
@@ -53,17 +65,19 @@ class NotificationServices {
     );
   }
 
+  //Lắng nghe các thông báo đến khi ứng dụng đang chạy (foreground).
+  //Khi nhận được thông báo, nó gọi initLocalNotifications() và showNotification().
   void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
-      if(Platform.isAndroid) {
-      initLocalNotifications(context: context, msg: message);
-      showNotification(message);
+      if (Platform.isAndroid) {
+        initLocalNotifications(context: context, msg: message);
+        _handelMessage(message);
       }
       // AppDialog.showToast(message.notification?.title.toString());
     });
   }
 
-  Future<void> showNotification(RemoteMessage message) async {
+  Future<void> _handelMessage(RemoteMessage message) async {
     AndroidNotificationChannel channel = AndroidNotificationChannel(
         Random.secure().nextInt(100000).toString(),
         'High Importance Notification',
@@ -93,10 +107,6 @@ class NotificationServices {
         );
       },
     );
-  }
-
-  Future<String?> getDeviceToken() async {
-    return await messaging.getToken();
   }
 
   void isTokenRefersh() async {

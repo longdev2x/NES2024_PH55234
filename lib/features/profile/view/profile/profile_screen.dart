@@ -41,7 +41,7 @@ class ProfileScreen extends ConsumerWidget {
           SizedBox(height: 30.h),
           ProfileAvatarWidget(avatar: objUser.avatar),
           SizedBox(height: 20.h),
-          AppText20('${objUser.username} (${objUser.role.username})',
+          AppText20('${objUser.username} (${objUser.role.name})',
               fontWeight: FontWeight.bold),
           SizedBox(height: 5.h),
           AppText16(objUser.email),

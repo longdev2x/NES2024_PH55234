@@ -1,21 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:uuid/uuid.dart';
 
 class FriendEntity {
-  final String id;
-  final String name;
+  final String friendId;
+  final String username;
   final String? avatar;
+  final Role? role;
 
   FriendEntity({
-    String? id,
-    required this.name,
+    required this.friendId,
+    required this.username,
     this.avatar,
-  }) : id = id ?? const Uuid().v4();
+    this.role,
+  });
 
   factory FriendEntity.fromJson(Map<String, dynamic> json) {
     return FriendEntity(
-      name: json['name'],
+      friendId: json['id'],
+      username: json['username'],
       avatar: json['avatar'],
+      role: listRoles.firstWhere((role) => role.value == json['role']),
     );
   }
 }
