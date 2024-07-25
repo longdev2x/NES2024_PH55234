@@ -18,7 +18,6 @@ class FriendSearchScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(0.0),
             child: AppSearchBar(
               onChanged: (query) {
-                print('zzzz1-$query');
                 _onSearch(query, ref);
               },
               focus: true,
@@ -29,6 +28,7 @@ class FriendSearchScreen extends ConsumerWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(
+            vertical: AppConstants.marginVeti,
             horizontal: AppConstants.marginHori,
           ),
           child: fetchList.when(
@@ -70,9 +70,7 @@ class FriendSearchScreen extends ConsumerWidget {
   }
 
   void _onSearch(String query, WidgetRef ref) async {
-    print('zzzz2-$query');
     if (query.isNotEmpty) {
-      print('zzzz3-$query');
       ref.read(searchProvider.notifier).searchFriends(query: query, isEmail: query.contains('@gmail.com'));
     }
   }

@@ -15,7 +15,6 @@ class SearchFriendNotifier extends AutoDisposeAsyncNotifier<List<FriendEntity>> 
     String? query,
     bool isEmail = false,
   }) async {
-    print('zzzz4-$query');
     state = AsyncValue.data(
       await FriendRepos.searchUsers(
         query ?? '',

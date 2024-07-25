@@ -23,7 +23,7 @@ class ItemListFriend extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 2.w),
             child: Row(
               children: [
                 CircleAvatar(
@@ -51,7 +51,7 @@ class ItemListFriend extends StatelessWidget {
                       )
                     : AppText20(objFriend.username),
                 onTapAdd != null
-                  ? ElevatedButton(onPressed: onTapAdd, child: const Text('Kết bạn'))
+                  ? ElevatedButton.icon(onPressed: onTapAdd, icon: AppIcon(path: ImageRes.icAddFriend, size: 12.r,),label: const Text('Kết bạn', style: TextStyle(fontWeight: FontWeight.bold),))
                   : const AppIcon(path: ImageRes.icSMS)
               ],
             ),
