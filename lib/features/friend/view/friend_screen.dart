@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
+import 'package:nes24_ph55234/features/friend/controller/chat_provider.dart';
 import 'package:nes24_ph55234/features/friend/controller/friend_provider.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_widgets.dart';
 
@@ -39,7 +40,9 @@ class FriendScreen extends ConsumerWidget {
                       return ItemListRequest(
                         objFriendShip: objFriendShip,
                         onTapRow: () {
-                          Navigator.pushNamed(context, AppRoutesNames.friendProfile, arguments: objFriendShip.senderUsername);
+                          Navigator.pushNamed(
+                              context, AppRoutesNames.friendProfile,
+                              arguments: objFriendShip.senderUsername);
                         },
                         onAccept: () {
                           _acceptFriendRequest(objFriendShip.id, ref);
@@ -63,8 +66,11 @@ class FriendScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   friends.isNotEmpty
-                      ? Padding( padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                          child: const AppText20('Danh sách bạn bè', fontWeight: FontWeight.bold))
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 10.h),
+                          child: const AppText20('Danh sách bạn bè',
+                              fontWeight: FontWeight.bold))
                       : const SizedBox(),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 18.w),
@@ -76,7 +82,15 @@ class FriendScreen extends ConsumerWidget {
                         return ItemListFriend(
                           objFriend: friend,
                           onTapRow: () {
-                            Navigator.pushNamed(context, AppRoutesNames.friendProfile, arguments: friend.username);
+                            Navigator.pushNamed(
+                                context, AppRoutesNames.friendProfile,
+                                arguments: friend.username);
+                          },
+                          onTapAdd: () {
+                            ref.read(createChatProvider(friend));
+                            Navigator.pushNamed(
+                                context, AppRoutesNames.messageScreen,
+                                arguments: friend);
                           },
                         );
                       },

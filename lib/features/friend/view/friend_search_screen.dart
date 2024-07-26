@@ -64,6 +64,7 @@ class FriendSearchScreen extends ConsumerWidget {
           onTapAdd: () {
             _sendFriendRequest(ref, listFriends[index].friendId);
           },
+          isAddFriend: true,
         );
       },
     );

@@ -15,5 +15,6 @@
   static const String friendSearch = '/friendSreach';
   static const String friendProfile = '/friendProfile';
   static const String friendCreatePost = '/friendCreatePost';
+  static const String messageScreen = '/messageScreen';
 }
 

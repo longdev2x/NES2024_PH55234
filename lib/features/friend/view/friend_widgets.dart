@@ -15,14 +15,16 @@ import 'package:nes24_ph55234/global.dart';
 
 class ItemListFriend extends StatelessWidget {
   final Function() onTapRow;
-  final Function()? onTapAdd;
+  final Function() onTapAdd;
+  final bool isAddFriend;
   final FriendEntity objFriend;
 
   const ItemListFriend(
       {super.key,
       required this.objFriend,
       required this.onTapRow,
-      this.onTapAdd});
+      this.isAddFriend = false,
+      required this.onTapAdd});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class ItemListFriend extends StatelessWidget {
                   radius: 25,
                 ),
                 SizedBox(width: 12.w),
-                onTapAdd != null
+                isAddFriend
                     ? Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +61,7 @@ class ItemListFriend extends StatelessWidget {
                       )
                     : AppText20(objFriend.username),
                 const Spacer(),
-                onTapAdd != null
+                isAddFriend
                     ? ElevatedButton.icon(
                         onPressed: onTapAdd,
                         icon: AppIcon(
@@ -70,10 +72,13 @@ class ItemListFriend extends StatelessWidget {
                           'Kết bạn',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ))
-                    : const AppIcon(
-                        path: ImageRes.icSMS,
-                        size: 28,
-                      )
+                    : GestureDetector(
+                      onTap: onTapAdd,
+                      child: const AppIcon(
+                          path: ImageRes.icSMS,
+                          size: 28,
+                        ),
+                    )
               ],
             ),
           ),
@@ -351,17 +356,19 @@ class PostFriendItem extends ConsumerWidget {
               },
             ),
           ),
-          SizedBox(height: 10.h),
+          SizedBox(height: 20.h),
           Row(
             children: [
               GestureDetector(
                 onTap: () {
                   ref.read(friendPostProvider.notifier).toggleLike(objPostFriend.id);
                 },
-                child: AppIcon(
-                  path: objPostFriend.likes.contains(currentUserId)
+                child: AppImage(
+                  imagePath: objPostFriend.likes.contains(currentUserId)
                       ? ImageRes.icLove
                       : ImageRes.icDislike,
+                  height: 25.r,
+                  width: 25.r,
                 ),
               )
             ],

@@ -5,6 +5,7 @@ import 'package:nes24_ph55234/features/application/view/application.dart';
 import 'package:nes24_ph55234/features/auth/view/auth_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_profile_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_search_screen.dart';
+import 'package:nes24_ph55234/features/friend/view/message_screen.dart';
 import 'package:nes24_ph55234/features/grateful/view/grateful_screen.dart';
 import 'package:nes24_ph55234/features/onboarding/view/onboarding.dart';
 import 'package:nes24_ph55234/features/profile/view/BMI/bmi_navigate.dart';
@@ -70,6 +71,10 @@ class AppRoutes {
       const RouteEntity(
         path: AppRoutesNames.friendProfile,
         page: FriendProfileScreen(),
+      ),
+      const RouteEntity(
+        path: AppRoutesNames.messageScreen,
+        page: MessageScreen(),
       ),
     ];
   }
