@@ -123,6 +123,8 @@ class PostFriendEntity {
   final List<File?> imageFiles;
   final PostFeel? feel;
   final PostType? type;
+  final List<String> likes;
+  final int commentCount;
   final DateTime date;
 
   PostFriendEntity({
@@ -135,6 +137,8 @@ class PostFriendEntity {
     required this.limit,
     required this.content,
     required this.type,
+    this.likes = const [],
+    this.commentCount = 0,
     required this.date,
     required this.feel,
   }) : id = id ?? const Uuid().v4();
@@ -144,6 +148,8 @@ class PostFriendEntity {
     PostLimit? limit,
     List<String?>? images,
     List<File?>? imageFiles,
+    List<String>? likes,
+    int? commentCount,
     PostFeel? feel,
   }) =>
       PostFriendEntity(
@@ -156,6 +162,8 @@ class PostFriendEntity {
         feel: feel ?? this.feel,
         type: type,
         date: date,
+        likes: likes ?? this.likes,
+        commentCount: commentCount ?? this.commentCount,
         images: images ?? this.images,
         imageFiles: imageFiles ?? this.imageFiles,
       );
@@ -169,19 +177,21 @@ class PostFriendEntity {
       content: json['content'],
       limit: PostLimit.values.firstWhere(
         (e) => e.name == json['limit'],
-        orElse: () => PostLimit.public, // Default value if not found
+        orElse: () => PostLimit.public,
       ),
       images: List<String?>.from(json['images'] ?? []),
-      imageFiles: [], // Cannot be stored in JSON, initialize as empty
+      imageFiles: [],
       type: PostType.values.firstWhere(
         (e) => e.name == json['type'],
-        orElse: () => PostType.normal, // Default value if not found
+        orElse: () => PostType.normal,
       ),
+      likes: List<String>.from(json['likes'] ?? []),
+      commentCount: json['comment_count'] ?? 0,
       date: (json['date'] as Timestamp).toDate(),
       feel: json['feel'] != null
           ? PostFeel.values.firstWhere(
               (e) => e.name == json['feel'],
-              orElse: () => PostFeel.normal, // Default value if not found
+              orElse: () => PostFeel.normal,
             )
           : null,
     );
@@ -197,6 +207,8 @@ class PostFriendEntity {
       'limit': limit.name,
       'images': images,
       'type': type?.name,
+      'likes': likes,
+      'comment_count': commentCount,
       'date': Timestamp.fromDate(date),
       'feel': feel?.name,
     };

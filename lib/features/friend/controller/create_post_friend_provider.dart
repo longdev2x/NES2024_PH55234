@@ -6,8 +6,8 @@ import 'package:nes24_ph55234/global.dart';
 import 'package:uuid/uuid.dart';
 
 class FriendCreatePostNotifier extends StateNotifier<PostFriendEntity> {
-  late UserEntity objUse;
-  FriendCreatePostNotifier({required UserEntity objUser})
+  late UserEntity objUser;
+  FriendCreatePostNotifier({required this.objUser})
       : super(
           PostFriendEntity(
             id: const Uuid().v4(),
@@ -44,8 +44,8 @@ class FriendCreatePostNotifier extends StateNotifier<PostFriendEntity> {
     state = PostFriendEntity(
       id: const Uuid().v4(),
       userId: Global.storageService.getUserId(),
-      username: objUse.username,
-      avatar: objUse.avatar,
+      username: objUser.username,
+      avatar: objUser.avatar,
       limit: PostLimit.public,
       content: '',
       images: [],

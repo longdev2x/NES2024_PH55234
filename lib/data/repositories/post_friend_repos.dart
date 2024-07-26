@@ -11,15 +11,23 @@ class PostFriendRepos {
 
   static Future<List<PostFriendEntity>> getAllPosts() async {
     final snapshot = await _firestore.collection(_c).get();
-    return snapshot.docs.map((e) => PostFriendEntity.fromJson(e.data())).toList();
+    List<PostFriendEntity> posts =
+        snapshot.docs.map((e) => PostFriendEntity.fromJson(e.data())).toList();
+
+    posts.sort((a, b) => b.date.compareTo(a.date));
+
+    return posts;
   }
 
-  static Future<List<PostFriendEntity>> getFriendPostsByUser(String userId) async {
+  static Future<List<PostFriendEntity>> getFriendPostsByUser(
+      String userId) async {
     final snapshot = await _firestore
         .collection(_c)
         .where('user_id', isEqualTo: userId)
         .get();
-    return snapshot.docs.map((e) => PostFriendEntity.fromJson(e.data())).toList();
+    return snapshot.docs
+        .map((e) => PostFriendEntity.fromJson(e.data()))
+        .toList();
   }
 
   static Future<PostFriendEntity> getFriendPost(String id) async {
@@ -34,12 +42,13 @@ class PostFriendRepos {
   static Future<void> createOrUpdateFriendPost(PostFriendEntity objPost) async {
     final docRef = _firestore.collection(_c).doc(objPost.id);
     final snapShot = await docRef.get();
-    
+
     // Upload images and get links
-    List<String?> uploadedImages = await _uploadImages(objPost.imageFiles, objPost.id);
+    List<String?> uploadedImages =
+        await _uploadImages(objPost.imageFiles, objPost.id);
     objPost = objPost.copyWith(images: uploadedImages, imageFiles: []);
 
-    if(snapShot.exists) {
+    if (snapShot.exists) {
       await docRef.update(objPost.toJson());
     } else {
       await docRef.set(objPost.toJson());
@@ -54,7 +63,11 @@ class PostFriendRepos {
 
     for (File? file in imageFiles) {
       if (file != null) {
-        final ref = _storage.ref().child(AppConstants.fbStoragePost).child(idPost).child(DateTime.now().millisecondsSinceEpoch.toString());
+        final ref = _storage
+            .ref()
+            .child(AppConstants.fbStoragePost)
+            .child(idPost)
+            .child(DateTime.now().millisecondsSinceEpoch.toString());
         await ref.putFile(file);
         String url = await ref.getDownloadURL();
         imageUrls.add(url);
@@ -65,4 +78,16 @@ class PostFriendRepos {
     return imageUrls;
   }
 
+  static Future<void> updatePostLikes(String postId, List<String> likes) async {
+    await _firestore.collection(_c).doc(postId).update({
+      'likes': likes,
+    });
+  }
+
+  static Future<void> updatePostCommentCount(
+      String postId, int commentCount) async {
+    await _firestore.collection(_c).doc(postId).update({
+      'comment_count': commentCount,
+    });
+  }
 }
