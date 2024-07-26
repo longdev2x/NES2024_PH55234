@@ -84,7 +84,7 @@ class FriendScreen extends ConsumerWidget {
                           onTapRow: () {
                             Navigator.pushNamed(
                                 context, AppRoutesNames.friendProfile,
-                                arguments: friend.username);
+                                arguments: friend);
                           },
                           onTapAdd: () {
                             ref.read(createChatProvider(friend));

@@ -35,7 +35,8 @@ class FriendPostScreen extends ConsumerWidget {
                         _addImage(context, objUser, ref);
                       },
                     ),
-                error: (error, stackTrace) => const Center(child: Text('Error')),
+                error: (error, stackTrace) =>
+                    const Center(child: Text('Error')),
                 loading: () => FPostHeaderWidget(
                       avatar: null,
                       onTapImagePicker: () {},

@@ -59,7 +59,7 @@ class FriendSearchScreen extends ConsumerWidget {
         return ItemListFriend(
           objFriend: listFriends[index],
           onTapRow: () {
-            Navigator.pushNamed(context, AppRoutesNames.friendProfile, arguments: listFriends[index].username);
+            Navigator.pushNamed(context, AppRoutesNames.friendProfile, arguments: listFriends[index]);
           },
           onTapAdd: () {
             _sendFriendRequest(ref, listFriends[index].friendId);

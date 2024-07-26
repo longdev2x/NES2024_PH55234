@@ -73,12 +73,12 @@ class ItemListFriend extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ))
                     : GestureDetector(
-                      onTap: onTapAdd,
-                      child: const AppIcon(
+                        onTap: onTapAdd,
+                        child: const AppIcon(
                           path: ImageRes.icSMS,
                           size: 28,
                         ),
-                    )
+                      )
               ],
             ),
           ),
@@ -236,11 +236,20 @@ class FriendDiverWidget extends StatelessWidget {
 }
 
 class FpostContent extends ConsumerWidget {
-  const FpostContent({super.key});
+  final String? friendId;
+  const FpostContent({
+    super.key,
+    this.friendId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fetchPosts = ref.watch(friendPostProvider);
+    final AsyncValue<List<PostFriendEntity>> fetchPosts;
+    if(friendId == null) {
+      fetchPosts = ref.watch(friendPostProvider);
+    } else {
+      fetchPosts = ref.watch(profilePostProvider(friendId!));
+    }
     return fetchPosts.when(
         data: (posts) {
           return _buildContent(ref, posts);
@@ -361,7 +370,9 @@ class PostFriendItem extends ConsumerWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  ref.read(friendPostProvider.notifier).toggleLike(objPostFriend.id);
+                  ref
+                      .read(friendPostProvider.notifier)
+                      .toggleLike(objPostFriend.id);
                 },
                 child: AppImage(
                   imagePath: objPostFriend.likes.contains(currentUserId)

@@ -4,7 +4,7 @@ import 'package:nes24_ph55234/data/models/message_entity.dart';
 import 'package:nes24_ph55234/data/repositories/message_repos.dart';
 import 'package:nes24_ph55234/global.dart';
 
-//Stream danh sách chat
+//St123456ream danh sách chat
 final chatProvider = StreamProvider.autoDispose<List<ChatEntity>>((ref) {
   final userId = Global.storageService.getUserId();
   return MessageRepos.getChats(userId);

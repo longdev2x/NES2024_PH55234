@@ -25,7 +25,7 @@ class FriendPostNotifier extends AsyncNotifier<List<PostFriendEntity>> {
           }
           return post;
         }).toList();
-        if(newPost == null) {
+        if (newPost == null) {
           listPost.insert(0, objPost);
         }
         return listPost;
@@ -53,7 +53,8 @@ class FriendPostNotifier extends AsyncNotifier<List<PostFriendEntity>> {
       }).toList();
     });
     // Cập nhật trên server
-    await PostFriendRepos.updatePostLikes(postId, state.value!.firstWhere((post) => post.id == postId).likes);
+    await PostFriendRepos.updatePostLikes(
+        postId, state.value!.firstWhere((post) => post.id == postId).likes);
   }
 
   Future<void> addComment(String postId) async {
@@ -65,9 +66,10 @@ class FriendPostNotifier extends AsyncNotifier<List<PostFriendEntity>> {
         return post;
       }).toList();
     });
-    
+
     // Cập nhật trên server
-    await PostFriendRepos.updatePostCommentCount(postId, state.value!.firstWhere((post) => post.id == postId).commentCount);
+    await PostFriendRepos.updatePostCommentCount(postId,
+        state.value!.firstWhere((post) => post.id == postId).commentCount);
   }
 }
 
@@ -75,3 +77,8 @@ final friendPostProvider =
     AsyncNotifierProvider<FriendPostNotifier, List<PostFriendEntity>>(
   () => FriendPostNotifier(),
 );
+
+
+final profilePostProvider = FutureProvider.family<List<PostFriendEntity>, String>((ref, friendId) {
+  return PostFriendRepos.getFriendPostsByUser(friendId);
+},);
