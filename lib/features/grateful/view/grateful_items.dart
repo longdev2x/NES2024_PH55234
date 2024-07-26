@@ -48,7 +48,10 @@ class GratefulPostItem extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  AppText20(objPost.formatDate, fontWeight: FontWeight.bold,),
+                  AppText20(
+                    objPost.formatDate,
+                    fontWeight: FontWeight.bold,
+                  ),
                   const Spacer(),
                   AppImage(
                     imagePath: emoijMap[objPost.feel],
@@ -68,47 +71,45 @@ class GratefulPostItem extends ConsumerWidget {
               if (textItems.length > 2) const Text('...'),
               SizedBox(height: 10.h),
               // Hiển thị hàng ảnh
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  //min giữa 3 và length, tránh trường hợp nhỏ hơn 3, chỉ lấy tối đa 3 ảnh
-                  ...List.generate(
-                    min(3, imageItems.length),
-                    (index) {
-                      return index == 2 && imageItems.length > 3
-                          ? Stack(
-                              children: [
-                                Image.network(
-                                  imageItems[index].content!,
-                                  fit: BoxFit.cover,
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: List.generate(
+                  min(3, imageItems.length),
+                  (index) {
+                    return index == 2 && imageItems.length > 3
+                        ? Stack(
+                            children: [
+                              Image.network(
+                                imageItems[index].content!,
+                                fit: BoxFit.cover,
+                                height: 70.h,
+                                width: 96.w,
+                              ),
+                              Positioned.fill(
+                                child: Container(
                                   height: 70.h,
                                   width: 96.w,
-                                ),
-                                Positioned.fill(
-                                  child: Container(
-                                    height: 70.h,
-                                    width: 96.w,
-                                    color: Colors.black.withOpacity(0.5),
-                                    child: Center(
-                                      child: AppText20(
-                                        '+${imageItems.length - 3}',
-                                        color: Colors.white,
-                                      ),
+                                  color: Colors.black.withOpacity(0.5),
+                                  child: Center(
+                                    child: AppText20(
+                                      '+${imageItems.length - 3}',
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
-                              ],
-                            )
-                          : Image.network(
-                              imageItems[index].content!,
-                              fit: BoxFit.cover,
-                              height: 70.h,
-                              width: 96.w,
-                            );
-                    },
-                  ),
-                ],
-              )
+                              ),
+                            ],
+                          )
+                        : Image.network(
+                            imageItems[index].content!,
+                            fit: BoxFit.cover,
+                            height: 70.h,
+                            width: 96.w,
+                          );
+                  },
+                ),
+              ),
             ],
           ),
         ),

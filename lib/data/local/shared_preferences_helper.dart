@@ -64,6 +64,15 @@ class SharedPreferencesHelper {
     return value;
   }
 
+  Future<bool> setRole(String role) async {
+    return await _pref.setString(AppConstants.storageRole, role);
+  }
+
+  String getRole() {
+    String value = _pref.getString(AppConstants.storageRole) ?? listRoles.first.name;
+    return value;
+  }
+
   Future<bool> removeKey(String key, int seconds) async {
     try {
       Timer(Duration(seconds: seconds), () async {

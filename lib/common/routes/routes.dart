@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
+import 'package:nes24_ph55234/features/advise/view/expert/expert_advise_session_screen.dart';
+import 'package:nes24_ph55234/features/advise/view/user/user_advise_session_screen.dart';
 import 'package:nes24_ph55234/features/application/view/application.dart';
 import 'package:nes24_ph55234/features/auth/view/auth_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_profile_screen.dart';
@@ -75,6 +77,14 @@ class AppRoutes {
       const RouteEntity(
         path: AppRoutesNames.messageScreen,
         page: MessageScreen(),
+      ),
+      const RouteEntity(
+        path: AppRoutesNames.adviseUser,
+        page: UserAdviseSessionScreen(),
+      ),
+      const RouteEntity(
+        path: AppRoutesNames.adviseExpext,
+        page: ExpertAdviseSessionScreen(),
       ),
     ];
   }

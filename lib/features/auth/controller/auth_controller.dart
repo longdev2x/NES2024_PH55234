@@ -6,6 +6,7 @@ import 'package:nes24_ph55234/data/repositories/auth_repos.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nes24_ph55234/data/repositories/profile_repos.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'package:nes24_ph55234/main.dart';
 
@@ -43,6 +44,7 @@ class AuthController {
         throw Exception("Lỗi khi lưu thông tin người dùng: $e");
       }
 
+      await Global.storageService.setRole(objUser.role.name);
       await Global.storageService.setUserId(objUser.id);
 
       AppToast.showToast("Đăng ký thành công!");
@@ -89,8 +91,10 @@ class AuthController {
       if (user == null) {
         AppToast.showToast('Kiểm tra lại tài khoản');
         return;
-      }
+      }      
+      UserEntity objUser = await  ProfileRepos.getUserProfile(user.uid);
       await Global.storageService.setUserId(user.uid);
+      await Global.storageService.setRole(objUser.role.name);
       if (isRemember) {
         await Global.storageService.setRemember(
             email: email, password: password, isRemember: isRemember);

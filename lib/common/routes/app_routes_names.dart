@@ -10,11 +10,12 @@
   static const String bmi = '/bmi';
   static const String yoga = '/yoga';
   static const String yogaDetail = '/yoga_detail';
-  static const String advise = '/advise';
   static const String editProfile = '/editProfile';
   static const String friendSearch = '/friendSreach';
   static const String friendProfile = '/friendProfile';
   static const String friendCreatePost = '/friendCreatePost';
   static const String messageScreen = '/messageScreen';
+  static const String adviseUser= '/adviseUser';
+  static const String adviseExpext = '/adviseExpert';
 }
 

@@ -1,5 +1,6 @@
 class AppConstants {
   static const String storageUserId = 'user_id';
+  static const String storageRole = 'role';
   static const String strageRemember = 'remember_pass';
   static const String storageDeviceOpenFirstKey = 'first_time';
   static const String isRemember = 'is_remember';

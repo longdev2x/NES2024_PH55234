@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
+import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:nes24_ph55234/data/repositories/auth_repos.dart';
+import 'package:nes24_ph55234/global.dart';
 
 class AppDrawerWidget extends StatelessWidget {
   const AppDrawerWidget({super.key});
@@ -62,7 +64,16 @@ class AppDrawerWidget extends StatelessWidget {
             title: const Text('BMI'),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              String role = Global.storageService.getRole();
+              if (role == listRoles[0].name) {
+                _pop(context);
+                Navigator.of(context).pushNamed(AppRoutesNames.adviseUser);
+              } else {
+                _pop(context);
+                Navigator.of(context).pushNamed(AppRoutesNames.adviseExpext);
+              }
+            },
             leading: const Icon(Icons.call),
             title: const Text('Tư vấn bí mật'),
           ),
