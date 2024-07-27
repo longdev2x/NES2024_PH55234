@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
+import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
@@ -56,6 +57,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isUpdate = ModalRoute.of(context)!.settings.arguments as bool;
     final fetchUser = ref.watch(profileProvider);
     return Scaffold(
       appBar: AppBar(),
@@ -63,7 +65,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         data: (objUser) {
           init(objUser);
           return _buildContent(context, objUser, _usernameController,
-              weightController, heightController);
+              weightController, heightController, isUpdate);
         },
         error: (error, stackTrace) => Center(child: Text('Error-$error')),
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -77,6 +79,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     TextEditingController userController,
     TextEditingController weightController,
     TextEditingController heightController,
+    bool isUpdate,
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
@@ -113,7 +116,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   double height = double.tryParse(heightController.text)!;
                   ref.read(profileProvider.notifier).updateUserProfile(
                       username: username, weight: weight, height: height);
-                  Navigator.pop(context);
+                  if (isUpdate) {
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, AppRoutesNames.application, (route) => false);
+                  }
                 },
                 name: 'Lưu Thông Tin',
                 height: 50,

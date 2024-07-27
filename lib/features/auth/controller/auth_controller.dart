@@ -47,10 +47,9 @@ class AuthController {
 
       await Global.storageService.setRole(objUser.role.name);
       await Global.storageService.setUserId(objUser.id);
-
       AppToast.showToast("Đăng ký thành công!");
-      navKey.currentState!.pushNamedAndRemoveUntil(
-          AppRoutesNames.application, (route) => false);
+      navKey.currentState!
+          .pushNamed(AppRoutesNames.editProfile, arguments: false);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "email-already-in-use":
@@ -92,11 +91,11 @@ class AuthController {
       if (user == null) {
         AppToast.showToast('Kiểm tra lại tài khoản');
         return;
-      } 
-      UserEntity objUser = await  ProfileRepos.getUserProfile(user.uid);
+      }
+      UserEntity objUser = await ProfileRepos.getUserProfile(user.uid);
       objUser = objUser.copyWith(token: await user.getIdToken());
       await ProfileRepos.updateUserProfile(objUser);
-        
+
       await Global.storageService.setUserId(user.uid);
       await Global.storageService.setRole(objUser.role.name);
       if (isRemember) {

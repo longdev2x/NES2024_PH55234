@@ -50,7 +50,11 @@ class ProfileScreen extends ConsumerWidget {
           SizedBox(height: 20.h),
           AppButton(
               ontap: () {
-                Navigator.pushNamed(context, AppRoutesNames.editProfile);
+                Navigator.pushNamed(
+                  context,
+                  AppRoutesNames.editProfile,
+                  arguments: true,
+                );
               },
               name: 'Cập nhật hồ sơ',
               width: 250),

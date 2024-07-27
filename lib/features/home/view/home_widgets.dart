@@ -14,25 +14,32 @@ import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/features/home/controller/banner_dots_provider.dart';
 import 'package:nes24_ph55234/features/home/controller/home_hori_category_provider.dart';
 import 'package:nes24_ph55234/features/home/view/home_items.dart';
+import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
 
 AppBar homeAppBar(WidgetRef ref, BuildContext context) {
-  // final String? avatar = Global.storageService.getUserProfile().name;
-  const String? avatar = null;
+  final fetchUser = ref.watch(profileProvider);
   return AppBar(
     actions: [
       const AppThemeSwitcher(),
-      IconButton(onPressed: () {
-        Navigator.pushNamed(context, AppRoutesNames.search);
-      }, icon: const Icon(Icons.search)),
+      IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutesNames.search);
+          },
+          icon: const Icon(Icons.search)),
       GestureDetector(
         onTap: () {},
         child: Row(
           children: [
-            AppImageWithColor(
-              imagePath: avatar,
-              width: 26.w,
-              height: 26.h,
-              color: Colors.black,
+            fetchUser.when(
+              data: (objUser) => CircleAvatar(
+                backgroundImage: objUser.avatar != null
+                    ? NetworkImage(objUser.avatar!)
+                    : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
+              ),
+              error: (error, stackTrace) => const Center(child: Text('Error')),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
             SizedBox(width: 20.w),
           ],
@@ -52,16 +59,21 @@ class HelloText extends StatelessWidget {
   }
 }
 
-class UserName extends StatelessWidget {
+class UserName extends ConsumerWidget {
   const UserName({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // final String? name = Global.storageService.getUserProfile().name;
-    String name = "Hoàng Nhật Long";
-    return AppText24(
-      name,
-      fontWeight: FontWeight.bold,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final fetchUser = ref.watch(profileProvider);
+    return fetchUser.when(
+      data: (objUser) => AppText24(
+        objUser.username,
+        fontWeight: FontWeight.bold,
+      ),
+      error: (error, stackTrace) => const Center(child: Text('Error')),
+      loading: () => const Center(
+        child: SizedBox(),
+      ),
     );
   }
 }
