@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/routes/routes.dart';
 import 'package:nes24_ph55234/common/provider_global/is_dark_theme_provider.dart';
+import 'package:nes24_ph55234/common/services/notification_sevices.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'firebase_options.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    NotificationServices().initialize(context);
     final isDark = ref.watch(isDarkThemeProvider);
     return ScreenUtilInit(
       designSize: const Size(375, 812),

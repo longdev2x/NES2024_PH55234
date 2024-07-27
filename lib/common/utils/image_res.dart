@@ -48,6 +48,8 @@ class ImageRes {
   static const String icImagePicker = '${_baseIcon}ic_image_picker.png';
   static const String icDislike = '${_baseIcon}ic_dislike.png';
   static const String icLove = '${_baseIcon}ic_love.png';
+  static const String icExpert = '${_baseIcon}ic_expert.png';
+  static const String icUser = '${_baseIcon}ic_user.png';
   //
   static const String icAngry = '${_baseIcon}ic_feel_angry.png';
   static const String icCry = '${_baseIcon}ic_feel_cry.png';

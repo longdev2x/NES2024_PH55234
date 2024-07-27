@@ -30,6 +30,7 @@ class AuthController {
       UserEntity objUser = UserEntity(
         id: user.uid,
         email: email,
+        token: await user.getIdToken(),
         role: role,
         bith: DateTime.now().subtract(const Duration(days: 7300)),
         gender: 'Nam',
@@ -91,8 +92,11 @@ class AuthController {
       if (user == null) {
         AppToast.showToast('Kiểm tra lại tài khoản');
         return;
-      }      
+      } 
       UserEntity objUser = await  ProfileRepos.getUserProfile(user.uid);
+      objUser = objUser.copyWith(token: await user.getIdToken());
+      await ProfileRepos.updateUserProfile(objUser);
+        
       await Global.storageService.setUserId(user.uid);
       await Global.storageService.setRole(objUser.role.name);
       if (isRemember) {

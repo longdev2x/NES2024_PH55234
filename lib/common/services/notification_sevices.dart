@@ -1,114 +1,131 @@
+import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:googleapis_auth/auth_io.dart';
+import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
+import 'package:nes24_ph55234/data/models/friend_entity.dart';
 
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> initialize() async {
-    //request Permission from User
-    requestNotificationPermission();
-    //Fetch the FCM token for this device
-    final fCMtoken = await getDeviceToken();
-    //print the token
-    print('Token: $fCMtoken');
+  Future<void> initialize(BuildContext context) async {
+    await _requestNotificationPermission();
+    await getDeviceToken();
+    _initLocalNotifications(context);
+    _setupNotificationTapAction(context);
+    //Luồng stream khi ở foreground
+    _setupForegroundNotificationHandler(context);
   }
 
-  // hàm yêu cầu cấp quyền
-  Future<void> requestNotificationPermission() async {
+  Future<void> _requestNotificationPermission() async {
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       sound: true,
       badge: true,
     );
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      if (kDebugMode) {
-        print("user granted permission");
-      }
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      if (kDebugMode) {
-        print('User granted provisional permission');
-      }
-    } else {
-      if (kDebugMode) {
-        print('User denied permission');
-      }
+    if (kDebugMode) {
+      print('Người dùng đã : ${settings.authorizationStatus}');
     }
   }
 
   Future<String?> getDeviceToken() async {
-    return await messaging.getToken();
+    final String? token = await messaging.getToken();
+    if (kDebugMode) {
+      print('FCM Token: $token');
+    }
+    return token;
   }
 
-  //Khởi tạo cài đặt cho thông báo cục bộ .
-  //Cấu hình biểu tượng cho Android và các cài đặt cho iOS.
-  void initLocalNotifications(
-      {required BuildContext context, required RemoteMessage msg}) async {
-    var androidInitlization =
-        const AndroidInitializationSettings('@mipmap/ic_launcher.png');
+  //Bỏ qua IOS do k có tài khoản devoloper
+  void _initLocalNotifications(BuildContext context) async {
+    //cài đặt khởi tạo cho Android
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher.png');
 
-    var iosInitlization = const DarwinInitializationSettings();
-    var initializationSettings = InitializationSettings(
-      android: androidInitlization,
-      iOS: iosInitlization,
+    //cài đặt khởi tạo plugin thông báo cục bộ(hiện chỉ khai báo android)
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: androidInitializationSettings,
     );
-
+    //khởi tạo plugin thông báo cục bộ
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveBackgroundNotificationResponse: (details) {},
-    );
-  }
-
-  //Lắng nghe các thông báo đến khi ứng dụng đang chạy (foreground).
-  //Khi nhận được thông báo, nó gọi initLocalNotifications() và showNotification().
-  void firebaseInit(BuildContext context) {
-    FirebaseMessaging.onMessage.listen((message) {
-      if (Platform.isAndroid) {
-        initLocalNotifications(context: context, msg: message);
-        _handelMessage(message);
-      }
-      // AppDialog.showToast(message.notification?.title.toString());
-    });
-  }
-
-  Future<void> _handelMessage(RemoteMessage message) async {
-    AndroidNotificationChannel channel = AndroidNotificationChannel(
-        Random.secure().nextInt(100000).toString(),
-        'High Importance Notification',
-        importance: Importance.max);
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(channel.id, channel.name,
-            channelDescription: 'Your channel description',
-            importance: Importance.high,
-            priority: Priority.high,
-            ticker: 'ticker');
-
-    DarwinNotificationDetails darwinNotificationDetails =
-        const DarwinNotificationDetails(
-            presentAlert: true, presentBadge: true, presentSound: true);
-
-    NotificationDetails notificationDetails = NotificationDetails(
-        android: androidNotificationDetails, iOS: darwinNotificationDetails);
-
-    Future.delayed(
-      Duration.zero,
-      () {
-        _flutterLocalNotificationsPlugin.show(
-          0,
-          message.notification!.title.toString(),
-          message.notification!.body.toString(),
-          notificationDetails,
-        );
+      //Callback khi user tap notification
+      onDidReceiveNotificationResponse: (details) {
+        //handler ontap to notification....
       },
     );
   }
 
+//Luồng stream khi ở foreground,
+  void _setupForegroundNotificationHandler(BuildContext context) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      _handleMessage(message, context);
+    });
+  }
+
+  Future<void> _handleMessage(
+      RemoteMessage message, BuildContext context) async {
+    AndroidNotificationChannel channel = const AndroidNotificationChannel(
+      'message_channel', //iid channel cho kênh nhắn tin
+      'Message Notifications',
+      importance: Importance.max,
+    );
+
+    try {
+      await _flutterLocalNotificationsPlugin.show(
+        0,
+        message.notification?.title ?? "Tin nhắn mới",
+        message.notification?.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            importance: Importance.max,
+            priority: Priority.high,
+            icon: '@mipmap/ic_launcher',
+          ),
+        ),
+        payload: json.encode(
+            message.data), // Thêm payload để xử lý khi nhấn vào thông báo
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error notification: $e');
+      }
+    }
+  }
+
+  void _setupNotificationTapAction(BuildContext context) {
+    _flutterLocalNotificationsPlugin.initialize(
+      const InitializationSettings(
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+      ),
+      onDidReceiveNotificationResponse: (NotificationResponse details) {
+        // Xử lý khi nhấn vào thông báo
+        if (details.payload != null) {
+          final data = json.decode(details.payload!);
+          // Chuyển đến màn hình tin nhắn với dữ liệu từ payload
+          Navigator.pushNamed(
+            context,
+            AppRoutesNames.messageScreen,
+            arguments: FriendEntity(
+              friendId: data['senderId'],
+              username: data['senderName'],
+              avatar: data['senderAvatar'],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  //Luồng stream khi token dc generate lại, cần cập nhật lại
   void isTokenRefersh() async {
     messaging.onTokenRefresh.listen((event) {
       event.toString();
@@ -116,5 +133,57 @@ class NotificationServices {
         print('Refresh');
       }
     });
+  }
+
+  //Setup send notification
+  Future<void> sendNotification({
+    required String type,
+    required String receiverToken,
+    required String title,
+    required String body,
+  }) async {
+    // Đường dẫn tới tệp JSON key của tài khoản dịch vụ
+    final jsonKey = File(
+            '/Users/hoanglong/Desktop/NES24_PH55234/nes24-ph55234-firebase-adminsdk-43wdc-de5ba10c9e.json')
+        .readAsStringSync();
+    // Tạo Credential từ JSON key
+    var credentials = ServiceAccountCredentials.fromJson(jsonKey);
+    // Phạm vi cho FCM API
+    var scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
+    // Tạo một HTTP client
+    var httpClient = await clientViaServiceAccount(credentials, scopes);
+    // Tạo URL cho API HTTP v1
+    var projectId = 'nes24-ph55234'; //project id trên firebaes
+    var url = Uri.parse(
+        'https://fcm.googleapis.com/v1/projects/$projectId/messages:send');
+
+    // Payload thông báo
+    var payload = {
+      'message': {
+        'token': receiverToken,
+        'notification': {
+          'title': title,
+          'body': body,
+        },
+      },
+    };
+
+    // Gửi yêu cầu POST đến API HTTP v1
+    var response = await httpClient.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(payload),
+    );
+
+    // Xử lý kết quả
+    if (response.statusCode == 200) {
+      if (kDebugMode) {
+        print('Thành công send notification');
+      }
+    } else {
+      if (kDebugMode) {
+        print('Gửi notifi thất bại: ${response.body}');
+      }
+    }
   }
 }

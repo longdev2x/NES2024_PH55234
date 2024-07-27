@@ -21,11 +21,9 @@ class UserAdviseSessionScreen extends ConsumerWidget {
       appBar: appGlobalAppBar('Tư vấn tâm lý'),
       body: fetchSessions.when(
         data: (sessions) {
-          print('zzz0-screen-${sessions.length}');
           return ListView.builder(
             itemCount: sessions.length,
             itemBuilder: (context, index) {
-              print('zzz1-screen-${sessions.length}');
               if (sessions.isEmpty) {
                 return const Center(
                   child: Text('Chưa có cuộc tư vấn nào'),
@@ -43,7 +41,7 @@ class UserAdviseSessionScreen extends ConsumerWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            AdviseChatDetailScreen(sessionId: session.id),
+                            AdviseChatDetailScreen(sessionId: session.id, content: session.content,),
                       ),
                     );
                   });
@@ -52,8 +50,6 @@ class UserAdviseSessionScreen extends ConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) {
-          print('zzz-error-$error');
-          print('zzz-error-$stack');
           return const Center(child: Text('Error'));
         } 
       ),

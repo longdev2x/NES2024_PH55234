@@ -42,6 +42,7 @@ class UserEntity {
   final Role role;
   final DateTime bith;
   final String username;
+  final String? token;
   final String gender;
   List<String> friendIds;
   final String? avatar;
@@ -52,6 +53,7 @@ class UserEntity {
   UserEntity({
     required this.id,
     required this.email,
+    required this.token,
     required this.role,
     required this.bith,
     String? username,
@@ -66,6 +68,7 @@ class UserEntity {
   UserEntity copyWith({
     String? email,
     String? username,
+    String? token,
     Role? role,
     String? avatar,
     String? gender,
@@ -78,6 +81,7 @@ class UserEntity {
       UserEntity(
         id: id,
         email: email ?? this.email,
+        token: token ?? this.token,
         role: role ?? this.role,
         username: username ?? this.username,
         avatar: avatar ?? this.avatar,
@@ -92,6 +96,7 @@ class UserEntity {
   Map<String, dynamic> toJson() => {
         'id': id,
         'email': email,
+        'token': token,
         'role': role.value,
         'username': username,
         'avatar': avatar,
@@ -107,6 +112,7 @@ class UserEntity {
     return UserEntity(
       id: json['id'],
       email: json['email'],
+      token: json['token'],
       role: listRoles.firstWhere((e) => e.value == json['role']),
       username: json['username'],
       avatar: json['avatar'],

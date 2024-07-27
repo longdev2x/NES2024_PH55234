@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/components/app_global_app_bar.dart';
+import 'package:nes24_ph55234/common/components/app_image.dart';
+import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
+import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/advise_entity.dart';
 import 'package:nes24_ph55234/data/repositories/advise_repos.dart';
 import 'package:nes24_ph55234/features/advise/controller/advise_provider.dart';
@@ -9,8 +14,12 @@ import 'package:nes24_ph55234/global.dart';
 
 class AdviseChatDetailScreen extends ConsumerStatefulWidget {
   final String sessionId;
-
-  const AdviseChatDetailScreen({super.key, required this.sessionId});
+  final String content;
+  const AdviseChatDetailScreen({
+    super.key,
+    required this.sessionId,
+    required this.content,
+  });
 
   @override
   ConsumerState createState() => _AdviseChatDetailScreenState();
@@ -35,61 +44,94 @@ class _AdviseChatDetailScreenState
 
     return Scaffold(
       appBar: appGlobalAppBar('Tư vấn tâm lý'),
-      body: Column(
-        children: [
-          Expanded(
-            child: sessionStream.when(
-              data: (session) {
-                return ListView.builder(
-                  controller: _scrollController,
-                  itemCount: session.messages.length,
-                  itemBuilder: (context, index) {
-                    final message = session.messages[index];
-                    return MessageBubble(
-                      message: message.message,
-                      isMe:
-                          message.senderId == Global.storageService.getUserId(),
-                      isExpert: message.isExpert,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppConstants.marginHori,
+            vertical: AppConstants.marginVeti),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const AppText24('Nội dung cần tư vấn:'),
+                TextButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AppConfirm(
+                        title: widget.content,
+                        onConfirm: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                     );
                   },
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stack) => Center(child: Text('Error: $error')),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3),
+                  child: const AppText16('Xem đầy đủ'),
                 ),
               ],
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: const InputDecoration(
-                      hintText: 'Nhập tin nhắn...',
-                      border: InputBorder.none,
+            Text(
+              widget.content,
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 10.h),
+            const Divider(),
+            Expanded(
+              child: sessionStream.when(
+                data: (session) {
+                  return ListView.builder(
+                    controller: _scrollController,
+                    itemCount: session.messages.length,
+                    itemBuilder: (context, index) {
+                      final message = session.messages[index];
+                      return MessageBubble(
+                        message: message.message,
+                        isMe: message.senderId ==
+                            Global.storageService.getUserId(),
+                        isExpert: message.isExpert,
+                      );
+                    },
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stack) => Center(child: Text('Error: $error')),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _messageController,
+                      decoration: const InputDecoration(
+                        hintText: 'Nhập tin nhắn...',
+                        border: InputBorder.none,
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: _sendMessage,
-                ),
-              ],
+                  IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: _sendMessage,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -145,10 +187,7 @@ class MessageBubble extends StatelessWidget {
           if (!isMe) ...[
             CircleAvatar(
               backgroundColor: isExpert ? Colors.blue : Colors.grey,
-              child: Icon(
-                isExpert ? Icons.psychology : Icons.person,
-                color: Colors.white,
-              ),
+              child: AppImage(imagePath: isExpert ? ImageRes.icExpert : ImageRes.icUser, height: 35.r, width: 35.r,),
             ),
             const SizedBox(width: 8),
           ],
@@ -171,11 +210,8 @@ class MessageBubble extends StatelessWidget {
           if (isMe) ...[
             const SizedBox(width: 8),
             CircleAvatar(
-              backgroundColor: Colors.blue,
-              child: const Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
+              backgroundColor: Colors.grey,
+              child: AppImage(imagePath: !isExpert ? ImageRes.icExpert : ImageRes.icUser, height: 35.r, width: 35.r,),
             ),
           ],
         ],

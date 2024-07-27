@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nes24_ph55234/common/services/notification_sevices.dart';
 import 'package:nes24_ph55234/data/models/message_entity.dart';
 import 'package:nes24_ph55234/global.dart';
 
@@ -23,7 +24,10 @@ class MessageRepos {
       });
     } else {
       // Nếu chat chưa tồn tại, tạo mới
-      await _firestore.collection('chats').doc(objChat.id).set(objChat.toJson());
+      await _firestore
+          .collection('chats')
+          .doc(objChat.id)
+          .set(objChat.toJson());
     }
   }
 
@@ -75,6 +79,21 @@ class MessageRepos {
       'time': Timestamp.fromDate(objMessage.timestamp),
       'unread': Global.storageService.getUserId() != objMessage.senderId,
     });
+
+    if (Global.storageService.getUserId() != objMessage.senderId) {
+      NotificationServices().sendNotification(
+        type: 'message',
+        receiverToken: await getUserToken(objMessage.receiverId),
+        title: "Tin nhắn mới",
+        body: objMessage.content,
+      );
+    }
+  }
+  //Lấy token người nhận
+  static Future<String> getUserToken(String userId) async {
+    DocumentSnapshot userDoc =
+        await _firestore.collection('users').doc(userId).get();
+    return userDoc['token'] ?? '';
   }
 
   static Future<void> markMessageAsRead(String messageId) async {
