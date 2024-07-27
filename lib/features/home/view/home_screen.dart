@@ -18,20 +18,19 @@ class HomeScreen extends ConsumerWidget {
         child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20.h),
+              SizedBox(height: 10.h),
               const HelloText(),
               const UserName(),
-              SizedBox(height: 20.h),
+              SizedBox(height: 15.h),
               AppSearchBar(onTap: () => Navigator.of(context).pushNamed(AppRoutesNames.search),),
               SizedBox(height: 15.h),
               const HomeBanner(),
               SizedBox(height: 15.h),
-              const HomeMenuBar(),
-              SizedBox(height: 15.h),
-              const SingleChildScrollView(child: CourseItemGrid()),
+              const HomeAnalysisWidget(),
             ],
           ),
         ),

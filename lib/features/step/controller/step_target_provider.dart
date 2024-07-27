@@ -6,9 +6,9 @@ import 'package:nes24_ph55234/data/models/target_entity.dart';
 import 'package:nes24_ph55234/data/repositories/target_repos.dart';
 import 'package:nes24_ph55234/global.dart';
 
-class TargetAsyncNotifier extends FamilyAsyncNotifier<TargetEntity?, String> {
+class StepTargetAsyncNotifier extends FamilyAsyncNotifier<TargetEntity?, String> {
   static late String userId;
-  TargetAsyncNotifier() : super();
+  StepTargetAsyncNotifier() : super();
 
   @override
   FutureOr<TargetEntity?> build(String arg) async {
@@ -47,6 +47,6 @@ class TargetAsyncNotifier extends FamilyAsyncNotifier<TargetEntity?, String> {
   }
 }
 
-final targetAsyncFamilyProvider =
-    AsyncNotifierProviderFamily<TargetAsyncNotifier, TargetEntity?, String>(
-        () => TargetAsyncNotifier());
+final stepTargetAsyncFamilyProvider =
+    AsyncNotifierProviderFamily<StepTargetAsyncNotifier, TargetEntity?, String>(
+        () => StepTargetAsyncNotifier());

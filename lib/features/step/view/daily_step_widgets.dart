@@ -7,7 +7,7 @@ import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
-import 'package:nes24_ph55234/features/step/controller/target_provider.dart';
+import 'package:nes24_ph55234/features/step/controller/step_target_provider.dart';
 
 class StepMainCircle extends StatelessWidget {
   final StepEntity objStep;
@@ -33,11 +33,11 @@ class StepRowMoreInfor extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchTargetMetree =
-        ref.watch(targetAsyncFamilyProvider(AppConstants.typeCaloDaily));
+        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeCaloDaily));
     final fetchTargeCalo =
-        ref.watch(targetAsyncFamilyProvider(AppConstants.typeCaloDaily));
+        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeCaloDaily));
     final fetchTargetMinute =
-        ref.watch(targetAsyncFamilyProvider(AppConstants.typeCaloDaily));
+        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeCaloDaily));
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 36.r),

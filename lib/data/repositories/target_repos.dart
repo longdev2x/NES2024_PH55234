@@ -6,11 +6,12 @@ class TargetRepos {
   static final FirebaseFirestore _instance = FirebaseFirestore.instance;
   static const String _c = AppConstants.cTarget;
 
-  static Future<List<TargetEntity>?> getAllTarget(String userId) async {
+  static Future<List<TargetEntity>> getAllTarget(String userId) async {
     final querySnap = await _instance
         .collection(_c)
         .where('user_id', isEqualTo: userId)
         .get();
+    if(querySnap.docs.isEmpty) return [];
     return querySnap.docs
         .map((queryDoc) => TargetEntity.fromJson(queryDoc.data()))
         .toList();
@@ -72,4 +73,20 @@ class TargetRepos {
       docRef.set(objTarget.toJson());
     }
   }
+
+  static Future<void> updateOrAddMultipleTargets(List<TargetEntity> targets) async {
+  final batch = _instance.batch();
+  for (var target in targets) {
+    final docRef = _instance.collection(_c).doc(target.id);
+    final docSnapshot = await docRef.get();
+
+    if (docSnapshot.exists) {
+      batch.update(docRef, target.toJson());
+    } else {
+      batch.set(docRef, target.toJson());
+    }
+  }
+  await batch.commit();
+}
+
 }

@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nes24_ph55234/data/repositories/profile_repos.dart';
+import 'package:nes24_ph55234/features/home/controller/all_target_provider.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'package:nes24_ph55234/main.dart';
 
@@ -44,12 +45,12 @@ class AuthController {
         await user.delete();
         throw Exception("Lỗi khi lưu thông tin người dùng: $e");
       }
-
-      await Global.storageService.setRole(objUser.role.name);
       await Global.storageService.setUserId(objUser.id);
+      Global.storageService.setRole(objUser.role.name);
+      ref.read(allTargetProvider.notifier).setAllDefaultTarget();
+      await Global.storageService.setRemember(email: '', password: '', isRemember: false);
       AppToast.showToast("Đăng ký thành công!");
-      navKey.currentState!
-          .pushNamed(AppRoutesNames.editProfile, arguments: false);
+      navKey.currentState!.pushNamed(AppRoutesNames.editProfile, arguments: false);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "email-already-in-use":

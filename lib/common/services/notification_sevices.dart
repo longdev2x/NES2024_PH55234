@@ -13,14 +13,17 @@ class NotificationServices {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> initialize(BuildContext context) async {
+  Future<void> initialize1() async {
     await _requestNotificationPermission();
     await getDeviceToken();
+  }
+  Future<void> initialize2(BuildContext context) async {
     _initLocalNotifications(context);
     _setupNotificationTapAction(context);
     //Luồng stream khi ở foreground
     _setupForegroundNotificationHandler(context);
   }
+
 
   Future<void> _requestNotificationPermission() async {
     NotificationSettings settings = await messaging.requestPermission(

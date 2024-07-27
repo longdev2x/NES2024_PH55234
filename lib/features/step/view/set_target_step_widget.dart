@@ -6,7 +6,7 @@ import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/target_entity.dart';
-import 'package:nes24_ph55234/features/step/controller/target_provider.dart';
+import 'package:nes24_ph55234/features/step/controller/step_target_provider.dart';
 
 class SetTargetStepsWidget extends ConsumerStatefulWidget {
   final bool isDaily;
@@ -65,25 +65,25 @@ class _SetTargetStepsWidgetState extends ConsumerState<SetTargetStepsWidget> {
   @override
   Widget build(BuildContext context) {
     //Type
-    final TargetAsyncNotifier stepNotifier =
-        ref.watch(targetAsyncFamilyProvider(typeStep).notifier);
+    final StepTargetAsyncNotifier stepNotifier =
+        ref.watch(stepTargetAsyncFamilyProvider(typeStep).notifier);
     final AsyncValue<TargetEntity?> fetchTargetStep =
-        ref.watch(targetAsyncFamilyProvider(typeStep));
+        ref.watch(stepTargetAsyncFamilyProvider(typeStep));
 
-    final TargetAsyncNotifier metreNotifier =
-        ref.watch(targetAsyncFamilyProvider(typeMetre).notifier);
+    final StepTargetAsyncNotifier metreNotifier =
+        ref.watch(stepTargetAsyncFamilyProvider(typeMetre).notifier);
     final AsyncValue<TargetEntity?> fetchTargetmetre =
-        ref.watch(targetAsyncFamilyProvider(typeMetre));
+        ref.watch(stepTargetAsyncFamilyProvider(typeMetre));
 
-    final TargetAsyncNotifier caloNotifier =
-        ref.watch(targetAsyncFamilyProvider(typeCalo).notifier);
+    final StepTargetAsyncNotifier caloNotifier =
+        ref.watch(stepTargetAsyncFamilyProvider(typeCalo).notifier);
     final AsyncValue<TargetEntity?> fetchTargetCalo =
-        ref.watch(targetAsyncFamilyProvider(typeCalo));
+        ref.watch(stepTargetAsyncFamilyProvider(typeCalo));
 
-    final TargetAsyncNotifier minuteNotifier =
-        ref.watch(targetAsyncFamilyProvider(typeMinute).notifier);
+    final StepTargetAsyncNotifier minuteNotifier =
+        ref.watch(stepTargetAsyncFamilyProvider(typeMinute).notifier);
     final AsyncValue<TargetEntity?> fetchTargetMinute =
-        ref.watch(targetAsyncFamilyProvider(typeMinute));
+        ref.watch(stepTargetAsyncFamilyProvider(typeMinute));
 
     return AlertDialog(
       content: Form(

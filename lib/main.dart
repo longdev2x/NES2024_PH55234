@@ -23,7 +23,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    NotificationServices().initialize(context);
+    NotificationServices().initialize1();
+    NotificationServices().initialize2(context);
     final isDark = ref.watch(isDarkThemeProvider);
     return ScreenUtilInit(
       designSize: const Size(375, 812),

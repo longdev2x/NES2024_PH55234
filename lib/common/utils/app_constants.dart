@@ -35,5 +35,10 @@ class AppConstants {
   static const String typeStepCounter = 'type_step_counter';
   static const String typeMetreCounter = 'type_metre_counter';
   static const String typeCaloCounter = 'type_calo_counter';
-  static const String typeMinuteCounter = 'type_minute_counter';  
+  static const String typeMinuteCounter = 'type_minute_counter'; 
+
+  static const String typeHoursSleep = 'typeHoursSleep'; 
+  static const String typeHeight = 'typeHeight'; 
+  static const String typeWeight = 'typeWeight'; 
+  static const String typeBMI = 'typeBMI';
 }

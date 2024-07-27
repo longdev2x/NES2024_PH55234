@@ -10,7 +10,7 @@ import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/features/step/controller/step_counter_provider.dart';
-import 'package:nes24_ph55234/features/step/controller/target_provider.dart';
+import 'package:nes24_ph55234/features/step/controller/step_target_provider.dart';
 
 class StepCounterMainCircleHolder extends ConsumerWidget {
   const StepCounterMainCircleHolder({super.key});
@@ -34,7 +34,7 @@ class StepCounterMainCircle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchTargetStep =
-        ref.watch(targetAsyncFamilyProvider(AppConstants.typeStepCounter));
+        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeStepCounter));
     return GestureDetector(
       onTap: () {
         AppToast.showToast('Nhấn giữ để dừng nhé!');
@@ -73,11 +73,11 @@ class CounterRowInfo extends ConsumerWidget {
     final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     final fetchTargetMetree =
-        ref.watch(targetAsyncFamilyProvider(AppConstants.typeCaloCounter));
+        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeCaloCounter));
     final fetchTargeCalo =
-        ref.watch(targetAsyncFamilyProvider(AppConstants.typeCaloCounter));
+        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeCaloCounter));
     final fetchTargetMinute =
-        ref.watch(targetAsyncFamilyProvider(AppConstants.typeCaloCounter));
+        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeCaloCounter));
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
