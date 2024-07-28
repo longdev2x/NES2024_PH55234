@@ -6,7 +6,9 @@ import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
+import 'package:nes24_ph55234/data/models/bmi_entity.dart';
 import 'package:nes24_ph55234/data/models/user_entity.dart';
+import 'package:nes24_ph55234/features/profile/controller/bmi_provider.dart';
 import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
 import 'package:nes24_ph55234/features/profile/view/BMI/bmi_widgets.dart';
 import 'package:nes24_ph55234/features/profile/view/profile/profile_widgets.dart';
@@ -60,11 +62,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       _usernameController.text = objUser.username;
     }
     //Chỉ gán giá trị khởi tạo
-    if(isHealth == null && isLaw == null && isTamLy == null) {
-    //Category
-    isTamLy = objUser.category.contains(AppConstants.tamly);
-    isHealth = objUser.category.contains(AppConstants.health);
-    isLaw = objUser.category.contains(AppConstants.law);
+    if (isHealth == null && isLaw == null && isTamLy == null) {
+      //Category
+      isTamLy = objUser.category.contains(AppConstants.tamly);
+      isHealth = objUser.category.contains(AppConstants.health);
+      isLaw = objUser.category.contains(AppConstants.law);
     }
   }
 
@@ -115,45 +117,46 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 },
               ),
               if (isExpert) SizedBox(height: 5.h),
-              if (isExpert) Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Lĩnh vực tư vấn:',
-                      style: TextStyle(
-                          fontSize: 16.sp, fontWeight: FontWeight.bold)),
-                  Row(children: [
-                    Checkbox(
-                      value: isTamLy,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isTamLy = value!;
-                        });
-                      },
-                    ),
-                    const AppText14('Tâm lý'),
-                    const Spacer(),
-                    Checkbox(
-                      value: isHealth,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isHealth = value!;
-                        });
-                      },
-                    ),
-                    const AppText14('Sức khoẻ'),
-                    const Spacer(),
-                    Checkbox(
-                      value: isLaw,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isLaw = value!;
-                        });
-                      },
-                    ),
-                    const AppText14('Pháp luật'),
-                  ]),
-                ],
-              ),
+              if (isExpert)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Lĩnh vực tư vấn:',
+                        style: TextStyle(
+                            fontSize: 16.sp, fontWeight: FontWeight.bold)),
+                    Row(children: [
+                      Checkbox(
+                        value: isTamLy,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isTamLy = value!;
+                          });
+                        },
+                      ),
+                      const AppText14('Tâm lý'),
+                      const Spacer(),
+                      Checkbox(
+                        value: isHealth,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isHealth = value!;
+                          });
+                        },
+                      ),
+                      const AppText14('Sức khoẻ'),
+                      const Spacer(),
+                      Checkbox(
+                        value: isLaw,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isLaw = value!;
+                          });
+                        },
+                      ),
+                      const AppText14('Pháp luật'),
+                    ]),
+                  ],
+                ),
               SizedBox(height: isExpert ? 5.h : 20.h),
               ProfileBMIInputWidget(
                 objUser: objUser,
@@ -183,6 +186,17 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   if (isUpdate) {
                     Navigator.pop(context);
                   } else {
+                    ref.read(bmiAsyncProvider.notifier).addBMI(
+                          BMIEntity(
+                            userId: objUser.id,
+                            date: DateTime.now(),
+                            bmi: objUser.bmi,
+                            age: objUser.cacularAge(),
+                            height: objUser.height,
+                            weight: objUser.weight,
+                            gender: objUser.gender,
+                          ),
+                        );
                     Navigator.pushNamedAndRemoveUntil(
                         context, AppRoutesNames.application, (route) => false);
                   }

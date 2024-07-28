@@ -50,6 +50,11 @@ class ImageRes {
   static const String icLove = '${_baseIcon}ic_love.png';
   static const String icExpert = '${_baseIcon}ic_expert.png';
   static const String icUser = '${_baseIcon}ic_user.png';
+  static const String icAge = '${_baseIcon}ic_age.png';
+  static const String icHeight = '${_baseIcon}ic_height.png';
+  static const String icWeight = '${_baseIcon}ic_weight.png';
+  static const String icFoot = '${_baseIcon}ic_foot.png';
+  static const String icGroup = '${_baseIcon}ic_group.png';
   //
   static const String icAngry = '${_baseIcon}ic_feel_angry.png';
   static const String icCry = '${_baseIcon}ic_feel_cry.png';

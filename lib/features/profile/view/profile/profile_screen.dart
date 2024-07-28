@@ -38,9 +38,9 @@ class ProfileScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 30.h),
+          SizedBox(height: 10.h),
           ProfileAvatarWidget(avatar: objUser.avatar),
-          SizedBox(height: 20.h),
+          SizedBox(height: 15.h),
           AppText20('${objUser.username} (${objUser.role.name})',
               fontWeight: FontWeight.bold),
           SizedBox(height: 5.h),
@@ -58,7 +58,7 @@ class ProfileScreen extends ConsumerWidget {
               },
               name: 'Cập nhật hồ sơ',
               width: 250),
-          SizedBox(height: 40.h),
+          SizedBox(height: 20.h),
           Expanded(
             child: ListView(
               children: [

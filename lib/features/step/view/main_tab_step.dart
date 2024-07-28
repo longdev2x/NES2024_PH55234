@@ -35,15 +35,15 @@ class _StepMainTabState extends State<StepMainTab>
           bottom: TabBar(
             controller: _tabController,
             tabs: const [
-              AppText16('Daily Steps'),
               AppText16('Steps Counter'),
+              AppText16('Daily Steps'),
             ],
           ),
         ),
       ),
       body: TabBarView(controller: _tabController, children: const [
-        DailyStepScreen(),
         StepsCounterScreen(),
+        DailyStepScreen(),
       ]),
     );
   }

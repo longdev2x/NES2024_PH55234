@@ -15,6 +15,7 @@ import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/sleep_entity.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/data/models/target_entity.dart';
+import 'package:nes24_ph55234/features/application/controller/application_provider.dart';
 import 'package:nes24_ph55234/features/home/controller/all_target_provider.dart';
 import 'package:nes24_ph55234/features/home/controller/banner_dots_provider.dart';
 import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
@@ -36,10 +37,15 @@ AppBar homeAppBar(WidgetRef ref, BuildContext context) {
         child: Row(
           children: [
             fetchUser.when(
-              data: (objUser) => CircleAvatar(
-                backgroundImage: objUser.avatar != null
-                    ? NetworkImage(objUser.avatar!)
-                    : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
+              data: (objUser) => GestureDetector(
+                onTap: () {
+                  ref.read(bottomTabsProvider.notifier).state = 4;
+                },
+                child: CircleAvatar(
+                  backgroundImage: objUser.avatar != null
+                      ? NetworkImage(objUser.avatar!)
+                      : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
+                ),
               ),
               error: (error, stackTrace) => const Center(child: Text('Error')),
               loading: () => const Center(
@@ -275,7 +281,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
                       return HomeCardPriviewItem(
                         title: 'BMI',
                         subtile: 'kg/m2',
-                        result: profile.bmi ?? 0,
+                        result: profile.calculateBMI(),
                         target: target.target,
                       );
                     default:

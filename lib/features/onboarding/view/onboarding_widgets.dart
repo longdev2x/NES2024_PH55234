@@ -1,6 +1,6 @@
+import 'package:nes24_ph55234/common/components/app_image.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
-import 'package:nes24_ph55234/common/components/app_icon.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,9 +20,10 @@ class OnboardingWidget1 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 30.h),
-                AppIcon(
-                  path: ImageRes.clap,
-                  size: 35.r,
+                AppImage(
+                  imagePath: ImageRes.clap,
+                  height: 35.r,
+                  width: 35.r,
                 ),
                 SizedBox(height: 15.h),
                 const AppText40('Hello!'),
@@ -84,9 +85,10 @@ class OnboardingWidget2 extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        AppIcon(
-          path: image,
-          size: size != null ? size!.r : 150.r,
+        AppImage(
+          imagePath: image,
+          height: size != null ? size!.r : 150.r,
+          width: size != null ? size!.r : 150.r,
         ),
         SizedBox(height: 20.h),
         AppText28(

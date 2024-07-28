@@ -54,7 +54,7 @@ class ItemListFriend extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                             AppText14(
-                              'Vai trò: ${objFriend.role?.name ?? 'Nguời dùng'}',
+                              objFriend.role?.name ?? 'Nguời dùng',
                             ),
                           ],
                         ),

@@ -9,15 +9,20 @@ import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/features/step/controller/step_target_provider.dart';
 
-class StepMainCircle extends StatelessWidget {
+class StepMainCircle extends ConsumerWidget {
   final StepEntity objStep;
   const StepMainCircle({super.key, required this.objStep});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final fetchTargetStepDaily =
+        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeStepDaily));
     return AppCircularProgressContent(
       step: objStep.step,
-      targetStep: 1500,
+      targetStep: fetchTargetStepDaily.when(
+          data: (objTarget) => objTarget!.target.toInt(),
+          error: (e, s) => 0,
+          loading: () => 2500),
       date: 'Hôm qua',
       iconPath: ImageRes.icWalk,
     );
@@ -33,11 +38,11 @@ class StepRowMoreInfor extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchTargetMetree =
-        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeCaloDaily));
+        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeMetreDaily));
     final fetchTargeCalo =
         ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeCaloDaily));
     final fetchTargetMinute =
-        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeCaloDaily));
+        ref.watch(stepTargetAsyncFamilyProvider(AppConstants.typeMinuteDaily));
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 36.r),
@@ -46,6 +51,7 @@ class StepRowMoreInfor extends ConsumerWidget {
         children: [
           fetchTargetMetree.when(
             data: (data) {
+              print('zzzzzz-${data?.target}');
               final percentMetre =
                   (objStep.metre / (data?.target ?? 100)).clamp(0.0, 1.0);
               return AppCircularProgressIcon(
@@ -63,6 +69,7 @@ class StepRowMoreInfor extends ConsumerWidget {
           ),
           fetchTargeCalo.when(
               data: (data) {
+                print('zzzzzz-${data?.target}');
                 final percentKacl =
                     (objStep.calo / (data?.target ?? 100)).clamp(0.0, 1.0);
                 return AppCircularProgressIcon(
@@ -79,6 +86,7 @@ class StepRowMoreInfor extends ConsumerWidget {
                   )),
           fetchTargetMinute.when(
             data: (data) {
+              print('zzzzzz-${data?.target}');
               final percentMinute =
                   (objStep.minute / (data?.target ?? 100)).clamp(0.0, 1.0);
               return AppCircularProgressIcon(

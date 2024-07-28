@@ -149,4 +149,9 @@ class UserEntity {
     }
     return age;
   }
+
+  double calculateBMI() {
+    final bmi = weight! / ((height! / 100) * (height! / 100));
+    return bmi;
+  }
 }

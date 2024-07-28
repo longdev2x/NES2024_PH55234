@@ -25,9 +25,9 @@ class DailyStepAsyncNotifier
           date: DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day),
           step: 1250,
-          calo: 5,
-          metre: 10,
-          minute: 2),
+          calo: 26,
+          metre: 550,
+          minute: 6),
     ];
     return list;
   }

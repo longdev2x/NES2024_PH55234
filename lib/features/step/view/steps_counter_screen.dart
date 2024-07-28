@@ -73,7 +73,7 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
             SizedBox(height: 40.h),
             isStarted
                 ? CounterRowButton(objSteps)
-                : AppButton(name: 'Lịch Sử Đi Bộ', ontap: () {
+                : AppButton(name: 'Lịch Sử Đi Bộ', width: 300,ontap: () {
                   Navigator.of(context).pushNamed(AppRoutesNames.historyStep);
                 },),
 

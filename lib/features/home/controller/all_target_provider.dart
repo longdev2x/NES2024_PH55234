@@ -29,6 +29,10 @@ class AllTargetProvider extends AsyncNotifier<List<TargetEntity>> {
       TargetEntity(userId: userId, type: AppConstants.typeCaloDaily, target: 1000),
       TargetEntity(userId: userId, type: AppConstants.typeMetreDaily, target: 5000),
       TargetEntity(userId: userId, type: AppConstants.typeMinuteDaily, target: 20),
+      TargetEntity(userId: userId, type: AppConstants.typeStepCounter, target: 5000),
+      TargetEntity(userId: userId, type: AppConstants.typeCaloCounter, target: 1200),
+      TargetEntity(userId: userId, type: AppConstants.typeMetreCounter, target: 2400),
+      TargetEntity(userId: userId, type: AppConstants.typeMinuteCounter, target: 30),
     ];
     await TargetRepos.updateOrAddMultipleTargets(targets);
   }

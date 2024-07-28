@@ -72,25 +72,53 @@ class ProfileRowInforWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        AppText14(
-          '${objUser.cacularAge() ?? '...'} (tuổi) | ',
-          fontWeight: FontWeight.bold,
+        _buildInfoCard(
+          iconPath: ImageRes.icAge,
+          label: 'Tuổi',
+          value: '${objUser.cacularAge() ?? '...'}',
         ),
-        AppText14(
-          '${objUser.height ?? '...'} (cm) | ',
-          fontWeight: FontWeight.bold,
+        _buildInfoCard(
+          iconPath: ImageRes.icHeight,
+          label: 'Chiều cao',
+          value: '${objUser.height ?? '...'} cm',
         ),
-        AppText14(
-          '${objUser.weight ?? '...'} (kg) | ',
-          fontWeight: FontWeight.bold,
+        _buildInfoCard(
+          iconPath: ImageRes.icWeight,
+          label: 'Cân nặng',
+          value: '${objUser.weight ?? '...'} kg',
         ),
-        AppText14(
-          '${objUser.bmi?.toStringAsFixed(2) ?? '...'} (kg/m2)',
-          fontWeight: FontWeight.bold,
+        _buildInfoCard(
+          iconPath: ImageRes.icBMI,
+          label: 'BMI',
+          value: objUser.calculateBMI().toStringAsFixed(2)
         ),
       ],
+    );
+  }
+
+  Widget _buildInfoCard(
+      {required String iconPath,
+      required String label,
+      required String value}) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Image.asset(iconPath, height: 24, width: 24),
+            const SizedBox(height: 5),
+            AppText16(label, fontWeight: FontWeight.bold),
+            const SizedBox(height: 5),
+            AppText14(value),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -113,7 +141,7 @@ class ProfileListItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 60.h,
+        height: 55.h,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
         margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
         decoration: BoxDecoration(

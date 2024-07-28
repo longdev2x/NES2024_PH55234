@@ -3,7 +3,7 @@ import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-//Cần set Width khi đặt trong 1 row
+
 class AppButton extends StatelessWidget {
   final double? height;
   final double? width;
@@ -14,38 +14,61 @@ class AppButton extends StatelessWidget {
   final double? fontSize;
   final Function()? ontap;
 
-  const AppButton(
-      {super.key,
-      this.ontap,
-      this.radius = 26,
-      this.height = 45,
-      this.width = double.infinity,
-      this.name = "",
-      this.bgColor = AppColors.bgButton,
-      this.textColor = Colors.white,
-      this.fontSize = 19});
+  const AppButton({
+    super.key,
+    this.ontap,
+    this.radius = 26,
+    this.height = 45,
+    this.width = double.infinity,
+    this.name = "",
+    this.bgColor = AppColors.bgButton,
+    this.textColor = Colors.white,
+    this.fontSize = 19,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: ontap,
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeIn,
         alignment: Alignment.center,
         height: height!.h,
         width: width!.w,
         decoration: BoxDecoration(
-            color: bgColor!, borderRadius: BorderRadius.circular(radius!)),
+          gradient: LinearGradient(
+            colors: [
+              bgColor!,
+              bgColor!.withOpacity(0.9),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(radius!),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
         child: Text(
           name!,
           style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.bold,
-              fontSize: fontSize!.sp),
+            color: textColor,
+            fontWeight: FontWeight.w600,
+            fontSize: fontSize!.sp,
+          ),
         ),
       ),
     );
   }
 }
+
+
 
 //Cần set Width khi đặt trong 1 row
 class AppButtonWithIcon extends StatelessWidget {

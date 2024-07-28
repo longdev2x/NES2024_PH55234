@@ -7,8 +7,8 @@ import 'package:nes24_ph55234/features/profile/view/BMI/bmi_calculate_screen.dar
 import 'package:nes24_ph55234/features/profile/view/BMI/bmi_profile_screen.dart';
 
 final List<Widget> screens = [
-  const BMICalculateScreen(),
   const BmiProfileScreen(),
+  const BMICalculateScreen(),
 ];
 
 class BMINavigate extends ConsumerWidget {
@@ -23,14 +23,14 @@ class BMINavigate extends ConsumerWidget {
         items: const [
           BottomNavigationBarItem(
               icon: AppIcon(
-                path: ImageRes.icCalculate,
-              ),
-              label: 'Tính toán'),
-          BottomNavigationBarItem(
-              icon: AppIcon(
                 path: ImageRes.icBMI,
               ),
               label: 'BMI gần nhất'),
+          BottomNavigationBarItem(
+              icon: AppIcon(
+                path: ImageRes.icCalculate,
+              ),
+              label: 'Tính toán'),
         ],
         currentIndex: currentIndex,
         onTap: (index) {

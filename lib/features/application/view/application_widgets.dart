@@ -5,7 +5,8 @@ import 'package:nes24_ph55234/features/friend/view/main_friend_screen.dart';
 import 'package:nes24_ph55234/features/home/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:nes24_ph55234/features/profile/view/profile/profile_screen.dart';
-import 'package:nes24_ph55234/features/search/view/search_screen.dart';
+import 'package:nes24_ph55234/features/step/view/main_tab_step.dart';
+import 'package:nes24_ph55234/features/yoga/view/yoga_screen.dart';
 
 List<BottomNavigationBarItem> bottomTabs = [
   BottomNavigationBarItem(
@@ -14,10 +15,10 @@ List<BottomNavigationBarItem> bottomTabs = [
           imagepath: ImageRes.home, color: AppColors.primaryElement),
       label: 'Home'),
   BottomNavigationBarItem(
-      icon: _botttomIcon(imagepath: ImageRes.search),
+      icon: _botttomIcon(imagepath: ImageRes.icGroup),
       activeIcon: _botttomIcon(
-          imagepath: ImageRes.search, color: AppColors.primaryElement),
-      label: 'Search'),
+          imagepath: ImageRes.icGroup, color: AppColors.primaryElement),
+      label: 'Friend'),
   BottomNavigationBarItem(
       icon: _botttomIcon(imagepath: 'assets/icons/play-circle1.png'),
       activeIcon: _botttomIcon(
@@ -25,10 +26,10 @@ List<BottomNavigationBarItem> bottomTabs = [
           color: AppColors.primaryElement),
       label: 'Play'),
   BottomNavigationBarItem(
-      icon: _botttomIcon(imagepath: ImageRes.message),
+      icon: _botttomIcon(imagepath: ImageRes.icFoot),
       activeIcon: _botttomIcon(
-          imagepath: ImageRes.message, color: AppColors.primaryElement),
-      label: 'Message'),
+          imagepath: ImageRes.icFoot, color: AppColors.primaryElement),
+      label: 'Step'),
   BottomNavigationBarItem(
       icon: _botttomIcon(imagepath: 'assets/icons/person2.png'),
       activeIcon: _botttomIcon(
@@ -57,9 +58,7 @@ Widget appScreens({int index = 0}) {
 List<Widget> screens = [
   const HomeScreen(),
   const MainFriendScreen(),
-  const SearchScreen(),
-  const Center(
-      child: Text('Tin nhắn + Tư vấn bí mật',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
+  const YogaScreen(),
+  const StepMainTab(),
   const ProfileScreen(),
 ];
