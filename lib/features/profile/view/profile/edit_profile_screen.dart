@@ -176,6 +176,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   String username = userController.text;
                   double weight = double.tryParse(weightController.text)!;
                   double height = double.tryParse(heightController.text)!;
+                  final bmi = weight / ((height / 100) * (height / 100));
 
                   ref.read(profileProvider.notifier).updateUserProfile(
                       username: username,
@@ -190,10 +191,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           BMIEntity(
                             userId: objUser.id,
                             date: DateTime.now(),
-                            bmi: objUser.bmi,
+                            bmi: bmi,
                             age: objUser.cacularAge(),
-                            height: objUser.height,
-                            weight: objUser.weight,
+                            height: height,
+                            weight: weight,
                             gender: objUser.gender,
                           ),
                         );
