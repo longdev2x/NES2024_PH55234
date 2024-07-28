@@ -47,7 +47,7 @@ class ExpertAdviseSessionScreen extends ConsumerWidget {
             child: Column(children: [
               if(healthSessions != null)
                 ...[
-                  const AppText16('Sức khoẻ', fontWeight: FontWeight.bold),
+                  const Align(alignment: Alignment.centerLeft, child: AppText16('Sức khoẻ', fontWeight: FontWeight.bold)),
                   SizedBox(height: 10.h),
                   _buildList(healthSessions!)
                 ],

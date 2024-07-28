@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -99,6 +100,9 @@ class UserAdviseSessionScreen extends ConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) {
+          if (kDebugMode) {
+            print('zzz-eror-$error');
+          }
           return Center(child: Text('Error-$error'));
         },
       ),
