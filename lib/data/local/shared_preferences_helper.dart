@@ -73,6 +73,19 @@ class SharedPreferencesHelper {
     return value;
   }
 
+  Future<bool> setHoursSleep(int hours) async {
+    return await _pref.setInt('sleepHour', hours);
+  }
+  Future<bool> setMinutesSleep(int minutes) async {
+    return await _pref.setInt('sleepMitues', minutes);
+  }
+  int getHoursSleep() {
+    return _pref.getInt('sleepHour') ?? 10;
+  }
+  int getMinutesSleep() {
+    return _pref.getInt('sleepMitues') ?? 0;
+  }
+
   Future<bool> removeKey(String key, int seconds) async {
     try {
       Timer(Duration(seconds: seconds), () async {

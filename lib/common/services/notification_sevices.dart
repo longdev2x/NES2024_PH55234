@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/data/models/friend_entity.dart';
+import 'package:nes24_ph55234/main.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -14,16 +17,17 @@ class NotificationServices {
       FlutterLocalNotificationsPlugin();
 
   Future<void> initialize1() async {
+    tz.initializeTimeZones();
     await _requestNotificationPermission();
     await getDeviceToken();
   }
+
   Future<void> initialize2(BuildContext context) async {
     _initLocalNotifications(context);
     _setupNotificationTapAction(context);
     //Luồng stream khi ở foreground
     _setupForegroundNotificationHandler(context);
   }
-
 
   Future<void> _requestNotificationPermission() async {
     NotificationSettings settings = await messaging.requestPermission(
@@ -110,19 +114,24 @@ class NotificationServices {
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
       onDidReceiveNotificationResponse: (NotificationResponse details) {
+      print("zzzĐã nhận phản hồi từ thông báo: ${details.payload}");
         // Xử lý khi nhấn vào thông báo
         if (details.payload != null) {
-          final data = json.decode(details.payload!);
-          // Chuyển đến màn hình tin nhắn với dữ liệu từ payload
-          Navigator.pushNamed(
-            context,
-            AppRoutesNames.messageScreen,
-            arguments: FriendEntity(
-              friendId: data['senderId'],
-              username: data['senderName'],
-              avatar: data['senderAvatar'],
-            ),
-          );
+          if (details.payload == 'sleep_screen') {
+            print("zzzChuyển đến màn hình Sleep");
+            Navigator.pushNamed(context, AppRoutesNames.sleep);
+          } else {
+            final data = json.decode(details.payload!);
+            Navigator.pushNamed(
+              context,
+              AppRoutesNames.messageScreen,
+              arguments: FriendEntity(
+                friendId: data['senderId'],
+                username: data['senderName'],
+                avatar: data['senderAvatar'],
+              ),
+            );
+          }
         }
       },
     );
@@ -137,6 +146,57 @@ class NotificationServices {
       }
     });
   }
+
+  //Notification Sleep
+  Future<void> scheduleSleepNotification(TimeOfDay sleepTime) async {
+  print("zzzĐang lên lịch thông báo giờ ngủ cho ${sleepTime.format(navKey.currentState!.context)}");
+  final vietnamTime = tz.getLocation('Asia/Ho_Chi_Minh');
+  final now = tz.TZDateTime.now(vietnamTime);
+
+  var scheduledDate = tz.TZDateTime(
+    vietnamTime,
+    now.year,
+    now.month,
+    now.day,
+    sleepTime.hour,
+    sleepTime.minute,
+  );
+
+  if (scheduledDate.isBefore(now)) {
+    scheduledDate = scheduledDate.add(const Duration(days: 1));
+  }
+
+  print("zzzThời gian lên lịch: $scheduledDate");
+
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'sleep_channel_id',
+    'Sleep Notifications',
+    importance: Importance.max,
+    priority: Priority.high,
+  );
+
+  const NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
+
+  try {
+    await _flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'Đã đến giờ ngủ!',
+      'Nhấn để bắt đầu theo dõi giấc ngủ của bạn.',
+      scheduledDate,
+      platformChannelSpecifics,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: 'sleep_screen',
+    );
+    print("zzzĐã lên lịch thông báo thành công");
+  } catch (e) {
+    print("zzzLỗi khi lên lịch thông báo: $e");
+  }
+}
 
   //Setup send notification
   Future<void> sendNotification({

@@ -10,6 +10,7 @@ class TargetRepos {
     final querySnap = await _instance
         .collection(_c)
         .where('user_id', isEqualTo: userId)
+        .orderBy('type', descending: true)
         .get();
     if(querySnap.docs.isEmpty) return [];
     return querySnap.docs

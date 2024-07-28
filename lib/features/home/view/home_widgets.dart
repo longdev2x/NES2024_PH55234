@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
+import 'package:nes24_ph55234/common/components/app_circular_progress.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
 import 'package:nes24_ph55234/common/components/app_theme_switcher.dart';
@@ -11,10 +12,14 @@ import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
+import 'package:nes24_ph55234/data/models/sleep_entity.dart';
+import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/data/models/target_entity.dart';
 import 'package:nes24_ph55234/features/home/controller/all_target_provider.dart';
 import 'package:nes24_ph55234/features/home/controller/banner_dots_provider.dart';
 import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
+import 'package:nes24_ph55234/features/sleep/controller/sleep_provider.dart';
+import 'package:nes24_ph55234/features/step/controller/daily_step_provider.dart';
 
 AppBar homeAppBar(WidgetRef ref, BuildContext context) {
   final fetchUser = ref.watch(profileProvider);
@@ -194,49 +199,160 @@ class HomeAnalysisWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchTarget = ref.watch(allTargetProvider);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final fetchStep = ref.watch(dailyStepProvider);
+    final fetchProfile = ref.watch(profileProvider);
+    final List<SleepEntity> listSleeps = ref.watch(sleepProvider);
+
+    return fetchTarget.when(
+      data: (targets) {
+        return fetchProfile.when(
+          data: (profile) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const AppText20('Thành tích', fontWeight: FontWeight.bold),
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) =>
+                              HomeSetTargetWidget(targets: targets),
+                        );
+                      },
+                      style: const ButtonStyle(
+                        padding: WidgetStatePropertyAll(
+                          EdgeInsets.symmetric(horizontal: 1, vertical: 3),
+                        ),
+                      ),
+                      child: const AppText16(
+                        'Đặt lại mục tiêu',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                ...targets.map((target) {
+                  switch (target.type) {
+                    case AppConstants.typeStepDaily:
+                      return _buildStepCard(fetchStep, target);
+                    case AppConstants.typeHoursSleep:
+                      if (listSleeps.isEmpty || listSleeps.first.endTime == null) {
+                        return HomeCardPriviewItem(
+                          title: 'Giấc ngủ',
+                          subtile: 'giờ',
+                          result: 0,
+                          target: target.target,
+                        );
+                      }
+                      return HomeCardPriviewItem(
+                        title: 'Giấc ngủ',
+                        subtile: 'giờ',
+                        result: listSleeps.first.endTime!
+                            .difference(listSleeps.first.startTime!)
+                            .inHours
+                            .toDouble(),
+                        target: target.target,
+                      );
+                    case AppConstants.typeHeight:
+                      return HomeCardPriviewItem(
+                        title: 'Chiều cao',
+                        subtile: 'cm',
+                        result: profile.height ?? 0,
+                        target: target.target,
+                      );
+                    case AppConstants.typeWeight:
+                      return HomeCardPriviewItem(
+                        title: 'Cân nặng',
+                        subtile: 'kg',
+                        result: profile.weight ?? 0,
+                        target: target.target,
+                      );
+                    case AppConstants.typeBMI:
+                      return HomeCardPriviewItem(
+                        title: 'BMI',
+                        subtile: 'kg/m2',
+                        result: profile.bmi ?? 0,
+                        target: target.target,
+                      );
+                    default:
+                      return const SizedBox();
+                  }
+                }).toList(),
+              ],
+            );
+          },
+          error: (e, s) => const Center(child: Text('Profile Error')),
+          loading: () => const Center(child: CircularProgressIndicator()),
+        );
+      },
+      error: (error, stack) => Center(child: Text('Target Error - $error')),
+      loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  Widget _buildStepCard(
+      AsyncValue<List<StepEntity>> fetchStep, TargetEntity target) {
+    return fetchStep.when(
+      data: (steps) {
+        StepEntity todayStep = steps.last;
+        return HomeCardPriviewItem(
+          title: 'Đi bộ',
+          subtile: 'bước',
+          result: todayStep.step.toDouble(),
+          target: target.target,
+        );
+      },
+      error: (e, s) => const Center(child: Text('Step Error')),
+      loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
+class HomeCardPriviewItem extends StatelessWidget {
+  final String title;
+  final String subtile;
+  final double result;
+  final double target;
+  const HomeCardPriviewItem({
+    super.key,
+    required this.title,
+    required this.subtile,
+    required this.result,
+    required this.target,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final double percent = (result / target).clamp(0.0, 1.0);
+    return Card(
+      margin: EdgeInsets.only(bottom: 15.h),
+      child: Padding(
+        padding:
+            EdgeInsets.only(left: 12.w, right: 20.w, top: 10.h, bottom: 10.h),
+        child: Row(
           children: [
-            const AppText16('Thành tích', fontWeight: FontWeight.bold),
-            TextButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (ctx) {
-                      return fetchTarget.when(
-                          data: (targets) {
-                            return HomeSetTargetWidget(
-                              targets: targets,
-                            );
-                          },
-                          error: (error, stack) => Center(
-                                child: Text('Error - $error'),
-                              ),
-                          loading: () =>
-                              const Center(child: CircularProgressIndicator()));
-                    });
-              },
-              style: const ButtonStyle(
-                  padding: WidgetStatePropertyAll(
-                      EdgeInsets.symmetric(horizontal: 1, vertical: 3))),
-              child: const AppText16(
-                'Đặt lại mục tiêu',
-                fontWeight: FontWeight.bold,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText20(
+                  title,
+                  fontWeight: FontWeight.bold,
+                ),
+                AppText16('Mục tiêu ${target.toInt()} $subtile'),
+              ],
+            ),
+            const Spacer(),
+            AppProgresTarget(
+              name: result.toInt().toString(),
+              percent: percent,
             ),
           ],
         ),
-        SizedBox(height: 10.h),
-        // AppCircularProgressContent(
-        //   step: 1000,
-        //   date: DateTime.now().toString(),
-        //   targetStep: 2500,
-        //   iconPath: ImageRes.icWalk,
-        // ),
-      ],
+      ),
     );
   }
 }
@@ -403,6 +519,32 @@ class _HomeSetTargetWidgetState extends ConsumerState<HomeSetTargetWidget> {
               width: 190.w,
               ontap: () {
                 if (!_formKey.currentState!.validate()) return;
+                final List<TargetEntity> newTargets = [];
+                for (TargetEntity target in targets) {
+                  if (target.type == AppConstants.typeHoursSleep) {
+                    newTargets.add(target.copyWith(
+                        target: double.parse(_hoursController.text)));
+                  }
+                  if (target.type == AppConstants.typeHeight) {
+                    newTargets.add(target.copyWith(
+                        target: double.parse(_heightController.text)));
+                  }
+                  if (target.type == AppConstants.typeWeight) {
+                    newTargets.add(target.copyWith(
+                        target: double.parse(_weightController.text)));
+                  }
+                  if (target.type == AppConstants.typeBMI) {
+                    newTargets.add(target.copyWith(
+                        target: double.parse(_bmiController.text)));
+                  }
+                  if (target.type == AppConstants.typeStepDaily) {
+                    newTargets.add(target.copyWith(
+                        target: double.parse(_stepsController.text)));
+                  }
+                }
+                ref
+                    .read(allTargetProvider.notifier)
+                    .updateAllTarget(newTargets);
                 Navigator.pop(context);
               },
               name: 'Chốt luôn',

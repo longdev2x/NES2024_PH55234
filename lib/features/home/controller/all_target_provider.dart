@@ -14,7 +14,9 @@ class AllTargetProvider extends AsyncNotifier<List<TargetEntity>> {
     return await TargetRepos.getAllTarget(Global.storageService.getUserId());
   }
   Future<void> updateAllTarget(List<TargetEntity> targets) async {
+    state = AsyncValue.data(targets);
     await TargetRepos.updateOrAddMultipleTargets(targets);
+    state = await AsyncValue.guard(() async => await TargetRepos.getAllTarget(Global.storageService.getUserId())); 
   }
   Future<void> setAllDefaultTarget() async {
     final String userId = Global.storageService.getUserId();

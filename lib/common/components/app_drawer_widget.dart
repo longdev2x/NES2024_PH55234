@@ -43,13 +43,6 @@ class AppDrawerWidget extends StatelessWidget {
           ListTile(
             onTap: () {
               _pop(context);
-            },
-            leading: const Icon(Icons.alarm),
-            title: const Text('Đo lường giấc ngủ'),
-          ),
-          ListTile(
-            onTap: () {
-              _pop(context);
               Navigator.of(context).pushNamed(AppRoutesNames.yoga);
             },
             leading: const Icon(Icons.video_collection_outlined),
@@ -76,6 +69,14 @@ class AppDrawerWidget extends StatelessWidget {
             },
             leading: const Icon(Icons.call),
             title: const Text('Tư vấn bí mật'),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).pushNamed(AppRoutesNames.sleep);
+            },
+            leading: const Icon(Icons.sledding),
+            title: const Text('Đo lường giấc ngủ'),
           ),
           ListTile(
             onTap: () {

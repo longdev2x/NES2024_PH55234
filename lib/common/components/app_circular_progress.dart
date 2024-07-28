@@ -122,17 +122,57 @@ class AppCircularProgressContent extends ConsumerWidget {
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                iconPath != null ? AppIcon(path: iconPath!, size: 35) : const SizedBox(),
+                iconPath != null
+                    ? AppIcon(path: iconPath!, size: 35)
+                    : const SizedBox(),
                 Text(
                   step.toString(),
                   style:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 80.sp),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 80.sp),
                 ),
-                // btnStart != null ? 
-                btnStart == null ? Text(date ?? '', style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w400),) : const SizedBox(),
+                // btnStart != null ?
+                btnStart == null
+                    ? Text(
+                        date ?? '',
+                        style: TextStyle(
+                            fontSize: 20.sp, fontWeight: FontWeight.w400),
+                      )
+                    : const SizedBox(),
                 btnStart == null ? btnTarget : const SizedBox(),
               ],
             ),
+    );
+  }
+}
+
+class AppProgresTarget extends StatelessWidget {
+  final double percent;
+  final String name;
+  final double? radius;
+  final double? fontSize;
+
+  const AppProgresTarget({
+    super.key,
+    required this.percent,
+    required this.name,
+    this.radius = 30.0,
+    this.fontSize = 20,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CircularPercentIndicator(
+      radius: radius!,
+      percent: percent,
+      backgroundColor: AppColors.primaryThreeElementText,
+      progressColor: AppColors.primaryElement,
+      backgroundWidth: 4.r,
+      lineWidth: 5.r,
+      circularStrokeCap: CircularStrokeCap.round,
+      center: Text(
+        name,
+        style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

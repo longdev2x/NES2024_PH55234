@@ -17,5 +17,6 @@
   static const String messageScreen = '/messageScreen';
   static const String adviseUser= '/adviseUser';
   static const String adviseExpext = '/adviseExpert';
+  static const String sleep = '/sleep';
 }
 

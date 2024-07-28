@@ -42,8 +42,8 @@ class UserEntity {
   final Role role;
   final DateTime bith;
   final String username;
-  final String? token;
   final String gender;
+  final String? token;
   List<String> friendIds;
   final String? avatar;
   final double? height;

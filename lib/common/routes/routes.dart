@@ -13,6 +13,7 @@ import 'package:nes24_ph55234/features/onboarding/view/onboarding.dart';
 import 'package:nes24_ph55234/features/profile/view/BMI/bmi_navigate.dart';
 import 'package:nes24_ph55234/features/profile/view/profile/edit_profile_screen.dart';
 import 'package:nes24_ph55234/features/search/view/search_screen.dart';
+import 'package:nes24_ph55234/features/sleep/view/sleep_screen.dart';
 import 'package:nes24_ph55234/features/step/view/history_step_counter_screen.dart';
 import 'package:nes24_ph55234/features/step/view/main_tab_step.dart';
 import 'package:nes24_ph55234/features/yoga/view/yoga_detail_screen.dart';
@@ -86,14 +87,14 @@ class AppRoutes {
         path: AppRoutesNames.adviseExpext,
         page: ExpertAdviseSessionScreen(),
       ),
+      const RouteEntity(
+        path: AppRoutesNames.sleep,
+        page: SleepScreen(),
+      ),
     ];
   }
 
   static MaterialPageRoute generateRoutSettings(RouteSettings settings) {
-    // Global.storageService.removeKey(AppConstants.storageUserTokenKey, 5);
-    // Global.storageService.removeKey(AppConstants.storageUserProfileKey, 5);
-    // Global.storageService.removeKey(AppConstants.storageDeviceOpenFirstKey, 5);
-    //print('Tokkennnn-   ${Global.storageService.getUserToken()}');
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
     var result =
