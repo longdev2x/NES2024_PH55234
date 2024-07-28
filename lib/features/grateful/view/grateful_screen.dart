@@ -35,12 +35,6 @@ class GratefulScreen extends ConsumerWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const SizedBox(
-                          child: AppText34(
-                            'Phần mục tiêu...',
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                         SizedBox(height: 20.h),
                         listPost.isEmpty
                             ? const SizedBox()
@@ -64,15 +58,45 @@ class GratefulScreen extends ConsumerWidget {
           ),
         ),
         Positioned(
-          left: 100.w,
-          right: 100.w,
+          left: 20.w,
+          right: 20.w,
           bottom: 20.h,
-          child: SizedBox(
-            height: 60,
+          child: Container(
+            height: 56.h,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFFA53E), Color(0xFFFF7643)],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.orange.withOpacity(0.3),
+                  spreadRadius: 1,
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
             child: ElevatedButton.icon(
-              style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.amber),),
-              icon: const Icon(Icons.post_add),
-              label: Text('Viết biết ơn', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.sp),),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              icon: const Icon(Icons.edit, size: 24),
+              label: Text(
+                'Viết biết ơn',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.sp,
+                ),
+              ),
               onPressed: () => showModalBottomSheet(
                 context: context,
                 useSafeArea: false,

@@ -156,6 +156,7 @@ class _CreateAdviseScreenState extends ConsumerState<CreateAdviseScreen> {
                 );
               }).toList(),
             ),
+            SizedBox(height: 10.h),
             TextField(
               controller: _controller,
               maxLines: 5,

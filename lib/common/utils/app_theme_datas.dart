@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class ThemeClass {
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: const Color.fromRGBO(253, 248, 242, 1),
@@ -21,6 +22,21 @@ class ThemeClass {
       bodyMedium: TextStyle(color: Colors.black87),
     ),
     iconTheme: const IconThemeData(color: Colors.black),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue,
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        textStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -45,5 +61,20 @@ class ThemeClass {
     ),
     iconTheme: const IconThemeData(color: Colors.white),
     dividerColor: Colors.white24,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.cyan,
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        textStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
   );
 }

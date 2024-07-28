@@ -72,7 +72,7 @@ class GratefulPostItem extends ConsumerWidget {
               SizedBox(height: 10.h),
               // Hiển thị hàng ảnh
               Wrap(
-                spacing: 8,
+                spacing: 5,
                 runSpacing: 8,
                 children: List.generate(
                   min(3, imageItems.length),

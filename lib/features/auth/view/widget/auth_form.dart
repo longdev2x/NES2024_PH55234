@@ -102,7 +102,7 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
               children: [
                 SizedBox(height: 20.h),
                 AppTextFormField(
-                  hintText: "Xác nhận mật khẩu",
+                  lable: "Xác nhận mật khẩu",
                   controller: confirmPassController,
                   isPass: true,
                   validator: (value) {

@@ -318,7 +318,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
   }
 }
 
-class HomeCardPriviewItem extends StatelessWidget {
+class HomeCardPriviewItem extends ConsumerWidget {
   final String title;
   final String subtile;
   final double result;
@@ -332,7 +332,8 @@ class HomeCardPriviewItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(allTargetProvider);
     final double percent = (result / target).clamp(0.0, 1.0);
     return Card(
       margin: EdgeInsets.only(bottom: 15.h),

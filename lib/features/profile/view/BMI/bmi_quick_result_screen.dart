@@ -53,7 +53,7 @@ class BmiQuickResultScreen extends ConsumerWidget {
                                       weight: objBMI.weight,
                                       gender: objBMI.gender),
                                 );
-                            ref.read(indexScreenBMI.notifier).state = 1;
+                            ref.read(indexScreenBMI.notifier).state = 0;
                             Navigator.pop(context);
                           },
                           name: 'Lưu',

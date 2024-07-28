@@ -8,10 +8,11 @@ class PostGratefulRepos {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
-
   static Future<List<PostGratefulEntity>> getAllPosts() async {
-    final snapshot = await _firestore.collection(_c).get();
-    return snapshot.docs.map((e) => PostGratefulEntity.fromJson(e.data())).toList();
+    final snapshot = await _firestore.collection(_c).orderBy('date', descending: true).get();
+    return snapshot.docs
+        .map((e) => PostGratefulEntity.fromJson(e.data()))
+        .toList();
   }
 
   static Future<PostGratefulEntity> getPost(String id) async {
@@ -26,7 +27,7 @@ class PostGratefulRepos {
   static Future<void> createOrUpdatePost(PostGratefulEntity objPost) async {
     final docRef = _firestore.collection(_c).doc(objPost.id);
     final snapShot = await docRef.get();
-    if(snapShot.exists) {
+    if (snapShot.exists) {
       docRef.update(objPost.toJson());
       return;
     }
@@ -42,11 +43,14 @@ class PostGratefulRepos {
   ) async {
     List<ContentItem> newItems = [];
 
-    for (ContentItem item in items) {
+    for (int i = 0; i < items.length; i++) {
+      ContentItem item = items[i];
       if (item.type == 'image') {
-        //_storage.ref() là root của fbStorage, child sau là folder tổng, sau có thể tạo thêm folder không thì id
-        final ref =
-            _storage.ref().child(AppConstants.fbStoragePost).child(idPost);
+        final ref = _storage
+            .ref()
+            .child(AppConstants.fbStoragePost)
+            .child(idPost)
+            .child('image_$i'); // Tạo tên file duy nhất cho mỗi ảnh
         if (item.imageFile != null) {
           await ref.putFile(item.imageFile!);
           String url = await ref.getDownloadURL();

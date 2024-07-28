@@ -40,6 +40,7 @@ class _OnboardingScreen extends ConsumerState<OnboardingScreen> {
       OnboardingWidget2(
         image: ImageRes.peopleNoBackground,
         title: 'Nhiều tính năng hỗ trợ phát triển bản thân',
+        size: 170,
         subTitle:
             'Theo dõi bước chân theo ngày, viết lòng biết ơn, tính giấc ngủ, BMI, Thiền, Yoga, ... ',
       ),

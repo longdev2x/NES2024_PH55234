@@ -28,6 +28,9 @@ class GratefulNotifier extends AsyncNotifier<List<PostGratefulEntity>> {
         return listPost;
       },
     );
+    if(newPost == null) {
+      state = AsyncValue.data([objPost,...state.value!]);
+    }
     await PostGratefulRepos.createOrUpdatePost(newPost ?? objPost);
     state = await AsyncValue.guard(() async => await _loadList());
   }
