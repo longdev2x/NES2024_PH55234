@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
+import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
@@ -23,6 +24,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   late final TextEditingController weightController;
   late final TextEditingController heightController;
   late final TextEditingController bithController;
+
+  //filed category
+  bool? isTamLy;
+  bool? isHealth;
+  bool? isLaw;
 
   @override
   void initState() {
@@ -53,6 +59,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     if (_usernameController.text.isEmpty) {
       _usernameController.text = objUser.username;
     }
+    //Chỉ gán giá trị khởi tạo
+    if(isHealth == null && isLaw == null && isTamLy == null) {
+    //Category
+    isTamLy = objUser.category.contains(AppConstants.tamly);
+    isHealth = objUser.category.contains(AppConstants.health);
+    isLaw = objUser.category.contains(AppConstants.law);
+    }
   }
 
   @override
@@ -81,6 +94,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     TextEditingController heightController,
     bool isUpdate,
   ) {
+    final bool isExpert = objUser.role == listRoles[1];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
       child: SingleChildScrollView(
@@ -89,7 +103,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           child: Column(
             children: [
               ProfileAvatarWidget(avatar: objUser.avatar),
-              SizedBox(height: 40.h),
+              SizedBox(height: isExpert ? 20.h : 40.h),
               AppTextFormField(
                 lable: 'Username',
                 controller: _usernameController,
@@ -100,22 +114,72 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.h),
+              if (isExpert) SizedBox(height: 5.h),
+              if (isExpert) Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Lĩnh vực tư vấn:',
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.bold)),
+                  Row(children: [
+                    Checkbox(
+                      value: isTamLy,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isTamLy = value!;
+                        });
+                      },
+                    ),
+                    const AppText14('Tâm lý'),
+                    const Spacer(),
+                    Checkbox(
+                      value: isHealth,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isHealth = value!;
+                        });
+                      },
+                    ),
+                    const AppText14('Sức khoẻ'),
+                    const Spacer(),
+                    Checkbox(
+                      value: isLaw,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isLaw = value!;
+                        });
+                      },
+                    ),
+                    const AppText14('Pháp luật'),
+                  ]),
+                ],
+              ),
+              SizedBox(height: isExpert ? 5.h : 20.h),
               ProfileBMIInputWidget(
                 objUser: objUser,
                 bithController: bithController,
                 heightController: heightController,
                 weightController: weightController,
               ),
-              SizedBox(height: 65.h),
+              SizedBox(height: isExpert ? 35.h : 65.h),
               AppButton(
                 ontap: () {
+                  List<String> categories = [];
+                  if (isTamLy ?? false) categories.add(AppConstants.tamly);
+                  if (isHealth ?? false) categories.add(AppConstants.health);
+                  if (isLaw ?? false) categories.add(AppConstants.law);
+
                   if (!_formkey.currentState!.validate()) return;
                   String username = userController.text;
                   double weight = double.tryParse(weightController.text)!;
                   double height = double.tryParse(heightController.text)!;
+
                   ref.read(profileProvider.notifier).updateUserProfile(
-                      username: username, weight: weight, height: height);
+                      username: username,
+                      weight: weight,
+                      height: height,
+                      category: categories);
+
                   if (isUpdate) {
                     Navigator.pop(context);
                   } else {

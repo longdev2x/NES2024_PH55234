@@ -10,6 +10,10 @@ class AppConstants {
   static const String roleUser = 'role_user';
   static const String roleAdmin = 'role_admin';
   static const String roleExpert = 'role_expert';
+  //category expert
+  static const String tamly = 'Tâm lý';
+  static const String health = 'Sức khoẻ';
+  static const String law = 'Pháp luật';
   //Colection
   static const String cUser = 'user';
   static const String cFriendships = 'friendships';
@@ -35,10 +39,10 @@ class AppConstants {
   static const String typeStepCounter = 'type_step_counter';
   static const String typeMetreCounter = 'type_metre_counter';
   static const String typeCaloCounter = 'type_calo_counter';
-  static const String typeMinuteCounter = 'type_minute_counter'; 
+  static const String typeMinuteCounter = 'type_minute_counter';
 
-  static const String typeHoursSleep = 'typeHoursSleep'; 
-  static const String typeHeight = 'typeHeight'; 
-  static const String typeWeight = 'typeWeight'; 
+  static const String typeHoursSleep = 'typeHoursSleep';
+  static const String typeHeight = 'typeHeight';
+  static const String typeWeight = 'typeWeight';
   static const String typeBMI = 'typeBMI';
 }

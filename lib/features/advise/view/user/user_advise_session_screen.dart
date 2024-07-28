@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_global_app_bar.dart';
 import 'package:nes24_ph55234/common/components/app_image.dart';
+import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/advise_entity.dart';
 import 'package:nes24_ph55234/data/repositories/advise_repos.dart';
@@ -30,28 +32,75 @@ class UserAdviseSessionScreen extends ConsumerWidget {
                 );
               }
               final session = sessions[index];
-              return ListTile(
-                  leading: const AppImage(
-                    imagePath: ImageRes.avatarDefault,
-                  ),
-                  title: Text(session.content),
+              return Card(
+                margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: InkWell(
                   onTap: () {
-                    //Navigate tới màn hình nhắn tin chi tiết
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            AdviseChatDetailScreen(sessionId: session.id, content: session.content,),
+                        builder: (context) => AdviseChatDetailScreen(
+                          sessionId: session.id,
+                          content: session.content,
+                        ),
                       ),
                     );
-                  });
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(12.r),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          session.category ?? 'Không rõ lĩnh vực',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 25.r,
+                              backgroundColor: Colors.grey[200],
+                              child: AppImage(
+                                imagePath: ImageRes.avatarDefault,
+                                width: 40.r,
+                                height: 40.r,
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Text(
+                                session.content,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                ),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
             },
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) {
-          return const Center(child: Text('Error'));
-        } 
+          return Center(child: Text('Error-$error'));
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
@@ -73,6 +122,7 @@ class CreateAdviseScreen extends ConsumerStatefulWidget {
 
 class _CreateAdviseScreenState extends ConsumerState<CreateAdviseScreen> {
   final TextEditingController _controller = TextEditingController();
+  String selectedCategory = AppConstants.tamly;
   @override
   void dispose() {
     super.dispose();
@@ -87,6 +137,21 @@ class _CreateAdviseScreenState extends ConsumerState<CreateAdviseScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            DropdownButton<String>(
+              value: selectedCategory,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedCategory = newValue!;
+                });
+              },
+              items: <String>[AppConstants.tamly,AppConstants.health, AppConstants.law]
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
             TextField(
               controller: _controller,
               maxLines: 5,
@@ -103,6 +168,7 @@ class _CreateAdviseScreenState extends ConsumerState<CreateAdviseScreen> {
                     userId: Global.storageService.getUserId(),
                     content: _controller.text,
                     messages: [],
+                    category: selectedCategory,
                     createdAt: DateTime.now(),
                   );
                   await AdviseRepos.createAdviseSession(session);

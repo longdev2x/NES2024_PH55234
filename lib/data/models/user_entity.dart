@@ -49,6 +49,7 @@ class UserEntity {
   final double? height;
   final double? weight;
   final double? bmi;
+  List<String> category; //Chuyên gia
 
   UserEntity({
     required this.id,
@@ -63,6 +64,7 @@ class UserEntity {
     this.weight,
     this.bmi,
     required this.friendIds,
+    required this.category,
   }) : username = username ?? 'User${Random(100000).nextInt(1000000)}';
 
   UserEntity copyWith({
@@ -77,6 +79,7 @@ class UserEntity {
     double? bmi,
     DateTime? bith,
     List<String>? friendIds,
+    List<String>? category,
   }) =>
       UserEntity(
         id: id,
@@ -91,6 +94,7 @@ class UserEntity {
         weight: weight ?? this.weight,
         bmi: bmi ?? this.bmi,
         friendIds: friendIds ?? this.friendIds,
+        category: category ?? this.category,
       );
 
   Map<String, dynamic> toJson() => {
@@ -106,6 +110,7 @@ class UserEntity {
         'bmi': bmi,
         'bith': bith,
         'friend_ids': friendIds,
+        'category': category,
       };
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
@@ -121,9 +126,12 @@ class UserEntity {
       weight: json['weight'],
       height: json['height'],
       bmi: json['bmi'],
-      friendIds: (json['friend_ids'] as List<dynamic>)
+      friendIds: json['friend_ids'] != null ? (json['friend_ids'] as List<dynamic>)
           .map((e) => e.toString())
-          .toList(),
+          .toList() : [],
+      category: json['category'] != null ? (json['category'] as List<dynamic>)
+          .map((e) => e.toString())
+          .toList() : [],
     );
   }
   String get bithFormat {

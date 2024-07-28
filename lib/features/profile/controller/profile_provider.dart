@@ -7,7 +7,6 @@ import 'package:nes24_ph55234/data/repositories/profile_repos.dart';
 import 'package:nes24_ph55234/global.dart';
 
 class ProfileNotifier extends AutoDisposeAsyncNotifier<UserEntity> {
-
   @override
   Future<UserEntity> build() async {
     return _loadUserProfile();
@@ -28,38 +27,45 @@ class ProfileNotifier extends AutoDisposeAsyncNotifier<UserEntity> {
     double? weight,
     double? bmi,
     DateTime? bith,
+    List<String>? category,
   }) async {
     String? newAvatarUrl;
     if (avatarFile != null) {
       ref.read(loaderProvider.notifier).state = true;
-      newAvatarUrl = await ProfileRepos.uploadAvatar(Global.storageService.getUserId(), avatarFile);
+      newAvatarUrl = await ProfileRepos.uploadAvatar(
+          Global.storageService.getUserId(), avatarFile);
     }
     try {
       // Cập nhật state ngay lập tức để UI phản hồi nhanh
       state = AsyncData(state.value!.copyWith(
-        email: email ?? state.value!.email,
-        username: username ?? state.value!.username,
-        role: role ?? state.value!.role,
-        avatar: newAvatarUrl ?? state.value!.avatar,
-        gender: gender ?? state.value!.gender,
-        height: height ?? state.value!.height,
-        weight: weight ?? state.value!.weight,
-        bmi: bmi ?? state.value!.bmi,
-        bith: bith ?? state.value!.bith,
+        email: email,
+        username: username ,
+        role: role,
+        avatar: newAvatarUrl,
+        gender: gender,
+        height: height,
+        weight: weight,
+        bmi: bmi,
+        bith: bith,
+        category: category
       ));
 
+      print('zzz-list${category.toString()}');
       await ProfileRepos.updateUserProfile(state.value!);
       state = await AsyncValue.guard(() async => await _loadUserProfile());
     } catch (e) {
       if (kDebugMode) {
         print(e.toString());
-      }} finally {
+      }
+    } finally {
       ref.read(loaderProvider.notifier).state = false;
     }
   }
+
 }
 
-final profileProvider = AutoDisposeAsyncNotifierProvider<ProfileNotifier, UserEntity>(() {
+final profileProvider =
+    AutoDisposeAsyncNotifierProvider<ProfileNotifier, UserEntity>(() {
   return ProfileNotifier();
 });
 

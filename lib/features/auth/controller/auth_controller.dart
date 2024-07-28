@@ -36,6 +36,7 @@ class AuthController {
         bith: DateTime.now().subtract(const Duration(days: 7300)),
         gender: 'Nam',
         friendIds: [],
+        category: [],
       );
 
       try {

@@ -114,7 +114,7 @@ class NotificationServices {
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
       onDidReceiveNotificationResponse: (NotificationResponse details) {
-      print("zzzĐã nhận phản hồi từ thông báo: ${details.payload}");
+        print("zzzĐã nhận phản hồi từ thông báo: ${details.payload}");
         // Xử lý khi nhấn vào thông báo
         if (details.payload != null) {
           if (details.payload == 'sleep_screen') {
@@ -149,54 +149,59 @@ class NotificationServices {
 
   //Notification Sleep
   Future<void> scheduleSleepNotification(TimeOfDay sleepTime) async {
-  print("zzzĐang lên lịch thông báo giờ ngủ cho ${sleepTime.format(navKey.currentState!.context)}");
-  final vietnamTime = tz.getLocation('Asia/Ho_Chi_Minh');
-  final now = tz.TZDateTime.now(vietnamTime);
+    print(
+        "zzzĐang lên lịch thông báo giờ ngủ cho ${sleepTime.format(navKey.currentState!.context)}");
+    final vietnamTime = tz.getLocation('Asia/Ho_Chi_Minh');
+    final now = tz.TZDateTime.now(vietnamTime);
 
-  var scheduledDate = tz.TZDateTime(
-    vietnamTime,
-    now.year,
-    now.month,
-    now.day,
-    sleepTime.hour,
-    sleepTime.minute,
-  );
-
-  if (scheduledDate.isBefore(now)) {
-    scheduledDate = scheduledDate.add(const Duration(days: 1));
-  }
-
-  print("zzzThời gian lên lịch: $scheduledDate");
-
-  const AndroidNotificationDetails androidPlatformChannelSpecifics =
-      AndroidNotificationDetails(
-    'sleep_channel_id',
-    'Sleep Notifications',
-    importance: Importance.max,
-    priority: Priority.high,
-  );
-
-  const NotificationDetails platformChannelSpecifics =
-      NotificationDetails(android: androidPlatformChannelSpecifics);
-
-  try {
-    await _flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      'Đã đến giờ ngủ!',
-      'Nhấn để bắt đầu theo dõi giấc ngủ của bạn.',
-      scheduledDate,
-      platformChannelSpecifics,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time,
-      payload: 'sleep_screen',
+    var scheduledDate = tz.TZDateTime(
+      vietnamTime,
+      now.year,
+      now.month,
+      now.day,
+      sleepTime.hour,
+      sleepTime.minute,
     );
-    print("zzzĐã lên lịch thông báo thành công");
-  } catch (e) {
-    print("zzzLỗi khi lên lịch thông báo: $e");
+
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+
+    print("zzzThời gian lên lịch: $scheduledDate");
+
+
+    AndroidNotificationChannel channel = const AndroidNotificationChannel(
+      'sleep_channel_id', //iid channel cho kênh nhắn tin
+      'Sleep Notifications',
+      importance: Importance.max,
+    );
+
+    try {
+      await _flutterLocalNotificationsPlugin.zonedSchedule(
+        0,
+        'Đã đến giờ ngủ!',
+        'Nhấn để bắt đầu theo dõi giấc ngủ của bạn.',
+        scheduledDate,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            importance: channel.importance,
+            priority: Priority.high,
+            icon: '@mipmap/ic_launcher',
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: 'sleep_screen',
+      );
+      print("zzzĐã lên lịch thông báo thành công");
+    } catch (e) {
+      print("zzzLỗi khi lên lịch thông báo: $e");
+    }
   }
-}
 
   //Setup send notification
   Future<void> sendNotification({

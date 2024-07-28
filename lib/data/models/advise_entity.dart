@@ -7,6 +7,7 @@ class AdviseSession {
   final String userId;
   final String content;
   final List<AdviseMessage> messages;
+  final String? category;
   final DateTime createdAt;
 
   AdviseSession({
@@ -14,6 +15,7 @@ class AdviseSession {
     required this.userId,
     required this.content,
     required this.messages,
+    required this.category,
     required this.createdAt,
   }) : id = id ?? const Uuid().v4();
 
@@ -22,6 +24,7 @@ class AdviseSession {
       id: json['id'],
       userId: json['user_id'],
       content: json['content'],
+      category: json['category'],
       messages: (json['messages'] as List<dynamic>)
           .map((m) => AdviseMessage.fromJson(m))
           .toList(),
@@ -33,6 +36,7 @@ class AdviseSession {
         'id': id,
         'user_id': userId,
         'content': content,
+        'category': category,
         'messages': messages.map((m) => m.toJson()).toList(),
         'created_at': Timestamp.fromDate(createdAt),
       };
