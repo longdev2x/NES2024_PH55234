@@ -7,10 +7,13 @@ import 'package:nes24_ph55234/common/components/app_search_bar.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/features/home/view/home_widgets.dart';
 
+import '../controller/all_target_provider.dart';
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final fetchTarget = ref.watch(allTargetProvider);
     return Scaffold(
       appBar: homeAppBar(ref, context),
       drawer: const AppDrawerWidget(),
@@ -30,7 +33,13 @@ class HomeScreen extends ConsumerWidget {
               SizedBox(height: 15.h),
               const HomeBanner(),
               SizedBox(height: 15.h),
-              const HomeAnalysisWidget(),
+            fetchTarget.when(
+              data: (targets) {
+                return HomeAnalysisWidget(targets: targets);
+              },
+              error: (error, stack) => Center(child: Text('Target Error - $error')),
+              loading: () => const Center(child: CircularProgressIndicator()),
+            ),
             ],
           ),
         ),

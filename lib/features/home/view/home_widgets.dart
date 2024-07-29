@@ -200,102 +200,98 @@ class BannerContainer extends StatelessWidget {
 }
 
 class HomeAnalysisWidget extends ConsumerWidget {
-  const HomeAnalysisWidget({super.key});
+  final List<TargetEntity> targets;
+  const HomeAnalysisWidget({super.key, required this.targets});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fetchTarget = ref.watch(allTargetProvider);
     final fetchStep = ref.watch(dailyStepProvider);
     final fetchProfile = ref.watch(profileProvider);
     final List<SleepEntity> listSleeps = ref.watch(sleepProvider);
 
-    return fetchTarget.when(
-      data: (targets) {
-        return fetchProfile.when(
-          data: (profile) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return fetchProfile.when(
+      data: (profile) {
+        print('zzz-target-${targets.length}');
+        print('zzz-target-${profile.toJson()}');
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const AppText20('Thành tích', fontWeight: FontWeight.bold),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) =>
-                              HomeSetTargetWidget(targets: targets),
-                        );
-                      },
-                      style: const ButtonStyle(
-                        padding: WidgetStatePropertyAll(
-                          EdgeInsets.symmetric(horizontal: 1, vertical: 3),
-                        ),
-                      ),
-                      child: const AppText16(
-                        'Đặt lại mục tiêu',
-                        fontWeight: FontWeight.bold,
-                      ),
+                const AppText20('Thành tích', fontWeight: FontWeight.bold),
+                TextButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) =>
+                          HomeSetTargetWidget(targets: targets),
+                    );
+                  },
+                  style: const ButtonStyle(
+                    padding: WidgetStatePropertyAll(
+                      EdgeInsets.symmetric(horizontal: 1, vertical: 3),
                     ),
-                  ],
+                  ),
+                  child: const AppText16(
+                    'Đặt lại mục tiêu',
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                SizedBox(height: 10.h),
-                ...targets.map((target) {
-                  switch (target.type) {
-                    case AppConstants.typeStepDaily:
-                      return _buildStepCard(fetchStep, target);
-                    case AppConstants.typeHoursSleep:
-                      if (listSleeps.isEmpty || listSleeps.first.endTime == null) {
-                        return HomeCardPriviewItem(
-                          title: 'Giấc ngủ',
-                          subtile: 'giờ',
-                          result: 0,
-                          target: target.target,
-                        );
-                      }
-                      return HomeCardPriviewItem(
-                        title: 'Giấc ngủ',
-                        subtile: 'giờ',
-                        result: listSleeps.first.endTime!
-                            .difference(listSleeps.first.startTime!)
-                            .inHours
-                            .toDouble(),
-                        target: target.target,
-                      );
-                    case AppConstants.typeHeight:
-                      return HomeCardPriviewItem(
-                        title: 'Chiều cao',
-                        subtile: 'cm',
-                        result: profile.height ?? 0,
-                        target: target.target,
-                      );
-                    case AppConstants.typeWeight:
-                      return HomeCardPriviewItem(
-                        title: 'Cân nặng',
-                        subtile: 'kg',
-                        result: profile.weight ?? 0,
-                        target: target.target,
-                      );
-                    case AppConstants.typeBMI:
-                      return HomeCardPriviewItem(
-                        title: 'BMI',
-                        subtile: 'kg/m2',
-                        result: profile.calculateBMI(),
-                        target: target.target,
-                      );
-                    default:
-                      return const SizedBox();
-                  }
-                }).toList(),
               ],
-            );
-          },
-          error: (e, s) => const Center(child: Text('Profile Error')),
-          loading: () => const Center(child: CircularProgressIndicator()),
+            ),
+            SizedBox(height: 10.h),
+            ...targets.map((target) {
+              switch (target.type) {
+                case AppConstants.typeStepDaily:
+                  return _buildStepCard(fetchStep, target);
+                case AppConstants.typeHoursSleep:
+                  if (listSleeps.isEmpty || listSleeps.first.endTime == null) {
+                    return HomeCardPriviewItem(
+                      title: 'Giấc ngủ',
+                      subtile: 'giờ',
+                      result: 0,
+                      target: target.target,
+                    );
+                  }
+                  return HomeCardPriviewItem(
+                    title: 'Giấc ngủ',
+                    subtile: 'giờ',
+                    result: listSleeps.first.endTime!
+                        .difference(listSleeps.first.startTime!)
+                        .inHours
+                        .toDouble(),
+                    target: target.target,
+                  );
+                case AppConstants.typeHeight:
+                  return HomeCardPriviewItem(
+                    title: 'Chiều cao',
+                    subtile: 'cm',
+                    result: profile.height ?? 0,
+                    target: target.target,
+                  );
+                case AppConstants.typeWeight:
+                  return HomeCardPriviewItem(
+                    title: 'Cân nặng',
+                    subtile: 'kg',
+                    result: profile.weight ?? 0,
+                    target: target.target,
+                  );
+                case AppConstants.typeBMI:
+                  return HomeCardPriviewItem(
+                    title: 'BMI',
+                    subtile: 'kg/m2',
+                    result: profile.calculateBMI(),
+                    target: target.target,
+                  );
+                default:
+                  return const SizedBox();
+              }
+            }).toList(),
+          ],
         );
       },
-      error: (error, stack) => Center(child: Text('Target Error - $error')),
+      error: (e, s) => const Center(child: Text('Profile Error')),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
   }

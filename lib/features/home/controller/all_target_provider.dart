@@ -34,7 +34,9 @@ class AllTargetProvider extends AsyncNotifier<List<TargetEntity>> {
       TargetEntity(userId: userId, type: AppConstants.typeMetreCounter, target: 2400),
       TargetEntity(userId: userId, type: AppConstants.typeMinuteCounter, target: 30),
     ];
+    state = AsyncValue.data(targets);
     await TargetRepos.updateOrAddMultipleTargets(targets);
+    state = await AsyncValue.guard(() async => await _loadTarget());
   }
 }
 
