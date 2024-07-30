@@ -104,7 +104,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           key: _formkey,
           child: Column(
             children: [
-              ProfileAvatarWidget(avatar: objUser.avatar),
+              Hero(tag: 'avatar', child: ProfileAvatarWidget(avatar: objUser.avatar)),
               SizedBox(height: isExpert ? 20.h : 40.h),
               AppTextFormField(
                 lable: 'Username',

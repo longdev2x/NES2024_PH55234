@@ -18,16 +18,15 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchUser = ref.watch(profileProvider);
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+        appBar: PreferredSize(preferredSize: Size.fromHeight(30.h), child: AppBar()),
         body: fetchUser.when(
             data: (objUser) {
               return _buildContent(objUser, context);
             },
             error: (error, stackTrace) => Center(child: Text('Error-$error')),
             loading: () => const Center(child: CircularProgressIndicator())),
-      ),
-    );
+      );
   }
 
   Widget _buildContent(UserEntity objUser, BuildContext context) {
@@ -38,7 +37,6 @@ class ProfileScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 10.h),
           ProfileAvatarWidget(avatar: objUser.avatar),
           SizedBox(height: 15.h),
           AppText20('${objUser.username} (${objUser.role.name})',

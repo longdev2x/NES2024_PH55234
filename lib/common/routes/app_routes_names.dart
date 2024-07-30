@@ -10,6 +10,7 @@
   static const String bmi = '/bmi';
   static const String yoga = '/yoga';
   static const String yogaDetail = '/yoga_detail';
+  static const String profile = '/profile';
   static const String editProfile = '/editProfile';
   static const String friendSearch = '/friendSreach';
   static const String friendProfile = '/friendProfile';

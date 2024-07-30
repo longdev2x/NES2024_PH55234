@@ -20,7 +20,6 @@ class TargetRepos {
 
   static Future<TargetEntity?> getTargetFollowType(
       String userId, String type) async {
-        print('zzzzuserId-$userId');
     final querySnap = await _instance
         .collection(_c)
         .where('user_id', isEqualTo: userId)

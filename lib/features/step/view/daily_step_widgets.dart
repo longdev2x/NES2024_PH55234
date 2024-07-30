@@ -51,7 +51,6 @@ class StepRowMoreInfor extends ConsumerWidget {
         children: [
           fetchTargetMetree.when(
             data: (data) {
-              print('zzzzzz-${data?.target}');
               final percentMetre =
                   (objStep.metre / (data?.target ?? 100)).clamp(0.0, 1.0);
               return AppCircularProgressIcon(
@@ -69,7 +68,6 @@ class StepRowMoreInfor extends ConsumerWidget {
           ),
           fetchTargeCalo.when(
               data: (data) {
-                print('zzzzzz-${data?.target}');
                 final percentKacl =
                     (objStep.calo / (data?.target ?? 100)).clamp(0.0, 1.0);
                 return AppCircularProgressIcon(
@@ -86,7 +84,6 @@ class StepRowMoreInfor extends ConsumerWidget {
                   )),
           fetchTargetMinute.when(
             data: (data) {
-              print('zzzzzz-${data?.target}');
               final percentMinute =
                   (objStep.minute / (data?.target ?? 100)).clamp(0.0, 1.0);
               return AppCircularProgressIcon(

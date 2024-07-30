@@ -11,7 +11,6 @@ class ProfileRepos {
 
   static Future<void> updateUserProfile(UserEntity objUser) async {
     try {
-      print('zzz${objUser.toJson()}');
       await _firestore.collection(_c).doc(objUser.id).update(objUser.toJson());
     } catch (e) {
       throw Exception('Lỗi update User: $e');

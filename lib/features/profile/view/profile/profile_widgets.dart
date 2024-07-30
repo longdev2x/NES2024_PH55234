@@ -24,11 +24,14 @@ class ProfileAvatarWidget extends ConsumerWidget {
       width: 150.w,
       child: Stack(
         children: [
-          CircleAvatar(
-            radius: 100.r,
-            backgroundImage: avatar != null
-                ? NetworkImage(avatar!)
-                : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
+          Hero(
+            tag: avatar ?? '',
+            child: CircleAvatar(
+              radius: 100.r,
+              backgroundImage: avatar != null
+                  ? NetworkImage(avatar!)
+                  : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
+            ),
           ),
           if (isMyProfile)
             GestureDetector(

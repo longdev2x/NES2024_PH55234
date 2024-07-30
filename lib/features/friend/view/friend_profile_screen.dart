@@ -58,9 +58,12 @@ class _FriendProfileScreenState extends ConsumerState<FriendProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 30.h),
-            ProfileAvatarWidget(
-              avatar: objFriend.avatar,
-              isMyProfile: false,
+            Hero(
+              tag: 'avatar_friend',
+              child: ProfileAvatarWidget(
+                avatar: objFriend.avatar,
+                isMyProfile: false,
+              ),
             ),
             SizedBox(height: 20.h),
             AppText20('${objFriend.username} (${objFriend.role?.name})',

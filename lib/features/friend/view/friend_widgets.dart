@@ -126,12 +126,15 @@ class ItemListRequest extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CircleAvatar(
-                    backgroundImage: objFriendShip.senderAvatar != null
-                        ? NetworkImage(objFriendShip.senderAvatar!)
-                        : const AssetImage(ImageRes.avatarDefault)
-                            as ImageProvider,
-                    radius: 25,
+                  Hero(
+                    tag: 'avatar_friend',
+                    child: CircleAvatar(
+                      backgroundImage: objFriendShip.senderAvatar != null
+                          ? NetworkImage(objFriendShip.senderAvatar!)
+                          : const AssetImage(ImageRes.avatarDefault)
+                              as ImageProvider,
+                      radius: 25,
+                    ),
                   ),
                   SizedBox(width: 12.w),
                   Expanded(

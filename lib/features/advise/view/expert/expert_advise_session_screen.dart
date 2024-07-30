@@ -43,27 +43,35 @@ class ExpertAdviseSessionScreen extends ConsumerWidget {
                 .toList();
           }
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
-            child: Column(children: [
-              if(healthSessions != null)
-                ...[
-                  const Align(alignment: Alignment.centerLeft, child: AppText16('Sức khoẻ', fontWeight: FontWeight.bold)),
+            padding:
+                const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
+            child: Column(
+              children: [
+                if (healthSessions != null) ...[
+                  const Align(
+                      alignment: Alignment.centerLeft,
+                      child:
+                          AppText16('Sức khoẻ', fontWeight: FontWeight.bold)),
                   SizedBox(height: 10.h),
                   _buildList(healthSessions!)
                 ],
-              if(lawSessions != null)
-                ...[
-                  const Align( alignment: Alignment.centerLeft, child: AppText16('Pháp luật', fontWeight: FontWeight.bold)),
+                if (lawSessions != null) ...[
+                  const Align(
+                      alignment: Alignment.centerLeft,
+                      child:
+                          AppText16('Pháp luật', fontWeight: FontWeight.bold)),
                   SizedBox(height: 10.h),
                   _buildList(lawSessions!)
                 ],
-              if(tamlySessions != null)
-                ...[
-                  const Align(alignment: Alignment.centerLeft, child: AppText16('Tâm lý', fontWeight: FontWeight.bold)),
+                if (tamlySessions != null) ...[
+                  const Align(
+                      alignment: Alignment.centerLeft,
+                      child: AppText16('Tâm lý', fontWeight: FontWeight.bold)),
                   SizedBox(height: 10.h),
                   _buildList(tamlySessions!)
                 ]
-            ],),
+              ],
+            ),
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -75,9 +83,6 @@ class ExpertAdviseSessionScreen extends ConsumerWidget {
   Widget _buildList(
     List<AdviseSession> sessions,
   ) {
-    if(sessions.isNotEmpty) {
-    print('zzz-${sessions[0].content}');
-    }
     return ListView.builder(
       shrinkWrap: true,
       itemCount: sessions.length,

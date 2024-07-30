@@ -82,7 +82,7 @@ Widget _buildContent(BMIEntity objBMI, WidgetRef ref) {
       SizedBox(height: 50.h,),
       AppButton(
         ontap: () {
-          ref.read(indexScreenBMI.notifier).state = 0;
+          ref.read(indexScreenBMI.notifier).state = 1;
         },
         name: 'Tính lại',
       )

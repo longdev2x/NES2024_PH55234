@@ -51,11 +51,11 @@ class _DailyStepScreenState extends ConsumerState<DailyStepScreen> {
           data: (listStep) {
             return SingleChildScrollView(
               child: Column(children: [
-                SizedBox(height: 35.h),
-                StepMainCircle(objStep: listStep.last),
-                SizedBox(height: 40.h),
-                StepRowMoreInfor(objStep: listStep.last),
                 SizedBox(height: 20.h),
+                StepMainCircle(objStep: listStep.last),
+                SizedBox(height: 35.h),
+                StepRowMoreInfor(objStep: listStep.last),
+                SizedBox(height: 10.h),
                 const StepLineChart(),
               ]),
             );

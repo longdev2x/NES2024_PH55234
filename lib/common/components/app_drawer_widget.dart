@@ -17,6 +17,7 @@ class AppDrawerWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchUser = ref.watch(profileProvider);
     return Drawer(
+      clipBehavior: Clip.hardEdge,
       width: 310.w,
       child: Container(
         color: Colors.white,
@@ -24,21 +25,31 @@ class AppDrawerWidget extends ConsumerWidget {
           children: [
             fetchUser.when(
               data: (objUser) {
-                return DrawerHeader(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 35.r,
-                          backgroundImage: objUser.avatar != null 
-                          ? NetworkImage(objUser.avatar!)
-                          : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
+                return Hero(
+                  tag: '',
+                  child: GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, AppRoutesNames.profile),
+                    child: DrawerHeader(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 35.r,
+                              backgroundImage: objUser.avatar != null
+                                  ? NetworkImage(objUser.avatar!)
+                                  : const AssetImage(ImageRes.avatarDefault)
+                                      as ImageProvider,
+                            ),
+                            SizedBox(height: 2.h),
+                            AppText20(objUser.username,
+                                fontWeight: FontWeight.bold),
+                            AppText16(
+                                'BMI: ${objUser.calculateBMI().toStringAsFixed(1)}',
+                                fontWeight: FontWeight.bold),
+                          ],
                         ),
-                        SizedBox(height: 2.h),
-                        AppText20(objUser.username, fontWeight: FontWeight.bold),
-                        AppText16('BMI: ${objUser.calculateBMI().toStringAsFixed(1)}', fontWeight: FontWeight.bold),
-                      ],
+                      ),
                     ),
                   ),
                 );

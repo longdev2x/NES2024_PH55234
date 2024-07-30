@@ -64,7 +64,6 @@ class PlanBedNotifier extends StateNotifier<TimeOfDay> {
   }
 
   void _scheduleSleepNotification() {
-    print("zzzĐang gọi hàm lên lịch thông báo");
     NotificationServices().scheduleSleepNotification(state);
   }
 }

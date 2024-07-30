@@ -82,7 +82,7 @@ class MessageRepos {
 
     if (Global.storageService.getUserId() != objMessage.senderId) {
       NotificationServices().sendNotification(
-        type: 'message',
+        type: 'chat',
         receiverToken: await getUserToken(objMessage.receiverId),
         title: "Tin nhắn mới",
         body: objMessage.content,

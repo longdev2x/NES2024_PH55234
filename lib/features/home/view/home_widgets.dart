@@ -15,7 +15,6 @@ import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/sleep_entity.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/data/models/target_entity.dart';
-import 'package:nes24_ph55234/features/application/controller/application_provider.dart';
 import 'package:nes24_ph55234/features/home/controller/all_target_provider.dart';
 import 'package:nes24_ph55234/features/home/controller/banner_dots_provider.dart';
 import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
@@ -32,19 +31,20 @@ AppBar homeAppBar(WidgetRef ref, BuildContext context) {
             Navigator.pushNamed(context, AppRoutesNames.search);
           },
           icon: const Icon(Icons.search)),
-      GestureDetector(
-        onTap: () {},
-        child: Row(
+      Row(
           children: [
             fetchUser.when(
               data: (objUser) => GestureDetector(
                 onTap: () {
-                  ref.read(bottomTabsProvider.notifier).state = 4;
+                  Navigator.pushNamed(context, AppRoutesNames.profile);
                 },
-                child: CircleAvatar(
-                  backgroundImage: objUser.avatar != null
-                      ? NetworkImage(objUser.avatar!)
-                      : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
+                child: Hero(
+                  tag: objUser.avatar ?? '',
+                  child: CircleAvatar(
+                    backgroundImage: objUser.avatar != null
+                        ? NetworkImage(objUser.avatar!)
+                        : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
+                  ),
                 ),
               ),
               error: (error, stackTrace) => const Center(child: Text('Error')),
@@ -55,7 +55,6 @@ AppBar homeAppBar(WidgetRef ref, BuildContext context) {
             SizedBox(width: 20.w),
           ],
         ),
-      )
     ],
   );
 }
@@ -211,8 +210,6 @@ class HomeAnalysisWidget extends ConsumerWidget {
 
     return fetchProfile.when(
       data: (profile) {
-        print('zzz-target-${targets.length}');
-        print('zzz-target-${profile.toJson()}');
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

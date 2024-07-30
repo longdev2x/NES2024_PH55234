@@ -58,13 +58,12 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: 5.r),
+        padding: EdgeInsets.symmetric(horizontal: 5.r),
         child: Column(
           children: [
-            if(!_havePermission)
+            if (!_havePermission)
               const Text('Không thể chạy nếu bạn không cấp quyền'),
-            SizedBox(height: 30.h),
+            SizedBox(height: 20.h),
             isStarted
                 ? StepCounterMainCircle(objStep: objSteps)
                 : const StepCounterMainCircleHolder(),
@@ -73,10 +72,14 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
             SizedBox(height: 40.h),
             isStarted
                 ? CounterRowButton(objSteps)
-                : AppButton(name: 'Lịch Sử Đi Bộ', width: 300,ontap: () {
-                  Navigator.of(context).pushNamed(AppRoutesNames.historyStep);
-                },),
-
+                : AppButton(
+                    name: 'Lịch Sử Đi Bộ',
+                    width: 300,
+                    ontap: () {
+                      Navigator.of(context)
+                          .pushNamed(AppRoutesNames.historyStep);
+                    },
+                  ),
           ],
         ),
       ),

@@ -49,8 +49,7 @@ class ProfileNotifier extends AutoDisposeAsyncNotifier<UserEntity> {
         bith: bith,
         category: category
       ));
-
-      print('zzz-list${category.toString()}');
+      
       await ProfileRepos.updateUserProfile(state.value!);
       state = await AsyncValue.guard(() async => await _loadUserProfile());
     } catch (e) {
