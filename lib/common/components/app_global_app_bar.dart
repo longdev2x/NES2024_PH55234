@@ -19,14 +19,6 @@ AppBar appGlobalAppBar(String? title, {List<Widget>? actions}) {
             ),
           ),
     centerTitle: true,
-    leading: IconButton(
-      icon: Icon(
-        Icons.arrow_back_ios,
-        color: Theme.of(context).iconTheme.color,
-        size: 22.sp,
-      ),
-      onPressed: () => Navigator.of(context).pop(),
-    ),
     actions: actions,
     bottom: PreferredSize(
       preferredSize: Size.fromHeight(1.h),

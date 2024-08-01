@@ -51,19 +51,15 @@ class _FriendProfileScreenState extends ConsumerState<FriendProfileScreen> {
 
   Widget _buildContent(FriendEntity objFriend, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppConstants.marginHori),
+      padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 30.h),
-            Hero(
-              tag: 'avatar_friend',
-              child: ProfileAvatarWidget(
-                avatar: objFriend.avatar,
-                isMyProfile: false,
-              ),
+            ProfileAvatarWidget(
+              avatar: objFriend.avatar,
+              isMyProfile: false,
             ),
             SizedBox(height: 20.h),
             AppText20('${objFriend.username} (${objFriend.role?.name})',

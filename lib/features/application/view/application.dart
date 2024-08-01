@@ -105,27 +105,28 @@ class _ApplicationScreenState extends ConsumerState<ApplicationScreen>
               ),
             ),
           ),
-          HumbergerButton(
-            onTap: () {
-              smiBoolDrawerClosed.change(!smiBoolDrawerClosed.value);
-              ref.read(drawerClosedProvider.notifier).state = !isDrawerClosed;
-              if (isDrawerClosed) {
-                _animationController.forward();
-              } else {
-                _animationController.reverse();
-              }
-            },
-            onInit: (artboard) {
-              StateMachineController? humbergerController =
-                  RiveUtils.getRiverController(artboard,
-                      stateMachineName: 'State Machine');
-              //Khởi tạo SMIbool nhờ vào controller, isOpen ở trong file river
-              smiBoolDrawerClosed =
-                  humbergerController.findSMI('isOpen') as SMIBool;
-              //Ban đầu để nó đóng
-              smiBoolDrawerClosed.value = true;
-            },
-          ),
+          if (selectedIndex == 0)
+            HumbergerButton(
+              onTap: () {
+                smiBoolDrawerClosed.change(!smiBoolDrawerClosed.value);
+                ref.read(drawerClosedProvider.notifier).state = !isDrawerClosed;
+                if (isDrawerClosed) {
+                  _animationController.forward();
+                } else {
+                  _animationController.reverse();
+                }
+              },
+              onInit: (artboard) {
+                StateMachineController? humbergerController =
+                    RiveUtils.getRiverController(artboard,
+                        stateMachineName: 'State Machine');
+                //Khởi tạo SMIbool nhờ vào controller, isOpen ở trong file river
+                smiBoolDrawerClosed =
+                    humbergerController.findSMI('isOpen') as SMIBool;
+                //Ban đầu để nó đóng
+                smiBoolDrawerClosed.value = true;
+              },
+            ),
         ],
       ),
       bottomNavigationBar: Transform.translate(

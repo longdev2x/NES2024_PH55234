@@ -32,7 +32,7 @@ class FriendScreen extends ConsumerWidget {
                           ),
                         )
                       : const SizedBox(),
-                  ListView.builder(
+                  if(requests.isNotEmpty ) ListView.builder(
                     shrinkWrap: true,
                     itemCount: requests.length,
                     itemBuilder: (context, index) {

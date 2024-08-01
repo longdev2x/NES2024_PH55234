@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nes24_ph55234/features/profile/view/profile/profile_screen.dart';
 import 'package:nes24_ph55234/features/sleep/view/sleep_screen.dart';
 import 'package:nes24_ph55234/features/step/view/main_tab_step.dart';
-=import 'package:rive/rive.dart';
+import 'package:rive/rive.dart';
 
 Widget appScreens({int index = 0}) {
   List<Widget> screens = [];

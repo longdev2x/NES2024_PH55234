@@ -5,7 +5,6 @@ import 'package:nes24_ph55234/common/utils/image_res.dart';
 
 class InforNetworkCard extends StatelessWidget {
   final Function()? onTap;
-  final String? tagHero;
   final String? avatar;
   final String? title;
   final String? subtitle;
@@ -15,22 +14,18 @@ class InforNetworkCard extends StatelessWidget {
     required this.avatar,
     required this.title,
     required this.subtitle,
-    this.tagHero,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      leading: Hero(
-        tag: tagHero ?? DateTime.now().toIso8601String(),
-        child: CircleAvatar(
+      leading:  CircleAvatar(
           backgroundColor: Colors.black,
           backgroundImage: avatar != null
               ? NetworkImage(avatar!)
               : Image.asset(ImageRes.avatarDefault) as ImageProvider,
         ),
-      ),
       title: Text(
         title ?? '',
         style: const TextStyle(color: Colors.white),

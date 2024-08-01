@@ -124,15 +124,12 @@ class ItemListRequest extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Hero(
-                    tag: 'avatar_friend',
-                    child: CircleAvatar(
-                      backgroundImage: objFriendShip.senderAvatar != null
-                          ? NetworkImage(objFriendShip.senderAvatar!)
-                          : const AssetImage(ImageRes.avatarDefault)
-                              as ImageProvider,
-                      radius: 25,
-                    ),
+                  CircleAvatar(
+                    backgroundImage: objFriendShip.senderAvatar != null
+                        ? NetworkImage(objFriendShip.senderAvatar!)
+                        : const AssetImage(ImageRes.avatarDefault)
+                            as ImageProvider,
+                    radius: 25,
                   ),
                   SizedBox(width: 12.w),
                   Expanded(
@@ -246,7 +243,7 @@ class FpostContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AsyncValue<List<PostFriendEntity>> fetchPosts;
-    if(friendId == null) {
+    if (friendId == null) {
       fetchPosts = ref.watch(friendPostProvider);
     } else {
       fetchPosts = ref.watch(profilePostProvider(friendId!));
