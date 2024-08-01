@@ -34,6 +34,7 @@ class ImageRes {
   static const String icAddImage = '${_baseIcon}ic_add_image.png';
   static const String icCalculate = '${_baseIcon}ic_calculate.png';
   static const String icBMI = '${_baseIcon}ic_bmi.png';
+  static const String icBMI2 = '${_baseIcon}ic_bmi_2.png';
   static const String icCheckTick = '${_baseIcon}ic_check_tick.png';
   static const String icGenderMan= '${_baseIcon}ic_gender_man.png';
   static const String icGenderWoman = '${_baseIcon}ic_gender_woman.png';
@@ -55,6 +56,9 @@ class ImageRes {
   static const String icWeight = '${_baseIcon}ic_weight.png';
   static const String icFoot = '${_baseIcon}ic_foot.png';
   static const String icGroup = '${_baseIcon}ic_group.png';
+  static const String icAdvise = '${_baseIcon}ic_advise.png';
+  static const String icGrateful = '${_baseIcon}ic_grateful.png';
+  static const String icYoga = '${_baseIcon}ic_yoga.png';
   //
   static const String icAngry = '${_baseIcon}ic_feel_angry.png';
   static const String icCry = '${_baseIcon}ic_feel_cry.png';

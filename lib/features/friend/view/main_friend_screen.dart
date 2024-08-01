@@ -32,13 +32,14 @@ class _MainFriendScreenState extends ConsumerState<MainFriendScreen>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(110.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SafeArea(child: SizedBox(
+              )),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   child: AppSearchBar(
@@ -68,7 +69,6 @@ class _MainFriendScreenState extends ConsumerState<MainFriendScreen>
           FriendPostScreen(),
           ChatScreen(),
         ]),
-      ),
-    );
+      );
   }
 }

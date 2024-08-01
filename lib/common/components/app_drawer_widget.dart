@@ -23,7 +23,7 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
   @override
   Widget build(BuildContext context) {
     final fetchUser = ref.watch(profileProvider);
-    final int indexDrawer = ref.watch(drawerIndexProvider);
+    final int? indexDrawer = ref.watch(drawerIndexProvider);
 
     return Container(
       height: double.infinity,
@@ -56,7 +56,7 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
               AppListTileDrawer(
                 onTap: () {
                   ref.read(drawerIndexProvider.notifier).state = 0;
-                  widget.callBackWhenNavigate;
+                  widget.callBackWhenNavigate();
                   Navigator.of(context).pushNamed(AppRoutesNames.steps);
                 },
                 title: 'Đếm số bước chân',
@@ -66,17 +66,17 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
               AppListTileDrawer(
                 onTap: () {
                   ref.read(drawerIndexProvider.notifier).state = 1;
-                  widget.callBackWhenNavigate;
+                  widget.callBackWhenNavigate();
                   Navigator.of(context).pushNamed(AppRoutesNames.grateful);
                 },
                 title: 'Viết lòng biết ơn',
-                path: ImageRes.icLove,
+                path: ImageRes.icGrateful,
                 isActive: indexDrawer == 1,
               ),
               AppListTileDrawer(
                 onTap: () {
                   ref.read(drawerIndexProvider.notifier).state = 2;
-                  widget.callBackWhenNavigate;
+                  widget.callBackWhenNavigate();
                   Navigator.of(context).pushNamed(AppRoutesNames.sleep);
                 },
                 title: 'Đo lường giấc ngủ',
@@ -86,21 +86,21 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
               AppListTileDrawer(
                 onTap: () {
                   ref.read(drawerIndexProvider.notifier).state = 3;
-                  widget.callBackWhenNavigate;
+                  widget.callBackWhenNavigate();
                   Navigator.of(context).pushNamed(AppRoutesNames.bmi);
                 },
                 title: 'Chỉ số BMI',
-                path: ImageRes.icBMI,
+                path: ImageRes.icBMI2,
                 isActive: indexDrawer == 3,
               ),
               AppListTileDrawer(
                 onTap: () {
                   ref.read(drawerIndexProvider.notifier).state = 4;
-                  widget.callBackWhenNavigate;
+                  widget.callBackWhenNavigate();
                   Navigator.of(context).pushNamed(AppRoutesNames.yoga);
                 },
                 title: 'Thiền và Yoga',
-                path: ImageRes.icCalo,
+                path: ImageRes.icYoga,
                 isActive: indexDrawer == 4,
               ),
               fetchUser.when(
@@ -108,7 +108,7 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
                   return AppListTileDrawer(
                     onTap: () {
                       ref.read(drawerIndexProvider.notifier).state = 5;
-                      widget.callBackWhenNavigate;
+                      widget.callBackWhenNavigate();
                       if (objUser.role.value == listRoles[0].value) {
                         Navigator.of(context).pushNamed(AppRoutesNames.adviseUser);
                       } else {
@@ -116,7 +116,7 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
                       }
                     },
                     title: 'Tư vấn bí mật',
-                    path: ImageRes.icAddFriend,
+                    path: ImageRes.icAdvise,
                     isActive: indexDrawer == 5,
                   );
                 },
@@ -131,7 +131,7 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
                       context, AppRoutesNames.auth, (route) => false);
                 },
                 title: 'Đăng xuất',
-                path: ImageRes.icPause,
+                path: ImageRes.icLogout,
                 isActive: indexDrawer == 6,
               ),
             ],

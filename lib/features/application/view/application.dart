@@ -47,17 +47,25 @@ class _ApplicationScreenState extends ConsumerState<ApplicationScreen>
     super.initState();
   }
 
-
   @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
   }
 
+  void _closeDrawer() {
+    ref.read(drawerClosedProvider.notifier).state = true;
+    _animationController.reverse();
+    smiBoolDrawerClosed.value = true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isDrawerClosed = ref.watch(drawerClosedProvider);
     final int selectedIndex = ref.watch(bottomTabsProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(drawerIndexProvider.notifier).state = null;
+    });
     return Scaffold(
       backgroundColor: AppColors.backgroundColor2,
       resizeToAvoidBottomInset: true,
@@ -71,28 +79,29 @@ class _ApplicationScreenState extends ConsumerState<ApplicationScreen>
             left: isDrawerClosed ? -275.w : 0,
             height: MediaQuery.of(context).size.height,
             child: AppDrawerWidget(
-              callBackWhenNavigate: () {
-                ref.read(drawerClosedProvider.notifier).state = true;
-                _animationController.reverse();
-              },
+              callBackWhenNavigate: _closeDrawer,
             ),
           ),
           //Dịch chuyển theo offset.(giữ nguyên kích thước)
-          Transform.translate(
-            //_animation<double> chạy từ 0 đến 1.
-            offset: Offset(_animation.value * 230.w, 0),
-            //scale co dãn theo scal, cần thêm background không trùng màu
-            child: Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..rotateY(_animation.value - 30 * _animation.value * pi / 180),
-              child: Transform.scale(
-                //scaleAnimation<double> 1 - 0.8
-                scale: _scaleAnimation.value,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(24),
-                    child: screens[selectedIndex]),
+          GestureDetector(
+            onTap: _closeDrawer,
+            child: Transform.translate(
+              //_animation<double> chạy từ 0 đến 1.
+              offset: Offset(_animation.value * 230.w, 0),
+              //scale co dãn theo scal, cần thêm background không trùng màu
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.identity()
+                  ..setEntry(3, 2, 0.001)
+                  ..rotateY(
+                      _animation.value - 30 * _animation.value * pi / 180),
+                child: Transform.scale(
+                  //scaleAnimation<double> 1 - 0.8
+                  scale: _scaleAnimation.value,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: screens[selectedIndex]),
+                ),
               ),
             ),
           ),
@@ -119,56 +128,59 @@ class _ApplicationScreenState extends ConsumerState<ApplicationScreen>
           ),
         ],
       ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 20.h),
-          decoration: BoxDecoration(
-              color: AppColors.backgroundColor2.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(24.r)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ...List.generate(
-                bottomNavs.length,
-                (index) {
-                  return GestureDetector(
-                    onTap: () {
-                      bottomNavs[index].input?.change(true);
-                      ref.read(bottomTabsProvider.notifier).state = index;
+      bottomNavigationBar: Transform.translate(
+        offset: Offset(0, _animation.value * 80),
+        child: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 20.h),
+            decoration: BoxDecoration(
+                color: AppColors.backgroundColor2.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(24.r)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ...List.generate(
+                  bottomNavs.length,
+                  (index) {
+                    return GestureDetector(
+                      onTap: () {
+                        bottomNavs[index].input?.change(true);
+                        ref.read(bottomTabsProvider.notifier).state = index;
 
-                      Future.delayed(const Duration(seconds: 1), () {
-                        bottomNavs[index].input?.change(false);
-                      });
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AnimatedBar(isActive: selectedIndex == index),
-                        SizedBox(
-                          height: 36,
-                          width: 36,
-                          child: RiveAnimation.asset(
-                            bottomNavs.first.src,
-                            artboard: bottomNavs[index].artboard,
-                            onInit: (artboard) {
-                              StateMachineController controller =
-                                  RiveUtils.getRiverController(
-                                artboard,
-                                stateMachineName:
-                                    bottomNavs[index].stateMachineName,
-                              );
-                              bottomNavs[index].input =
-                                  controller.findSMI("active") as SMIBool;
-                            },
+                        Future.delayed(const Duration(seconds: 1), () {
+                          bottomNavs[index].input?.change(false);
+                        });
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AnimatedBar(isActive: selectedIndex == index),
+                          SizedBox(
+                            height: 36,
+                            width: 36,
+                            child: RiveAnimation.asset(
+                              bottomNavs.first.src,
+                              artboard: bottomNavs[index].artboard,
+                              onInit: (artboard) {
+                                StateMachineController controller =
+                                    RiveUtils.getRiverController(
+                                  artboard,
+                                  stateMachineName:
+                                      bottomNavs[index].stateMachineName,
+                                );
+                                bottomNavs[index].input =
+                                    controller.findSMI("active") as SMIBool;
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
