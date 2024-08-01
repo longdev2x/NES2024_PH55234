@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_global_app_bar.dart';
-import 'package:nes24_ph55234/common/components/app_icon.dart';
+import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
@@ -313,7 +313,7 @@ class _SleepSetupDialogWidgetState
                       ),
                       ElevatedButton.icon(
                         onPressed: () => _showTimePicker(planBed),
-                        icon: const AppIcon(
+                        icon: const AppIconAsset(
                           path: ImageRes.icCalandar,
                           size: 19,
                         ),

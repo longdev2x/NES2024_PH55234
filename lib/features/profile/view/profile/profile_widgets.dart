@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:nes24_ph55234/common/components/app_icon.dart';
+import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/provider_global/loader_provider.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
@@ -53,7 +53,7 @@ class ProfileAvatarWidget extends ConsumerWidget {
                   decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.onSecondary,
                       shape: BoxShape.circle),
-                  child: const AppIcon(path: ImageRes.icCamera),
+                  child: const AppIconAsset(path: ImageRes.icCamera),
                 ),
               ),
             ),
@@ -153,7 +153,7 @@ class ProfileListItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AppIcon(
+            AppIconAsset(
               path: icon,
               size: 18,
             ),
@@ -164,7 +164,7 @@ class ProfileListItem extends StatelessWidget {
             ),
             const Spacer(),
             if (isRight)
-              const AppIcon(
+              const AppIconAsset(
                 path: ImageRes.icArrowRight,
                 size: 14,
               ),

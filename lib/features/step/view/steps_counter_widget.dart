@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_circular_progress.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
-import 'package:nes24_ph55234/common/components/app_icon.dart';
+import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
@@ -314,5 +314,5 @@ Widget _radiusIcon(String iconPath) => Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           border: Border.all(width: 1)),
-      child: AppIcon(path: iconPath),
+      child: AppIconAsset(path: iconPath),
     );

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_global_app_bar.dart';
-import 'package:nes24_ph55234/common/components/app_image.dart';
+import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/advise_entity.dart';

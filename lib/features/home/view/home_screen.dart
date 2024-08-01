@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
-import 'package:nes24_ph55234/common/components/app_drawer_widget.dart';
 import 'package:nes24_ph55234/common/components/app_search_bar.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
+import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/features/home/view/home_widgets.dart';
 
 import '../controller/all_target_provider.dart';
@@ -16,10 +16,9 @@ class HomeScreen extends ConsumerWidget {
     final fetchTarget = ref.watch(allTargetProvider);
     return Scaffold(
       appBar: homeAppBar(ref, context),
-      drawer: const AppDrawerWidget(),
       body: RefreshIndicator(
         child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(

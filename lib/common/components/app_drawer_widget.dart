@@ -2,143 +2,142 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
+import 'package:nes24_ph55234/common/components/infor_card.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:nes24_ph55234/data/repositories/auth_repos.dart';
+import 'package:nes24_ph55234/features/application/controller/application_provider.dart';
 import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
-import 'package:nes24_ph55234/global.dart';
 
-class AppDrawerWidget extends ConsumerWidget {
-  const AppDrawerWidget({super.key});
+class AppDrawerWidget extends ConsumerStatefulWidget {
+  final Function() callBackWhenNavigate;
+  const AppDrawerWidget({super.key, required this.callBackWhenNavigate});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AppDrawerWidget> createState() => _AppDrawerWidgetState();
+}
+
+class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
+  @override
+  Widget build(BuildContext context) {
     final fetchUser = ref.watch(profileProvider);
-    return Drawer(
-      clipBehavior: Clip.hardEdge,
-      width: 310.w,
-      child: Container(
-        color: Colors.white,
-        child: ListView(
-          children: [
-            fetchUser.when(
-              data: (objUser) {
-                return Hero(
-                  tag: '',
-                  child: GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, AppRoutesNames.profile),
-                    child: DrawerHeader(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 35.r,
-                              backgroundImage: objUser.avatar != null
-                                  ? NetworkImage(objUser.avatar!)
-                                  : const AssetImage(ImageRes.avatarDefault)
-                                      as ImageProvider,
-                            ),
-                            SizedBox(height: 2.h),
-                            AppText20(objUser.username,
-                                fontWeight: FontWeight.bold),
-                            AppText16(
-                                'BMI: ${objUser.calculateBMI().toStringAsFixed(1)}',
-                                fontWeight: FontWeight.bold),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-              error: (error, stackTrace) =>
-                  Center(child: Text('Error - $error')),
-              loading: () => const Center(child: CircularProgressIndicator()),
+    final int indexDrawer = ref.watch(drawerIndexProvider);
+
+    return Container(
+      height: double.infinity,
+      width: 280.w,
+      decoration: const BoxDecoration(
+        color: AppColors.backgroundColor2,
+      ),
+      child: Column(
+        children: [
+          const SafeArea(child: SizedBox()),
+          fetchUser.when(
+            data: (objUser) => InforNetworkCard(
+              onTap: () => Navigator.pushNamed(context, AppRoutesNames.profile),
+              avatar: objUser.avatar!,
+              title: objUser.username,
+              subtitle: objUser.role.name,
             ),
-            _buildListTile(
-              context,
-              icon: Icons.directions_walk,
-              title: 'Đếm số bước chân',
-              routeName: AppRoutesNames.steps,
+            error: (error, stackTrace) => const Center(child: Text('Error')),
+            loading: () => const Center(child: CircularProgressIndicator()),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, top: 32.h, bottom: 16.h),
+              child: const AppText16('Chức năng', color: Colors.white),
             ),
-            _buildListTile(
-              context,
-              icon: Icons.book,
-              title: 'Viết lòng biết ơn',
-              routeName: AppRoutesNames.grateful,
-            ),
-            _buildListTile(
-              context,
-              icon: Icons.video_collection_outlined,
-              title: 'Video Thiền và Yoga',
-              routeName: AppRoutesNames.yoga,
-            ),
-            _buildListTile(
-              context,
-              icon: Icons.health_and_safety,
-              title: 'BMI',
-              routeName: AppRoutesNames.bmi,
-            ),
-            _buildListTile(
-              context,
-              icon: Icons.alarm,
-              title: 'Đo lường giấc ngủ',
-              routeName: AppRoutesNames.sleep,
-            ),
-            _buildListTile(
-              context,
-              icon: Icons.message,
-              title: 'Tư vấn bí mật',
-              routeName: Global.storageService.getRole() == listRoles[0].name
-                  ? AppRoutesNames.adviseUser
-                  : AppRoutesNames.adviseExpext,
-            ),
-            _buildListTile(
-              context,
-              icon: Icons.logout,
-              title: 'LogOut',
-              onTap: () => AuthRepos.signOut(),
-            ),
-          ],
-        ),
+          ),
+          Column(
+            children: [
+              AppListTileDrawer(
+                onTap: () {
+                  ref.read(drawerIndexProvider.notifier).state = 0;
+                  widget.callBackWhenNavigate;
+                  Navigator.of(context).pushNamed(AppRoutesNames.steps);
+                },
+                title: 'Đếm số bước chân',
+                path: ImageRes.icFoot,
+                isActive: indexDrawer == 0,
+              ),
+              AppListTileDrawer(
+                onTap: () {
+                  ref.read(drawerIndexProvider.notifier).state = 1;
+                  widget.callBackWhenNavigate;
+                  Navigator.of(context).pushNamed(AppRoutesNames.grateful);
+                },
+                title: 'Viết lòng biết ơn',
+                path: ImageRes.icLove,
+                isActive: indexDrawer == 1,
+              ),
+              AppListTileDrawer(
+                onTap: () {
+                  ref.read(drawerIndexProvider.notifier).state = 2;
+                  widget.callBackWhenNavigate;
+                  Navigator.of(context).pushNamed(AppRoutesNames.sleep);
+                },
+                title: 'Đo lường giấc ngủ',
+                path: ImageRes.icTime,
+                isActive: indexDrawer == 2,
+              ),
+              AppListTileDrawer(
+                onTap: () {
+                  ref.read(drawerIndexProvider.notifier).state = 3;
+                  widget.callBackWhenNavigate;
+                  Navigator.of(context).pushNamed(AppRoutesNames.bmi);
+                },
+                title: 'Chỉ số BMI',
+                path: ImageRes.icBMI,
+                isActive: indexDrawer == 3,
+              ),
+              AppListTileDrawer(
+                onTap: () {
+                  ref.read(drawerIndexProvider.notifier).state = 4;
+                  widget.callBackWhenNavigate;
+                  Navigator.of(context).pushNamed(AppRoutesNames.yoga);
+                },
+                title: 'Thiền và Yoga',
+                path: ImageRes.icCalo,
+                isActive: indexDrawer == 4,
+              ),
+              fetchUser.when(
+                data: (objUser) {
+                  return AppListTileDrawer(
+                    onTap: () {
+                      ref.read(drawerIndexProvider.notifier).state = 5;
+                      widget.callBackWhenNavigate;
+                      if (objUser.role.value == listRoles[0].value) {
+                        Navigator.of(context).pushNamed(AppRoutesNames.adviseUser);
+                      } else {
+                        Navigator.of(context).pushNamed(AppRoutesNames.adviseExpext);
+                      }
+                    },
+                    title: 'Tư vấn bí mật',
+                    path: ImageRes.icAddFriend,
+                    isActive: indexDrawer == 5,
+                  );
+                },
+                error: (error, stackTrace) =>
+                    const Center(child: Text('Error')),
+                loading: () => const Center(child: CircularProgressIndicator()),
+              ),
+              AppListTileDrawer(
+                onTap: () {
+                  AuthRepos.signOut();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, AppRoutesNames.auth, (route) => false);
+                },
+                title: 'Đăng xuất',
+                path: ImageRes.icPause,
+                isActive: indexDrawer == 6,
+              ),
+            ],
+          )
+        ],
       ),
     );
-  }
-
-  Widget _buildListTile(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    String? routeName,
-    Function()? onTap,
-  }) {
-    return ListTile(
-      onTap: () {
-        _pop(context);
-        if (onTap != null) {
-          onTap();
-        } else if (routeName != null) {
-          Navigator.of(context).pushNamed(routeName);
-        }
-      },
-      leading: Icon(icon,
-          color: AppColors.primaryElement.withOpacity(0.9), size: 28.w),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 18.sp,
-          fontWeight: FontWeight.w500,
-          color: Colors.black,
-        ),
-      ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
-    );
-  }
-
-  void _pop(BuildContext context) {
-    Navigator.pop(context);
   }
 }

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
-import 'package:nes24_ph55234/common/components/app_icon.dart';
-import 'package:nes24_ph55234/common/components/app_image.dart';
+import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
@@ -160,7 +159,7 @@ class ProfileBMIInputWidget extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AppIcon(
+                AppIconAsset(
                   path: iconPath,
                   iconColor: isChose ? Colors.grey : Colors.white,
                   size: 35,

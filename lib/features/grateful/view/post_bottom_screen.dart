@@ -4,8 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
-import 'package:nes24_ph55234/common/components/app_icon.dart';
-import 'package:nes24_ph55234/common/components/app_image.dart';
+import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
@@ -107,7 +106,7 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
                   children: [
                     ElevatedButton.icon(
                         onPressed: _showDatePicker,
-                        icon: const AppIcon(
+                        icon: const AppIconAsset(
                           path: ImageRes.icCalandar,
                           size: 19,
                         ),
@@ -185,7 +184,7 @@ class _PostBottomScreenState extends ConsumerState<PostBottomScreen> {
             children: [
               IconButton(
                 onPressed: _addImage,
-                icon: const AppIcon(path: ImageRes.icAddImage),
+                icon: const AppIconAsset(path: ImageRes.icAddImage),
               ),
             ],
           ),

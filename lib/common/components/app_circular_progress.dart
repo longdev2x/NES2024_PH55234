@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
-import 'package:nes24_ph55234/common/components/app_icon.dart';
+import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
@@ -37,7 +37,7 @@ class AppCircularProgressIcon extends StatelessWidget {
           backgroundWidth: 4.r,
           lineWidth: 5.r,
           circularStrokeCap: CircularStrokeCap.round,
-          center: iconPath == null ? null : AppIcon(path: iconPath!),
+          center: iconPath == null ? null : AppIconAsset(path: iconPath!),
         ),
         SizedBox(height: 5.h),
         Text(
@@ -123,7 +123,7 @@ class AppCircularProgressContent extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 iconPath != null
-                    ? AppIcon(path: iconPath!, size: 35)
+                    ? AppIconAsset(path: iconPath!, size: 35)
                     : const SizedBox(),
                 Text(
                   step.toString(),

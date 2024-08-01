@@ -19,14 +19,15 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchUser = ref.watch(profileProvider);
     return Scaffold(
-        appBar: PreferredSize(preferredSize: Size.fromHeight(30.h), child: AppBar()),
-        body: fetchUser.when(
-            data: (objUser) {
-              return _buildContent(objUser, context);
-            },
-            error: (error, stackTrace) => Center(child: Text('Error-$error')),
-            loading: () => const Center(child: CircularProgressIndicator())),
-      );
+      appBar:
+          PreferredSize(preferredSize: Size.fromHeight(30.h), child: AppBar()),
+      body: fetchUser.when(
+          data: (objUser) {
+            return _buildContent(objUser, context);
+          },
+          error: (error, stackTrace) => Center(child: Text('Error-$error')),
+          loading: () => const Center(child: CircularProgressIndicator())),
+    );
   }
 
   Widget _buildContent(UserEntity objUser, BuildContext context) {
@@ -34,31 +35,33 @@ class ProfileScreen extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(
           horizontal: AppConstants.marginHori,
           vertical: AppConstants.marginVeti),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ProfileAvatarWidget(avatar: objUser.avatar),
-          SizedBox(height: 15.h),
-          AppText20('${objUser.username} (${objUser.role.name})',
-              fontWeight: FontWeight.bold),
-          SizedBox(height: 5.h),
-          AppText16(objUser.email),
-          SizedBox(height: 10.h),
-          ProfileRowInforWidget(objUser: objUser),
-          SizedBox(height: 20.h),
-          AppButton(
-              ontap: () {
-                Navigator.pushNamed(
-                  context,
-                  AppRoutesNames.editProfile,
-                  arguments: true,
-                );
-              },
-              name: 'Cập nhật hồ sơ',
-              width: 250),
-          SizedBox(height: 20.h),
-          Expanded(
-            child: ListView(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ProfileAvatarWidget(avatar: objUser.avatar),
+            SizedBox(height: 15.h),
+            AppText20('${objUser.username} (${objUser.role.name})',
+                fontWeight: FontWeight.bold),
+            SizedBox(height: 5.h),
+            AppText16(objUser.email),
+            SizedBox(height: 10.h),
+            ProfileRowInforWidget(objUser: objUser),
+            SizedBox(height: 20.h),
+            AppButton(
+                ontap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutesNames.editProfile,
+                    arguments: true,
+                  );
+                },
+                name: 'Cập nhật hồ sơ',
+                width: 250),
+            SizedBox(height: 20.h),
+            ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 ProfileListItem(
                     onTap: () {}, text: 'Cài đặt', icon: ImageRes.icSettings),
@@ -78,8 +81,8 @@ class ProfileScreen extends ConsumerWidget {
                     icon: ImageRes.icLogout),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

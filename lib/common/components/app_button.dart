@@ -1,4 +1,4 @@
-import 'package:nes24_ph55234/common/components/app_icon.dart';
+import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -107,7 +107,7 @@ class AppButtonWithIcon extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(width: 12.w),
-            AppIcon(path: iconPath, onButton: true,),
+            AppIconAsset(path: iconPath),
             const Spacer(),
             Text(
               name!,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nes24_ph55234/common/components/app_icon.dart';
+import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/features/profile/controller/bmi_provider.dart';
 import 'package:nes24_ph55234/features/profile/view/BMI/bmi_calculate_screen.dart';
@@ -22,12 +22,12 @@ class BMINavigate extends ConsumerWidget {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-              icon: AppIcon(
+              icon: AppIconAsset(
                 path: ImageRes.icBMI,
               ),
               label: 'BMI gần nhất'),
           BottomNavigationBarItem(
-              icon: AppIcon(
+              icon: AppIconAsset(
                 path: ImageRes.icCalculate,
               ),
               label: 'Tính toán'),

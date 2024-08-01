@@ -1,10 +1,8 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nes24_ph55234/common/components/app_icon.dart';
-import 'package:nes24_ph55234/common/components/app_image.dart';
+import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
@@ -64,7 +62,7 @@ class ItemListFriend extends StatelessWidget {
                 isAddFriend
                     ? ElevatedButton.icon(
                         onPressed: onTapAdd,
-                        icon: AppIcon(
+                        icon: AppIconAsset(
                           path: ImageRes.icAddFriend,
                           size: 12.r,
                         ),
@@ -74,7 +72,7 @@ class ItemListFriend extends StatelessWidget {
                         ))
                     : GestureDetector(
                         onTap: onTapAdd,
-                        child: const AppIcon(
+                        child: const AppIconAsset(
                           path: ImageRes.icSMS,
                           size: 28,
                         ),
