@@ -2,21 +2,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/features/friend/view/main_friend_screen.dart';
 import 'package:nes24_ph55234/features/home/view/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:nes24_ph55234/features/notify/view/notify_screen.dart';
 import 'package:nes24_ph55234/features/profile/view/profile/profile_screen.dart';
 import 'package:nes24_ph55234/features/sleep/view/sleep_screen.dart';
-import 'package:nes24_ph55234/features/step/view/main_tab_step.dart';
 import 'package:rive/rive.dart';
 
-Widget appScreens({int index = 0}) {
-  List<Widget> screens = [];
-  return screens[index];
-}
+
 
 List<Widget> screens = [
   const HomeScreen(),
   const SleepScreen(),
   const MainFriendScreen(),
-  const StepMainTab(),
+  const NotifyScreen(),
   const ProfileScreen(),
 ];
 

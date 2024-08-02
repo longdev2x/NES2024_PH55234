@@ -132,6 +132,7 @@ class ProfileBMIInputWidget extends ConsumerWidget {
       BuildContext context, UserEntity objUser, WidgetRef ref) async {
     DateTime? bith = await showDatePicker(
       context: context,
+      locale: const Locale('vi', 'VN'),
       firstDate: DateTime.now().subtract(const Duration(days: 36500)),
       lastDate: DateTime.now(),
       initialDate: DateTime.now().subtract(const Duration(days: 7300)),
@@ -161,9 +162,10 @@ class ProfileBMIInputWidget extends ConsumerWidget {
               children: [
                 AppIconAsset(
                   path: iconPath,
-                  iconColor: isChose ? Colors.grey : Colors.white,
+                  iconColor: Colors.black,
                   size: 35,
                 ),
+                SizedBox(height: 3.h),
                 AppText16(text)
               ],
             ),

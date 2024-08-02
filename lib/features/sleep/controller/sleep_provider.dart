@@ -42,10 +42,11 @@ class SleepNotifier extends StateNotifier<List<SleepEntity>> {
 
 
 //Set time nhắc ngủ + notification
-final planBedProvider = StateNotifierProvider<PlanBedNotifier, TimeOfDay>((ref) => PlanBedNotifier());
+final planBedProvider = StateNotifierProvider<PlanBedNotifier, TimeOfDay>((ref) => PlanBedNotifier(ref));
 
 class PlanBedNotifier extends StateNotifier<TimeOfDay> {
-  PlanBedNotifier() : super(const TimeOfDay(hour: 22, minute: 0)) {
+  StateNotifierProviderRef? ref;
+  PlanBedNotifier(this.ref) : super(const TimeOfDay(hour: 22, minute: 0)) {
     _loadSavedTime();
   }
 
@@ -64,6 +65,7 @@ class PlanBedNotifier extends StateNotifier<TimeOfDay> {
   }
 
   void _scheduleSleepNotification() {
-    NotificationServices().scheduleSleepNotification(state);
+    print('zzz0101-$ref');
+    NotificationServices().scheduleSleepNotification(state, ref!);
   }
 }

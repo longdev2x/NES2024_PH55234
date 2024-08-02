@@ -15,11 +15,14 @@ import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/sleep_entity.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/data/models/target_entity.dart';
+import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:nes24_ph55234/features/home/controller/all_target_provider.dart';
 import 'package:nes24_ph55234/features/home/controller/banner_dots_provider.dart';
 import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
 import 'package:nes24_ph55234/features/sleep/controller/sleep_provider.dart';
 import 'package:nes24_ph55234/features/step/controller/daily_step_provider.dart';
+import 'package:nes24_ph55234/global.dart';
+import 'package:nes24_ph55234/main.dart';
 
 AppBar homeAppBar(WidgetRef ref, BuildContext context) {
   final fetchUser = ref.watch(profileProvider);
@@ -32,29 +35,30 @@ AppBar homeAppBar(WidgetRef ref, BuildContext context) {
           },
           icon: const Icon(Icons.search)),
       Row(
-          children: [
-            fetchUser.when(
-              data: (objUser) => GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoutesNames.profile);
-                },
-                child: Hero(
-                  tag: objUser.avatar ?? '',
-                  child: CircleAvatar(
-                    backgroundImage: objUser.avatar != null
-                        ? NetworkImage(objUser.avatar!)
-                        : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
-                  ),
+        children: [
+          fetchUser.when(
+            data: (objUser) => GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutesNames.profile);
+              },
+              child: Hero(
+                tag: objUser.avatar ?? '',
+                child: CircleAvatar(
+                  backgroundImage: objUser.avatar != null
+                      ? NetworkImage(objUser.avatar!)
+                      : const AssetImage(ImageRes.avatarDefault)
+                          as ImageProvider,
                 ),
               ),
-              error: (error, stackTrace) => const Center(child: Text('Error')),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
             ),
-            SizedBox(width: 20.w),
-          ],
-        ),
+            error: (error, stackTrace) => const Center(child: Text('Error')),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          SizedBox(width: 20.w),
+        ],
+      ),
     ],
   );
 }
@@ -100,14 +104,43 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
   int _currentIndex = 0;
   Timer? timer;
 
-  final List<BannerContainer> list = const [
-    BannerContainer(imagePath: ImageRes.stepCounterBanner),
-    BannerContainer(imagePath: ImageRes.sleepBanner),
-    BannerContainer(imagePath: ImageRes.gratefulBanner),
-    BannerContainer(imagePath: ImageRes.bmiBanner),
-    BannerContainer(imagePath: ImageRes.yogaBanner),
-    BannerContainer(imagePath: ImageRes.adviseBanner),
-  ];
+  List<BannerContainer> getList(WidgetRef ref) {
+    UserEntity? objUser = ref.watch(profileProvider).value;
+    return [
+      BannerContainer(
+          onTap: () => navKey.currentState!.pushNamed(AppRoutesNames.steps),
+          text: 'Thể chất',
+          imagePath: ImageRes.stepCounterBanner),
+      BannerContainer(
+          onTap: () => navKey.currentState!.pushNamed(AppRoutesNames.sleep),
+          text: 'Giấc ngủ',
+          imagePath: ImageRes.sleepBanner),
+      BannerContainer(
+          onTap: () => navKey.currentState!.pushNamed(AppRoutesNames.grateful),
+          text: 'Tinh thần',
+          imagePath: ImageRes.gratefulBanner),
+      BannerContainer(
+          onTap: () => navKey.currentState!.pushNamed(AppRoutesNames.bmi),
+          text: 'Ăn uống',
+          imagePath: ImageRes.bmiBanner),
+      BannerContainer(
+          onTap: () => navKey.currentState!.pushNamed(AppRoutesNames.yoga),
+          text: 'Sức khoẻ tinh thần',
+          imagePath: ImageRes.yogaBanner),
+      BannerContainer(
+          onTap: () {
+            if (objUser != null) {
+              if (objUser.role == listRoles[0]) {
+                navKey.currentState!.pushNamed(AppRoutesNames.adviseUser);
+              } else {
+                navKey.currentState!.pushNamed(AppRoutesNames.adviseExpext);
+              }
+            }
+          },
+          text: 'Tư vấn bí mật',
+          imagePath: ImageRes.adviseBanner),
+    ];
+  }
 
   @override
   void didChangeDependencies() {
@@ -124,7 +157,7 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
 
   void _startAutoScroll() {
     timer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
-      if (_currentIndex < list.length - 1) {
+      if (_currentIndex < getList(ref).length - 1) {
         _currentIndex++;
       } else {
         _currentIndex = 0;
@@ -152,7 +185,7 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
             onPageChanged: (index) {
               ref.read(bannerDotsProvider.notifier).changIndex(index);
             },
-            children: list,
+            children: getList(ref),
           ),
         ),
         SizedBox(height: 5.h),
@@ -164,7 +197,7 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
                 curve: Curves.bounceIn);
           },
           position: ref.watch(bannerDotsProvider),
-          dotsCount: list.length,
+          dotsCount: getList(ref).length,
           decorator: DotsDecorator(
             size: const Size.square(9),
             activeSize: const Size(20, 8),
@@ -181,19 +214,29 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
 }
 
 class BannerContainer extends StatelessWidget {
-  const BannerContainer({super.key, required this.imagePath});
+  final Function() onTap;
   final String imagePath;
+  final String text;
+  const BannerContainer(
+      {super.key,
+      required this.onTap,
+      required this.imagePath,
+      required this.text});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 325.h,
-      width: 160.h,
-      decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 325.h,
+        width: 160.h,
+        decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(imagePath),
             fit: BoxFit.fill,
           ),
-          borderRadius: BorderRadius.circular(28)),
+          borderRadius: BorderRadius.circular(28),
+        ),
+      ),
     );
   }
 }
@@ -213,78 +256,29 @@ class HomeAnalysisWidget extends ConsumerWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _buildHeader(context),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const AppText20('Thành tích', fontWeight: FontWeight.bold),
-                TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) =>
-                          HomeSetTargetWidget(targets: targets),
-                    );
-                  },
-                  style: const ButtonStyle(
-                    padding: WidgetStatePropertyAll(
-                      EdgeInsets.symmetric(horizontal: 1, vertical: 3),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pushNamed(AppRoutesNames.bmi),
+                  child: _buildHealthCard(profile)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pushNamed(AppRoutesNames.sleep),
+                      child: _buildSleepCard(
+                          listSleeps, _getTarget(AppConstants.typeHoursSleep)),
                     ),
-                  ),
-                  child: const AppText16(
-                    'Đặt lại mục tiêu',
-                    fontWeight: FontWeight.bold,
-                  ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pushNamed(AppRoutesNames.steps),
+                      child: _buildStepCard(
+                          fetchStep, _getTarget(AppConstants.typeStepDaily)),
+                    ),
+                  ],
                 ),
               ],
             ),
-            SizedBox(height: 10.h),
-            ...targets.map((target) {
-              switch (target.type) {
-                case AppConstants.typeStepDaily:
-                  return _buildStepCard(fetchStep, target);
-                case AppConstants.typeHoursSleep:
-                  if (listSleeps.isEmpty || listSleeps.first.endTime == null) {
-                    return HomeCardPriviewItem(
-                      title: 'Giấc ngủ',
-                      subtile: 'giờ',
-                      result: 0,
-                      target: target.target,
-                    );
-                  }
-                  return HomeCardPriviewItem(
-                    title: 'Giấc ngủ',
-                    subtile: 'giờ',
-                    result: listSleeps.first.endTime!
-                        .difference(listSleeps.first.startTime!)
-                        .inHours
-                        .toDouble(),
-                    target: target.target,
-                  );
-                case AppConstants.typeHeight:
-                  return HomeCardPriviewItem(
-                    title: 'Chiều cao',
-                    subtile: 'cm',
-                    result: profile.height ?? 0,
-                    target: target.target,
-                  );
-                case AppConstants.typeWeight:
-                  return HomeCardPriviewItem(
-                    title: 'Cân nặng',
-                    subtile: 'kg',
-                    result: profile.weight ?? 0,
-                    target: target.target,
-                  );
-                case AppConstants.typeBMI:
-                  return HomeCardPriviewItem(
-                    title: 'BMI',
-                    subtile: 'kg/m2',
-                    result: profile.calculateBMI(),
-                    target: target.target,
-                  );
-                default:
-                  return const SizedBox();
-              }
-            }).toList(),
           ],
         );
       },
@@ -293,67 +287,248 @@ class HomeAnalysisWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildStepCard(
-      AsyncValue<List<StepEntity>> fetchStep, TargetEntity target) {
-    return fetchStep.when(
-      data: (steps) {
-        StepEntity todayStep = steps.last;
-        return HomeCardPriviewItem(
-          title: 'Đi bộ',
-          subtile: 'bước',
-          result: todayStep.step.toDouble(),
-          target: target.target,
-        );
-      },
-      error: (e, s) => const Center(child: Text('Step Error')),
-      loading: () => const Center(child: CircularProgressIndicator()),
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const AppText20('Thành tích', fontWeight: FontWeight.bold),
+        TextButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (ctx) => HomeSetTargetWidget(targets: targets),
+            );
+          },
+          style: ButtonStyle(
+            padding: WidgetStateProperty.all(
+              const EdgeInsets.symmetric(horizontal: 1, vertical: 3),
+            ),
+          ),
+          child: const AppText16(
+            'Đặt lại mục tiêu',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     );
   }
-}
 
-class HomeCardPriviewItem extends ConsumerWidget {
-  final String title;
-  final String subtile;
-  final double result;
-  final double target;
-  const HomeCardPriviewItem({
-    super.key,
-    required this.title,
-    required this.subtile,
-    required this.result,
-    required this.target,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(allTargetProvider);
-    final double percent = (result / target).clamp(0.0, 1.0);
+  Widget _buildStepCard(
+      AsyncValue<List<StepEntity>> fetchStep, TargetEntity? target) {
     return Card(
-      margin: EdgeInsets.only(bottom: 15.h),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Padding(
-        padding:
-            EdgeInsets.only(left: 12.w, right: 20.w, top: 10.h, bottom: 10.h),
-        child: Row(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.w),
+        child: SizedBox(
+          height: 105.w,
+          width: 135.w,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.directions_walk,
+                      size: 30, color: Colors.blue),
+                  SizedBox(width: 10.w),
+                  const AppText19('Bước chân', fontWeight: FontWeight.bold),
+                ],
+              ),
+              SizedBox(height: 15.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  fetchStep.when(
+                    data: (steps) {
+                      StepEntity todayStep = steps.last;
+                      return AppProgresTarget(
+                        name: todayStep.step.toString(),
+                        percent: (todayStep.step / (target?.target ?? 10000))
+                            .clamp(0.0, 1.0),
+                        radius: 30,
+                      );
+                    },
+                    error: (e, s) => Text('Lỗi: $e'),
+                    loading: () => const CircularProgressIndicator(),
+                  ),
+                  SizedBox(width: 6.h),
+                  Column(
+                    children: [
+                      const AppText14('Mục tiêu'),
+                      AppText14(
+                        '${target?.target.toInt() ?? 2500} bước',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSleepCard(List<SleepEntity> listSleeps, TargetEntity? target) {
+    double sleepHours = 0;
+    if (listSleeps.isNotEmpty && listSleeps.first.endTime != null) {
+      sleepHours = listSleeps.first.endTime!
+          .difference(listSleeps.first.startTime!)
+          .inHours
+          .toDouble();
+    }
+
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.w),
+        child: SizedBox(
+          height: 105.w,
+          width: 135.w,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.bedtime, size: 30, color: Colors.indigo),
+                  SizedBox(width: 10.w),
+                  const AppText19('Giấc ngủ', fontWeight: FontWeight.bold),
+                ],
+              ),
+              SizedBox(height: 10.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppProgresTarget(
+                    name: '${sleepHours.toStringAsFixed(1)} h',
+                    percent:
+                        (sleepHours / (target?.target ?? 8)).clamp(0.0, 1.0),
+                    radius: 30,
+                  ),
+                  SizedBox(width: 5.h),
+                  Column(
+                    children: [
+                      const AppText14('Mục tiêu'),
+                      AppText14(
+                        '${target?.target ?? 8} giờ',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHealthCard(UserEntity profile) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.w),
+        child: Column(
           children: [
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText20(
-                  title,
-                  fontWeight: FontWeight.bold,
-                ),
-                AppText16('Mục tiêu ${target.toInt()} $subtile'),
+                const AppText19('Chỉ số sức khoẻ', fontWeight: FontWeight.bold),
+                SizedBox(height: 12.h),
+                _buildBMIIndicator(profile),
               ],
             ),
-            const Spacer(),
-            AppProgresTarget(
-              name: result.toInt().toString(),
-              percent: percent,
+            SizedBox(height: 10.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildHealthInfo(Icons.height, 'Chiều cao',
+                    '${profile.height?.toInt() ?? 0} cm'),
+                SizedBox(width: 25.w),
+                _buildHealthInfo(Icons.monitor_weight, 'Cân nặng',
+                    '${profile.weight?.toInt() ?? 0} kg'),
+              ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildBMIIndicator(UserEntity objUser) {
+    double bmi = objUser.calculateBMI();
+    Color bmiColor = _getBMIColor(bmi);
+    String bmiCategory = _getBMICategory(bmi);
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 130,
+          width: 130,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              CircularProgressIndicator(
+                value: (bmi / 30).clamp(0.0, 1.0),
+                strokeWidth: 8,
+                backgroundColor: Colors.grey[300],
+                valueColor: AlwaysStoppedAnimation<Color>(bmiColor),
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const AppText16('BMI', fontWeight: FontWeight.bold),
+                    AppText20(bmi.toStringAsFixed(1),
+                        fontWeight: FontWeight.bold, color: bmiColor),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 6.h),
+        AppText16(bmiCategory, color: bmiColor, fontWeight: FontWeight.bold),
+      ],
+    );
+  }
+
+  Widget _buildHealthInfo(IconData icon, String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(icon, size: 30, color: Colors.blue),
+        SizedBox(height: 2.h),
+        // AppText14(label),
+        AppText16(value, fontWeight: FontWeight.bold),
+      ],
+    );
+  }
+
+  Color _getBMIColor(double bmi) {
+    if (bmi < 18.5) return Colors.blue;
+    if (bmi < 25) return Colors.green;
+    if (bmi < 30) return Colors.orange;
+    return Colors.red;
+  }
+
+  String _getBMICategory(double bmi) {
+    if (bmi < 18.5) return 'Thiếu cân';
+    if (bmi < 25) return 'Bình thường';
+    if (bmi < 30) return 'Thừa cân';
+    return 'Béo phì';
+  }
+
+  TargetEntity? _getTarget(String type) {
+    return targets.firstWhere((t) => t.type == type,
+        orElse: () => TargetEntity(
+            userId: Global.storageService.getUserId(), type: type, target: 0));
   }
 }
 

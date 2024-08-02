@@ -1,8 +1,8 @@
 import 'package:nes24_ph55234/common/components/app_icon_image.dart';
+import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class AppButton extends StatelessWidget {
   final double? height;
@@ -48,10 +48,10 @@ class AppButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(radius!),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 2,
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -68,7 +68,34 @@ class AppButton extends StatelessWidget {
   }
 }
 
+class AppOutlineButton extends StatelessWidget {
+  final Function() onTap;
+  final String text;
+  const AppOutlineButton({
+    super.key,
+    required this.onTap,
+    required this.text,
+  });
 
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: onTap,
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(color: Colors.indigo[400]!),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.r),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      ),
+      child: AppText16(
+        text,
+        color: Colors.indigo[700],
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+}
 
 //Cần set Width khi đặt trong 1 row
 class AppButtonWithIcon extends StatelessWidget {
@@ -103,11 +130,24 @@ class AppButtonWithIcon extends StatelessWidget {
         height: height!.h,
         width: width!.w,
         decoration: BoxDecoration(
-            color: bgColor!, borderRadius: BorderRadius.circular(radius!)),
+          color: bgColor!,
+          borderRadius: BorderRadius.circular(radius!),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
         child: Row(
           children: [
             SizedBox(width: 12.w),
-            AppIconAsset(path: iconPath, iconColor: Colors.white,),
+            AppIconAsset(
+              path: iconPath,
+              iconColor: Colors.white,
+            ),
             const Spacer(),
             Text(
               name!,

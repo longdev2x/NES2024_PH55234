@@ -18,34 +18,36 @@ class HomeScreen extends ConsumerWidget {
       appBar: homeAppBar(ref, context),
       body: RefreshIndicator(
         child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 10.h),
-              const HelloText(),
-              const UserName(),
-              SizedBox(height: 15.h),
-              AppSearchBar(onTap: () => Navigator.of(context).pushNamed(AppRoutesNames.search),),
-              SizedBox(height: 15.h),
-              const HomeBanner(),
-              SizedBox(height: 15.h),
-            fetchTarget.when(
-              data: (targets) {
-                return HomeAnalysisWidget(targets: targets);
-              },
-              error: (error, stack) => Center(child: Text('Target Error - $error')),
-              loading: () => const Center(child: CircularProgressIndicator()),
+          padding:
+              const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const HelloText(),
+                const UserName(),
+                SizedBox(height: 8.h),
+                AppSearchBar(
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(AppRoutesNames.search)),
+                SizedBox(height: 15.h),
+                const HomeBanner(),
+                fetchTarget.when(
+                  data: (targets) {
+                    return HomeAnalysisWidget(targets: targets);
+                  },
+                  error: (error, stack) => Center(child: Text('Target Error - $error')),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                ),
+                SizedBox(height: 95.h),
+              ],
             ),
-            ],
           ),
         ),
-      ),
-      onRefresh: () async {
-        AppToast.showToast("Fetch lại dữ liệu");
-      },
+        onRefresh: () async {
+          AppToast.showToast("Fetch lại dữ liệu");
+        },
       ),
     );
   }

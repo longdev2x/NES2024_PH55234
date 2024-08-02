@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/routes/routes.dart';
@@ -31,6 +32,8 @@ class MyApp extends ConsumerWidget {
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: navKey,
+        supportedLocales: supportedLocales,
+        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
         title: 'NES24 PH55234 Hoàng Nhật Long',
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
@@ -41,4 +44,16 @@ class MyApp extends ConsumerWidget {
       ),
     );
   }
+
+
+  //    final localizationsDelegates = const [
+  //   GlobalMaterialLocalizations.delegate,
+  //   GlobalWidgetsLocalizations.delegate,
+  //   GlobalCupertinoLocalizations.delegate,
+  // ];
+  final supportedLocales = const [
+    Locale('vi', 'VN'), // Tiếng Việt
+    Locale('en', 'US'), // Tiếng Anh (hoặc các ngôn ngữ khác nếu cần)
+  ];
+  
 }

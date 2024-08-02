@@ -4,8 +4,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:googleapis_auth/auth_io.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
+import 'package:nes24_ph55234/data/models/notify_entity.dart';
+import 'package:nes24_ph55234/features/notify/controller/notify_provider.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'package:nes24_ph55234/main.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -69,7 +72,7 @@ class NotificationServices {
   }
 
   //Notification local Sleep
-  Future<void> scheduleSleepNotification(TimeOfDay sleepTime) async {
+  Future<void> scheduleSleepNotification(TimeOfDay sleepTime, StateNotifierProviderRef ref) async {
     final vietnamTime = tz.getLocation('Asia/Ho_Chi_Minh');
     final now = tz.TZDateTime.now(vietnamTime);
 
@@ -113,6 +116,17 @@ class NotificationServices {
         matchDateTimeComponents: DateTimeComponents.time,
         payload: 'sleep_screen',
       );
+      //Thêm vào provider thông báo
+      ref.read(notifyProvider.notifier).addNotify(
+            NotifyEntity(
+              title: 'Đã đến giờ ngủ',
+              body: 'Nhấn để bắt đầu theo dõi giấc ngủ của bạn.',
+              type: 'sleep',
+              time: DateTime.now(),
+              isRead: false,
+            ),
+          );
+          print('zzz22222');
       if (kDebugMode) {
         print("zzzĐã lên lịch thông báo thành công");
       }
@@ -198,6 +212,17 @@ class NotificationServices {
           //Trong data có sẵn senderId và type.(lúc gửi cần thêm)
           payload: json.encode(message.data),
         );
+
+        //Thêm vào provider thông báo
+        // _ref?.read(notifyProvider.notifier).addNotify(
+        //       NotifyEntity(
+        //         title: title,
+        //         body: body,
+        //         type: type ?? '',
+        //         time: DateTime.now(),
+        //         isRead: false,
+        //       ),
+        //     );
       } catch (e) {
         if (kDebugMode) {
           print('Error showing notification: $e');

@@ -8,6 +8,7 @@ import 'package:nes24_ph55234/common/components/app_global_app_bar.dart';
 import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
+import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/sleep_entity.dart';
 import 'package:nes24_ph55234/data/models/target_entity.dart';
@@ -50,163 +51,304 @@ class _SleepScreenState extends ConsumerState<SleepScreen> {
     return Scaffold(
       appBar: appGlobalAppBar('Sleep Tracker'),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            listSleep.isEmpty ||
-                    (listSleep.first.startTime != null &&
-                        listSleep.first.endTime != null)
-                ? _buildStartTracker(ref: ref, listSleeps: listSleep)
-                : _buildStopTracker(ref: ref, listSleeps: listSleep),
-            SizedBox(height: 20.h),
-          ],
+        padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori, vertical: AppConstants.marginVeti - 5),
+        child: SingleChildScrollView(
+          child: listSleep.isEmpty ||
+                  (listSleep.first.startTime != null &&
+                      listSleep.first.endTime != null)
+              ? _buildStartTracker(ref: ref, listSleeps: listSleep)
+              : _buildStopTracker(ref: ref, listSleeps: listSleep),
         ),
       ),
     );
   }
 
-  Widget _buildStartTracker(
-      {required WidgetRef ref, required List<SleepEntity> listSleeps}) {
-    SleepEntity? currentSleep;
-    int? totalSlep;
-    String? textTotalDuration;
-    if (listSleeps.isNotEmpty) {
-      currentSleep = listSleeps.first;
-      totalSlep =
-          currentSleep.endTime!.difference(currentSleep.startTime!).inMinutes;
-      textTotalDuration = 'Ngủ được: ${totalSlep}phút';
-      if (totalSlep > 60) {
-        textTotalDuration = 'Ngủ được: ${totalSlep / 60}giờ';
-      }
-    }
-
-    final fetchSleepTarget = ref.watch(sleepTargetProvider);
-    final TimeOfDay timeTellSleep = ref.read(planBedProvider);
-
-    return Column(
-      children: [
-        const SizedBox(width: double.infinity),
-        fetchSleepTarget.when(
-            data: (target) {
-              return Column(
-                children: [
-                  AppText20('Mục tiêu: ${target!.target} (giờ)', fontWeight: FontWeight.bold,),
-                  SizedBox(height: 5.h),
-                  AppText16('Giờ nhắc ngủ: ${timeTellSleep.format(context)}', fontWeight: FontWeight.bold),
-                  SizedBox(height: 10.h),
-                  TextButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (ctx) {
-                              return const SleepSetupDialogWidget();
-                            });
-                      },
-                      child: const AppText16('Thiết lập lại'),),
-                ],
-              );
-            },
-            error: (e, s) => const Center(
-                  child: Text('Error'),
-                ),
-            loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                )),
-        SizedBox(height: 50.h),
-        AppButton(
-          ontap: () {
-            ref
-                .read(sleepProvider.notifier)
-                .startSleep(startTime: DateTime.now());
-          },
-          width: 270,
-          name: 'Bắt đầu giấc ngủ mới',
-        ),
-        SizedBox(height: 50.h),
-        if (listSleeps.isNotEmpty)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(width: double.infinity),
-              const AppText20(
-                'Giấc ngủ gần nhất',
-                fontWeight: FontWeight.bold,
-              ),
-              SizedBox(height: 20.h),
-              Card(
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                  child: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppText16(
-                            'Đi ngủ: ${currentSleep!.startDateFormat!}',
-                          ),
-                          AppText16('Thức dậy: ${currentSleep.endDateFormat!}'),
-                        ],
-                      ),
-                      const Spacer(),
-                      AppText20(
-                        textTotalDuration,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 15.h),
-              Align(
-                  alignment: Alignment.center,
-                  child: TextButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: ref.context,
-                          isScrollControlled: false,
-                          builder: (context) => _buildHistorySleep(listSleeps),
-                        );
-                      },
-                      child: const AppText20('Xem thêm'))),
-            ],
-          ),
-        SizedBox(height: 100.h),
-      ],
-    );
+  Widget _buildStartTracker({required WidgetRef ref, required List<SleepEntity> listSleeps}) {
+  SleepEntity? currentSleep;
+  int? totalSleep;
+  String? textTotalDuration;
+  if (listSleeps.isNotEmpty) {
+    currentSleep = listSleeps.first;
+    totalSleep = currentSleep.endTime!.difference(currentSleep.startTime!).inMinutes;
+    textTotalDuration = totalSleep > 60
+        ? 'Ngủ được: ${(totalSleep / 60).toStringAsFixed(1)} giờ'
+        : 'Ngủ được: $totalSleep phút';
   }
 
+  final fetchSleepTarget = ref.watch(sleepTargetProvider);
+  final TimeOfDay timeTellSleep = ref.read(planBedProvider);
+
+  return SingleChildScrollView(
+    child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          fetchSleepTarget.when(
+            data: (target) => _buildTargetCard(target, timeTellSleep, context, ref),
+            error: (e, s) => const Center(child: Text('Error')),
+            loading: () => const Center(child: CircularProgressIndicator()),
+          ),
+          SizedBox(height: 25.h),
+          Center(
+            child: AppButton(
+              ontap: () {
+                ref.read(sleepProvider.notifier).startSleep(startTime: DateTime.now());
+              },
+              width: 270,
+              name: 'Bắt đầu giấc ngủ mới',
+            ),
+          ),
+          if (listSleeps.isNotEmpty) ...[
+            SizedBox(height: 25.h),
+            const AppText20(
+              'Giấc ngủ gần nhất',
+              fontWeight: FontWeight.bold,
+              color: Colors.indigo,
+            ),
+            SizedBox(height: 10.h),
+            _buildLastSleepCard(currentSleep!, textTotalDuration!),
+            SizedBox(height: 20.h),
+            Center(
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: ref.context,
+                    builder: (context) => _buildHistorySleep(listSleeps),
+                  );
+                },
+                icon: Icon(Icons.history, color: Colors.indigo[700]),
+                label: AppText19(
+                  'Xem lịch sử giấc ngủ',
+                  color: Colors.indigo[700],
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: Colors.indigo[400]!),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                ),
+              ),
+            ),
+          ],
+          SizedBox(height: 100.h),
+        ],
+      ),
+  );
+}
+
+Widget _buildTargetCard(TargetEntity? target, TimeOfDay timeTellSleep, BuildContext context, WidgetRef ref) {
+  return Card(
+    elevation: 2,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
+    child: Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppText20(
+                    'Mục tiêu',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[700],
+                  ),
+                  SizedBox(height: 5.h),
+                  AppText24(
+                    '${target?.target ?? 8.0} giờ',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.indigo[700],
+                  ),
+                ],
+              ),
+              Icon(Icons.nightlight_round, size: 40.w, color: Colors.indigo[400]),
+            ],
+          ),
+          SizedBox(height: 15.h),
+          Divider(color: Colors.grey[300]),
+          SizedBox(height: 15.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AppText16(
+                'Giờ nhắc ngủ',
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[700],
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: Colors.indigo[50],
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: AppText19(
+                  timeTellSleep.format(context),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.indigo[700],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 15.h),
+          AppOutlineButton(
+            text: 'Thiết lập lại',
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (ctx) => const SleepSetupDialogWidget(),
+              );
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildLastSleepCard(SleepEntity currentSleep, String textTotalDuration) {
+  return Card(
+    elevation: 2,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
+    child: Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildTimeColumn('Đi ngủ:', currentSleep.startDateFormat!),
+              _buildTimeColumn('Thức dậy:', currentSleep.endDateFormat!),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+            decoration: BoxDecoration(
+              color: Colors.indigo[50],
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: AppText20(
+              textTotalDuration,
+              fontWeight: FontWeight.w600,
+              color: Colors.indigo[700],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildTimeColumn(String label, String time) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      AppText16(label, color: Colors.grey[600]),
+      SizedBox(height: 4.h),
+      AppText19(time, fontWeight: FontWeight.w600, color: Colors.indigo[700]),
+    ],
+  );
+}
+
+  //Màn hình stop
   Widget _buildStopTracker(
       {required WidgetRef ref, required List<SleepEntity> listSleeps}) {
     SleepEntity currentSleep = listSleeps.first;
     int durationSlepNow =
         DateTime.now().difference(currentSleep.startTime!).inMinutes;
-    String textCurrentDuration = 'Đã ngủ được: $durationSlepNow phút';
-    if (durationSlepNow > 60) {
-      textCurrentDuration = 'Đã ngủ được: ${durationSlepNow / 60} giờ';
-    }
-    return Column(
-      children: [
-        const SizedBox(width: double.infinity),
-        AppText20('Giờ bắt đầu: ${currentSleep.startDateFormat}'),
-        SizedBox(height: 15.h),
-        AppText55(formatTime(DateTime.now())),
-        SizedBox(height: 15.h),
-        AppText20(
-          textCurrentDuration,
-          fontWeight: FontWeight.bold,
+    String textCurrentDuration =
+        'Đã ngủ được: ${durationSlepNow ~/ 60} giờ ${durationSlepNow % 60} phút';
+
+    return Container(
+      margin: EdgeInsets.only(top: 70.h),
+      padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 20.w),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.indigo.shade800, Colors.indigo.shade500],
         ),
-        SizedBox(height: 50.h),
-        AppButton(
-          ontap: () {
-            ref.read(sleepProvider.notifier).stopSleep(endTime: DateTime.now());
-          },
-          width: 200,
-          name: 'Đã thức dậy',
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          _buildInfoRow(
+              Icons.alarm, 'Giờ bắt đầu', currentSleep.startDateFormat ?? ''),
+          SizedBox(height: 30.h),
+          _buildCurrentTime(),
+          SizedBox(height: 30.h),
+          _buildDurationInfo(textCurrentDuration),
+          SizedBox(height: 50.h),
+          _buildWakeUpButton(ref),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: Colors.white70, size: 24),
+        SizedBox(width: 10.w),
+        AppText20(
+          '$label: $value',
+          color: Colors.white,
+          fontWeight: FontWeight.w500,
         ),
       ],
+    );
+  }
+
+  Widget _buildCurrentTime() {
+    return Column(
+      children: [
+        const AppText20('Thời gian hiện tại', color: Colors.white70),
+        SizedBox(height: 10.h),
+        AppText55(
+          formatTime(DateTime.now()),
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDurationInfo(String textCurrentDuration) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 20.w),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: AppText20(
+        textCurrentDuration,
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget _buildWakeUpButton(WidgetRef ref) {
+    return AppButton(
+      ontap: () {
+        ref.read(sleepProvider.notifier).stopSleep(endTime: DateTime.now());
+      },
+      width: 170,
+      name: 'Đã thức dậy',
+      bgColor: Colors.white,
+      textColor: Colors.indigo.shade800,
+      radius: 30,
     );
   }
 
