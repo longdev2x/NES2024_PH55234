@@ -93,10 +93,9 @@ class ProfileRowInforWidget extends StatelessWidget {
           value: '${objUser.weight ?? '...'} kg',
         ),
         _buildInfoCard(
-          iconPath: ImageRes.icBMI,
-          label: 'BMI',
-          value: objUser.calculateBMI().toStringAsFixed(2)
-        ),
+            iconPath: ImageRes.icBMI,
+            label: 'BMI',
+            value: objUser.calculateBMI().toStringAsFixed(2)),
       ],
     );
   }

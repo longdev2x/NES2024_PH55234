@@ -49,9 +49,11 @@ class AuthController {
       await Global.storageService.setUserId(objUser.id);
       Global.storageService.setRole(objUser.role.name);
       ref.read(allTargetProvider.notifier).setAllDefaultTarget();
-      await Global.storageService.setRemember(email: '', password: '', isRemember: false);
+      await Global.storageService
+          .setRemember(email: '', password: '', isRemember: false);
       AppToast.showToast("Đăng ký thành công!");
-      navKey.currentState!.pushNamed(AppRoutesNames.editProfile, arguments: false);
+      navKey.currentState!
+          .pushNamed(AppRoutesNames.editProfile, arguments: false);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "email-already-in-use":
@@ -129,6 +131,50 @@ class AuthController {
       }
     } finally {
       ref.read(loaderProvider.notifier).state = false;
+    }
+  }
+
+  static Future<void> forgot(String email, WidgetRef ref) async {
+    try {
+      ref.read(loaderProvider.notifier).state = true;
+      await AuthRepos.forgotPass(email);
+      AppToast.showToast('Vui lòng kiểm tra Email để lấy lại mật khẩu');
+      ref.read(loaderProvider.notifier).state = false;
+      navKey.currentState!.pushNamed(AppRoutesNames.auth);
+    } on FirebaseAuthException catch (e) {
+      ref.read(loaderProvider.notifier).state = true;
+      switch (e.code) {
+        case 'weak-password':
+          AppToast.showToast('Mật khẩu mới quá yếu');
+          break;
+        case 'requires-recent-login':
+          AppToast.showToast('Vui lòng đăng nhập lại trước khi đổi mật khẩu.');
+          navKey.currentState!.pushNamed(AppRoutesNames.auth);
+          break;
+        case 'wrong-password':
+          AppToast.showToast('Mật khẩu hiện tại không đúng.');
+          break;
+        default:
+          AppToast.showToast('Đã xảy ra lỗi: ${e.message}');
+      }
+    }
+  }
+
+  static Future<void> changePass(String email, String currentPassword,
+      String rePass, WidgetRef ref) async {
+    try {
+      ref.read(loaderProvider.notifier).state = true;
+      await AuthRepos.changePass(email, currentPassword, rePass);
+      AppToast.showToast('Đã đổi mật khẩu thành công, vui lòng đăng nhập lại');
+      ref.read(loaderProvider.notifier).state = false;
+      navKey.currentState!
+          .pushNamedAndRemoveUntil(AppRoutesNames.auth, (route) => false);
+    } on FirebaseAuthException catch (e) {
+      ref.read(loaderProvider.notifier).state = false;
+      AppToast.showToast(e.message);
+      if (kDebugMode) {
+        print(e.message);
+      }
     }
   }
 }

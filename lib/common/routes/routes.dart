@@ -5,6 +5,9 @@ import 'package:nes24_ph55234/features/advise/view/expert/expert_advise_session_
 import 'package:nes24_ph55234/features/advise/view/user/user_advise_session_screen.dart';
 import 'package:nes24_ph55234/features/application/view/application.dart';
 import 'package:nes24_ph55234/features/auth/view/auth_screen.dart';
+import 'package:nes24_ph55234/features/auth/view/forget_screen.dart';
+import 'package:nes24_ph55234/features/auth/view/rePass.dart';
+import 'package:nes24_ph55234/features/auth/view/settings_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_profile_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_search_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/message_screen.dart';
@@ -95,6 +98,18 @@ class AppRoutes {
       const RouteEntity(
         path: AppRoutesNames.sleep,
         page: SleepScreen(),
+      ),
+      const RouteEntity(
+        path: AppRoutesNames.forget,
+        page: ForgetScreen(),
+      ),
+      const RouteEntity(
+        path: AppRoutesNames.rePass,
+        page: RePassScreen(),
+      ),
+      const RouteEntity(
+        path: AppRoutesNames.settings,
+        page: SettingsScreen(),
       ),
     ];
   }

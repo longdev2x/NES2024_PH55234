@@ -5,6 +5,7 @@ import 'package:nes24_ph55234/common/provider_global/loader_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:nes24_ph55234/features/auth/controller/auth_controller.dart';
 import 'package:nes24_ph55234/features/auth/controller/auth_provider.dart';
@@ -134,6 +135,11 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
                         TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
                   ),
                   const Spacer(),
+                  GestureDetector(
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(AppRoutesNames.forget, arguments: emailController.text),
+                      child: const AppText16('Quên mật khẩu?',
+                          color: Colors.purple)),
                 ],
               ),
             ),

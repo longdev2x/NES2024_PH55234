@@ -24,7 +24,7 @@ class InforNetworkCard extends StatelessWidget {
           backgroundColor: Colors.black,
           backgroundImage: avatar != null
               ? NetworkImage(avatar!)
-              : Image.asset(ImageRes.avatarDefault) as ImageProvider,
+              : const AssetImage(ImageRes.avatarDefault) as ImageProvider,
         ),
       title: Text(
         title ?? '',

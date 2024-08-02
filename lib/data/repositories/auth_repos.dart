@@ -41,4 +41,17 @@ class AuthRepos {
   static Future<void> setUserInfor(UserEntity objUser) async {
     await _instanceStore.collection(c).doc(objUser.id).set(objUser.toJson());
   }
+
+  static Future<void> forgotPass(String email) async {
+    await _instanceAuth.sendPasswordResetEmail(email: email);
+  }
+
+  static Future<void> changePass(String email, String currentPassword, String rePass) async {
+    final user = FirebaseAuth.instance.currentUser;
+    final cred = EmailAuthProvider.credential(
+        email: user!.email!, password: currentPassword);
+
+    await user.reauthenticateWithCredential(cred);
+    await _instanceAuth.currentUser!.updatePassword(rePass);
+  }
 }

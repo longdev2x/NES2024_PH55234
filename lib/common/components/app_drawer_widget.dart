@@ -37,7 +37,7 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
           fetchUser.when(
             data: (objUser) => InforNetworkCard(
               onTap: () => Navigator.pushNamed(context, AppRoutesNames.profile),
-              avatar: objUser.avatar!,
+              avatar: objUser.avatar,
               title: objUser.username,
               subtitle: objUser.role.name,
             ),

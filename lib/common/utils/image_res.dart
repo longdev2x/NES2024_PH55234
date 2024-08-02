@@ -60,6 +60,7 @@ class ImageRes {
   static const String icAdvise = '${_baseIcon}ic_advise.png';
   static const String icGrateful = '${_baseIcon}ic_grateful.png';
   static const String icYoga = '${_baseIcon}ic_yoga.png';
+  static const String icNotify = '${_baseIcon}ic_notify.png';
   //
   static const String icAngry = '${_baseIcon}ic_feel_angry.png';
   static const String icCry = '${_baseIcon}ic_feel_cry.png';

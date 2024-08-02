@@ -5,7 +5,9 @@ import 'package:nes24_ph55234/common/provider_global/is_dark_theme_provider.dart
 import 'package:rive/rive.dart';
 
 class AppThemeSwitcher extends ConsumerStatefulWidget {
-  const AppThemeSwitcher({super.key});
+  final double? height;
+  final double? width;
+  const AppThemeSwitcher({super.key, this.height = 43.2, this.width = 64.8});
   @override
   ConsumerState<AppThemeSwitcher> createState() => _ThemeSwitcherState();
 }
@@ -39,8 +41,8 @@ class _ThemeSwitcherState extends ConsumerState<AppThemeSwitcher> {
           ref.read(isDarkThemeProvider.notifier).switchThemeMode();
         },
         child: SizedBox(
-          height: 43.2.h,
-          width: 64.8.w,
+          height: widget.height!.h,
+          width: widget.width!.w,
           child: RiveAnimation.asset(
             'assets/rives/switch_theme.riv',
             fit: BoxFit.fill,

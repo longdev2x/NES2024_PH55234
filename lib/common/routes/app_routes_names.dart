@@ -19,5 +19,8 @@
   static const String adviseUser= '/adviseUser';
   static const String adviseExpext = '/adviseExpert';
   static const String sleep = '/sleep';
+  static const String forget = '/forget';
+  static const String rePass = '/repass';
+  static const String settings = '/settings';
 }
 

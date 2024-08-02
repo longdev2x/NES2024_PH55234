@@ -64,9 +64,13 @@ class ProfileScreen extends ConsumerWidget {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 ProfileListItem(
-                    onTap: () {}, text: 'Cài đặt', icon: ImageRes.icSettings),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(AppRoutesNames.settings);
+                    }, text: 'Cài đặt', icon: ImageRes.icSettings),
                 ProfileListItem(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pushNamed(AppRoutesNames.rePass, arguments: objUser.email);
+                    },
                     text: 'Đổi mật khẩu',
                     icon: ImageRes.icChangPass),
                 ProfileListItem(
