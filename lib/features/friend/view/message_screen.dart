@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
@@ -54,7 +55,7 @@ class _MessageScreenState extends ConsumerState<MessageScreen> {
                   return const Center(
                       child: AppText20('Chưa ghi nhận lịch sử nhắn tin'));
                 }
-                return _buildMessageList(messages);
+                return _buildMessageList(messages, objFriend.avatar);
               },
               error: (error, _) {
                 return Center(child: Text('Error: $error'));
@@ -68,7 +69,7 @@ class _MessageScreenState extends ConsumerState<MessageScreen> {
     );
   }
 
-  Widget _buildMessageList(List<MessageEntity> messages) {
+  Widget _buildMessageList(List<MessageEntity> messages, String? avatar) {
     final currentUserId =
         ref.read(messageProvider(messages.first.receiverId).notifier).userId;
     return ListView.builder(
@@ -78,9 +79,11 @@ class _MessageScreenState extends ConsumerState<MessageScreen> {
       itemBuilder: (context, index) {
         final message = messages[index];
         final isMe = message.senderId == currentUserId;
-        return _MessageBubble(
+        return MessageBubble(
           message: message,
           isMe: isMe,
+          avatar: avatar,
+          isFirstMess: index == 0 || messages[index].senderId != messages[index -1].senderId,
         );
       },
     );
@@ -106,7 +109,7 @@ class _MessageScreenState extends ConsumerState<MessageScreen> {
             child: TextField(
               controller: _messageController,
               decoration: InputDecoration(
-                hintText: 'Type a message...',
+                hintText: 'Bạn muốn nhắn gì...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
                   borderSide: BorderSide.none,
@@ -144,11 +147,18 @@ class _MessageScreenState extends ConsumerState<MessageScreen> {
   }
 }
 
-class _MessageBubble extends StatelessWidget {
+class MessageBubble extends StatelessWidget {
   final MessageEntity message;
+  final String? avatar;
   final bool isMe;
+  final bool isFirstMess;
 
-  const _MessageBubble({Key? key, required this.message, required this.isMe})
+  const MessageBubble(
+      {Key? key,
+      required this.message,
+      required this.isMe,
+      required this.isFirstMess,
+      required this.avatar})
       : super(key: key);
 
   @override
@@ -157,31 +167,46 @@ class _MessageBubble extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
       child: Align(
         alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-        child: Container(
-          decoration: BoxDecoration(
-            color: isMe ? Theme.of(context).primaryColor : Colors.grey[300],
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                message.content,
-                style: TextStyle(
-                  color: isMe ? Colors.white : Colors.black,
-                ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            isFirstMess && !isMe
+                ? CircleAvatar(
+                    backgroundImage: avatar != null
+                        ? NetworkImage(avatar!)
+                        : const AssetImage(ImageRes.avatarDefault)
+                            as ImageProvider,
+                  )
+                : const SizedBox(),
+            SizedBox(width: 8.w),
+            Container(
+              decoration: BoxDecoration(
+                color: isMe ? Theme.of(context).primaryColor : Colors.grey[300],
+                borderRadius: BorderRadius.circular(12.0),
               ),
-              const SizedBox(height: 4.0),
-              Text(
-                DateFormat('HH:mm').format(message.timestamp),
-                style: TextStyle(
-                  fontSize: 10.0,
-                  color: isMe ? Colors.white70 : Colors.black54,
-                ),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    message.content,
+                    style: TextStyle(
+                      color: isMe ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Text(
+                    DateFormat('HH:mm').format(message.timestamp),
+                    style: TextStyle(
+                      fontSize: 10.0,
+                      color: isMe ? Colors.white70 : Colors.black54,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

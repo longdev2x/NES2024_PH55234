@@ -605,6 +605,7 @@ class _HomeSetTargetWidgetState extends ConsumerState<HomeSetTargetWidget> {
   @override
   Widget build(BuildContext context) {
     final planBed = ref.watch(planBedProvider);
+    final planWalk = ref.watch(planWalkProvider);
     return AlertDialog(
       content: SingleChildScrollView(
         child: Form(
@@ -639,9 +640,9 @@ class _HomeSetTargetWidgetState extends ConsumerState<HomeSetTargetWidget> {
                 SizedBox(
                   height: 40.h,
                   child: OutlinedButton(
-                      onPressed: () => _showTimePicker(planBed, 'walk'),
+                      onPressed: () => _showTimePicker(planWalk, 'walk'),
                       child: Text(
-                        planBed.format(context),
+                        planWalk.format(context),
                         style: const TextStyle(
                             color: Color.fromARGB(255, 15, 7, 125)),
                       )),
