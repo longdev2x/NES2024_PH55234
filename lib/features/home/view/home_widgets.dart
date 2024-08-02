@@ -20,7 +20,9 @@ import 'package:nes24_ph55234/features/home/controller/all_target_provider.dart'
 import 'package:nes24_ph55234/features/home/controller/banner_dots_provider.dart';
 import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart';
 import 'package:nes24_ph55234/features/sleep/controller/sleep_provider.dart';
+import 'package:nes24_ph55234/features/sleep/controller/sleep_target_provider.dart';
 import 'package:nes24_ph55234/features/step/controller/daily_step_provider.dart';
+import 'package:nes24_ph55234/features/step/controller/step_target_provider.dart';
 import 'package:nes24_ph55234/global.dart';
 import 'package:nes24_ph55234/main.dart';
 
@@ -260,18 +262,21 @@ class HomeAnalysisWidget extends ConsumerWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.of(context).pushNamed(AppRoutesNames.bmi),
-                  child: _buildHealthCard(profile)),
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(AppRoutesNames.bmi),
+                    child: _buildHealthCard(profile)),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () => Navigator.of(context).pushNamed(AppRoutesNames.sleep),
+                      onTap: () =>
+                          Navigator.of(context).pushNamed(AppRoutesNames.sleep),
                       child: _buildSleepCard(
                           listSleeps, _getTarget(AppConstants.typeHoursSleep)),
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.of(context).pushNamed(AppRoutesNames.steps),
+                      onTap: () =>
+                          Navigator.of(context).pushNamed(AppRoutesNames.steps),
                       child: _buildStepCard(
                           fetchStep, _getTarget(AppConstants.typeStepDaily)),
                     ),
@@ -599,6 +604,7 @@ class _HomeSetTargetWidgetState extends ConsumerState<HomeSetTargetWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final planBed = ref.watch(planBedProvider);
     return AlertDialog(
       content: SingleChildScrollView(
         child: Form(
@@ -610,36 +616,70 @@ class _HomeSetTargetWidgetState extends ConsumerState<HomeSetTargetWidget> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20.w),
-            AppTextFormField(
-              controller: _stepsController,
-              lable: 'Số bước /ngày',
-              validator: (value) {
-                step = double.tryParse(value ?? '');
-                if (step == null) {
-                  return 'Hãy chỉ nhập số';
-                }
-                if (step! < 100) {
-                  return 'Hãy đặt mục tiêu từ 100 nhé';
-                }
-                return null;
-              },
-              inputType: TextInputType.number,
+            Row(
+              children: [
+                Expanded(
+                  child: AppTextFormField(
+                    controller: _stepsController,
+                    lable: 'Số bước /ngày',
+                    validator: (value) {
+                      step = double.tryParse(value ?? '');
+                      if (step == null) {
+                        return 'Hãy chỉ nhập số';
+                      }
+                      if (step! < 100) {
+                        return 'Hãy đặt mục tiêu từ 100 nhé';
+                      }
+                      return null;
+                    },
+                    inputType: TextInputType.number,
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                SizedBox(
+                  height: 40.h,
+                  child: OutlinedButton(
+                      onPressed: () => _showTimePicker(planBed, 'walk'),
+                      child: Text(
+                        planBed.format(context),
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 15, 7, 125)),
+                      )),
+                ),
+              ],
             ),
             SizedBox(height: 20.h),
-            AppTextFormField(
-              controller: _hoursController,
-              lable: 'Số giờ ngủ (giờ /ngày)',
-              validator: (value) {
-                hours = double.tryParse(value ?? '');
-                if (hours == null) {
-                  return 'Hãy chỉ nhập số';
-                }
-                if (hours! < 5) {
-                  return 'Đừng ngủ dưới 5 tiếng nhé!';
-                }
-                return null;
-              },
-              inputType: TextInputType.number,
+            Row(
+              children: [
+                Expanded(
+                  child: AppTextFormField(
+                    controller: _hoursController,
+                    lable: 'Số giờ ngủ (giờ /ngày)',
+                    validator: (value) {
+                      hours = double.tryParse(value ?? '');
+                      if (hours == null) {
+                        return 'Hãy chỉ nhập số';
+                      }
+                      if (hours! < 5) {
+                        return 'Đừng ngủ dưới 5 tiếng nhé!';
+                      }
+                      return null;
+                    },
+                    inputType: TextInputType.number,
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                SizedBox(
+                  height: 40.h,
+                  child: OutlinedButton(
+                      onPressed: () => _showTimePicker(planBed, 'sleep'),
+                      child: Text(
+                        planBed.format(context),
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 15, 7, 125)),
+                      )),
+                ),
+              ],
             ),
             SizedBox(height: 20.h),
             AppTextFormField(
@@ -728,5 +768,19 @@ class _HomeSetTargetWidgetState extends ConsumerState<HomeSetTargetWidget> {
         ),
       ),
     );
+  }
+
+  void _showTimePicker(TimeOfDay planBed, String type) async {
+    final TimeOfDay? newTime = await showTimePicker(
+      context: context,
+      initialTime: planBed,
+    );
+    if (newTime != null) {
+      if (type == 'sleep') {
+        ref.read(planBedProvider.notifier).setTime(newTime);
+      } else {
+        ref.read(planWalkProvider.notifier).setTime(newTime);
+      }
+    }
   }
 }

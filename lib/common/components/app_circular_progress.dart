@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_button.dart';
 import 'package:nes24_ph55234/common/components/app_icon_image.dart';
-import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_colors.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/target_entity.dart';
@@ -77,21 +76,20 @@ class AppCircularProgressContent extends ConsumerWidget {
             : AppConstants.typeStepDaily));
     double percent = (step! / targetStep!).clamp(0.0, 1.0);
 
-    Widget btnTarget = ElevatedButton(
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (ctx) => SetTargetStepsWidget(isDaily: btnStart == null),
-        );
+    Widget btnTarget = stepTarget.when(
+      data: (target) {
+        return AppOutlineButton(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (ctx) =>
+                    SetTargetStepsWidget(isDaily: btnStart == null),
+              );
+            },
+            text: 'Target: ${target?.target.toInt().toString() ?? ''}');
       },
-      child: stepTarget.when(
-        data: (target) {
-          return AppText20(
-              "Target: ${target?.target.toInt().toString() ?? ''}");
-        },
-        error: (error, stackTrace) => const Text('Error'),
-        loading: () => const AppText24("Mục tiêu: "),
-      ),
+      error: (error, stackTrace) => const Text('Error'),
+      loading: () => const Center(child: CircularProgressIndicator()),
     );
 
     return CircularPercentIndicator(
@@ -135,7 +133,7 @@ class AppCircularProgressContent extends ConsumerWidget {
                     ? Text(
                         date ?? '',
                         style: TextStyle(
-                            fontSize: 20.sp, fontWeight: FontWeight.w400),
+                            fontSize: 18.sp, fontWeight: FontWeight.w500),
                       )
                     : const SizedBox(),
                 btnStart == null ? btnTarget : const SizedBox(),

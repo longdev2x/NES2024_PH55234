@@ -82,6 +82,7 @@ class AppOutlineButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onTap,
       style: OutlinedButton.styleFrom(
+        elevation: 5,
         side: BorderSide(color: Colors.indigo[400]!),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.r),

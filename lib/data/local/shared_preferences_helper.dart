@@ -15,6 +15,7 @@ class SharedPreferencesHelper {
   Future<bool> setString(String key, String value) async {
     return await _pref.setString(key, value);
   }
+
   String getString(String key) {
     return _pref.getString(key) ?? '';
   }
@@ -22,14 +23,16 @@ class SharedPreferencesHelper {
   Future<bool> setInt(String key, int value) async {
     return await _pref.setInt(key, value);
   }
-  int? getInt(String key)  {
+
+  int? getInt(String key) {
     return _pref.getInt(key);
   }
 
   Future<bool> setDouble(String key, double value) async {
     return await _pref.setDouble(key, value);
   }
-  double? getDouble(String key)  {
+
+  double? getDouble(String key) {
     return _pref.getDouble(key);
   }
 
@@ -41,17 +44,22 @@ class SharedPreferencesHelper {
     return _pref.getBool(AppConstants.storageDeviceOpenFirstKey) ?? true;
   }
 
-  Future<bool> setRemember({String email = '', String password = '', bool isRemember = false}) {
-    final String json = jsonEncode(RememberPassEntity(email: email, password: password, isRemember: isRemember).toJson());
+  Future<bool> setRemember(
+      {String email = '', String password = '', bool isRemember = false}) {
+    final String json = jsonEncode(RememberPassEntity(
+            email: email, password: password, isRemember: isRemember)
+        .toJson());
     return _pref.setString(AppConstants.strageRemember, json);
   }
 
   RememberPassEntity getRemember() {
     final String json = _pref.getString(AppConstants.strageRemember) ?? '';
-    if(json.isEmpty) {
-      return const RememberPassEntity(email: '', password: '', isRemember: false);
+    if (json.isEmpty) {
+      return const RememberPassEntity(
+          email: '', password: '', isRemember: false);
     }
-    RememberPassEntity objRemember = RememberPassEntity.fromJson(jsonDecode(json) as Map<String, dynamic>);
+    RememberPassEntity objRemember =
+        RememberPassEntity.fromJson(jsonDecode(json) as Map<String, dynamic>);
     return objRemember;
   }
 
@@ -69,21 +77,41 @@ class SharedPreferencesHelper {
   }
 
   String getRole() {
-    String value = _pref.getString(AppConstants.storageRole) ?? listRoles.first.name;
+    String value =
+        _pref.getString(AppConstants.storageRole) ?? listRoles.first.name;
     return value;
   }
 
   Future<bool> setHoursSleep(int hours) async {
     return await _pref.setInt('sleepHour', hours);
   }
+
   Future<bool> setMinutesSleep(int minutes) async {
     return await _pref.setInt('sleepMitues', minutes);
   }
+
   int getHoursSleep() {
     return _pref.getInt('sleepHour') ?? 10;
   }
+
   int getMinutesSleep() {
     return _pref.getInt('sleepMitues') ?? 0;
+  }
+
+  Future<bool> setHoursRun(int hours) async {
+    return await _pref.setInt('RunHour', hours);
+  }
+
+  Future<bool> setMinutesRun(int minutes) async {
+    return await _pref.setInt('RunMitues', minutes);
+  }
+
+  int getHoursRun() {
+    return _pref.getInt('RunHour') ?? 10;
+  }
+
+  int getMinutesRun() {
+    return _pref.getInt('RunMitues') ?? 0;
   }
 
   Future<bool> removeKey(String key, int seconds) async {

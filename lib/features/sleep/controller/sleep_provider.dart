@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nes24_ph55234/common/services/notification_sevices.dart';
 import 'package:nes24_ph55234/data/models/sleep_entity.dart';
 import 'package:nes24_ph55234/data/repositories/sleep_repos.dart';
 import 'package:nes24_ph55234/global.dart';
@@ -37,35 +35,5 @@ class SleepNotifier extends StateNotifier<List<SleepEntity>> {
   Future<void> stopSleep({required DateTime endTime}) async {
     final updatedSleep = state.first.copyWith(endTime: endTime);
     await SleepRepos.updateSleep(updatedSleep);
-  }
-}
-
-
-//Set time nhắc ngủ + notification
-final planBedProvider = StateNotifierProvider<PlanBedNotifier, TimeOfDay>((ref) => PlanBedNotifier(ref));
-
-class PlanBedNotifier extends StateNotifier<TimeOfDay> {
-  StateNotifierProviderRef? ref;
-  PlanBedNotifier(this.ref) : super(const TimeOfDay(hour: 22, minute: 0)) {
-    _loadSavedTime();
-  }
-
-  Future<void> _loadSavedTime() async {
-    final hour = Global.storageService.getHoursSleep();
-    final minute = Global.storageService.getMinutesSleep();
-    state = TimeOfDay(hour: hour, minute: minute);
-    _scheduleSleepNotification();
-  }
-
-  Future<void> setTime(TimeOfDay time) async {
-    state = time;
-    await Global.storageService.setHoursSleep(time.hour);
-    await Global.storageService.setMinutesSleep(time.minute);
-    _scheduleSleepNotification();
-  }
-
-  void _scheduleSleepNotification() {
-    print('zzz0101-$ref');
-    NotificationServices().scheduleSleepNotification(state, ref!);
   }
 }

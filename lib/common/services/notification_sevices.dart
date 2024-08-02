@@ -55,6 +55,8 @@ class NotificationServices {
         if (details.payload != null) {
           if (details.payload == 'sleep_screen') {
             navKey.currentState!.pushNamed(AppRoutesNames.sleep);
+          } else if(details.payload == 'steps_screen') {
+            navKey.currentState!.pushNamed(AppRoutesNames.steps);
           } else {
             final String type =
                 json.decode(details.payload!)['message']['type'];
@@ -72,7 +74,7 @@ class NotificationServices {
   }
 
   //Notification local Sleep
-  Future<void> scheduleSleepNotification(TimeOfDay sleepTime, StateNotifierProviderRef ref) async {
+  Future<void> scheduleSleepNotification(String channelId, String channelName, String title, String body, String payload, TimeOfDay sleepTime, StateNotifierProviderRef ref) async {
     final vietnamTime = tz.getLocation('Asia/Ho_Chi_Minh');
     final now = tz.TZDateTime.now(vietnamTime);
 
@@ -89,17 +91,17 @@ class NotificationServices {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
-    AndroidNotificationChannel channel = const AndroidNotificationChannel(
-      'sleep_channel_id', //iid channel cho kênh nhắn tin
-      'Sleep Notifications',
+    AndroidNotificationChannel channel = AndroidNotificationChannel(
+      channelId, 
+      channelName,
       importance: Importance.max,
     );
 
     try {
       await _flutterLocalNotificationsPlugin.zonedSchedule(
         0,
-        'Đã đến giờ ngủ!',
-        'Nhấn để bắt đầu theo dõi giấc ngủ của bạn.',
+        title,
+        body,
         scheduledDate,
         NotificationDetails(
           android: AndroidNotificationDetails(
@@ -114,7 +116,7 @@ class NotificationServices {
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         matchDateTimeComponents: DateTimeComponents.time,
-        payload: 'sleep_screen',
+        payload: payload,
       );
       //Thêm vào provider thông báo
       ref.read(notifyProvider.notifier).addNotify(

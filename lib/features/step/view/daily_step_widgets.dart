@@ -23,7 +23,7 @@ class StepMainCircle extends ConsumerWidget {
           data: (objTarget) => objTarget!.target.toInt(),
           error: (e, s) => 0,
           loading: () => 2500),
-      date: 'Hôm qua',
+      date: 'Hôm nay',
       iconPath: ImageRes.icWalk,
     );
   }

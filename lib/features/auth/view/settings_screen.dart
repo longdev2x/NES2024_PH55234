@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nes24_ph55234/common/components/app_global_app_bar.dart';
 import 'package:nes24_ph55234/common/components/app_icon_image.dart';
-import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_theme_switcher.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
@@ -15,13 +15,12 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bool notify = ref.watch(notifyEnableProvider);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: appGlobalAppBar('Cài đặt'),
       body: Padding(
         padding:
             const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
         child: Column(
           children: [
-            const AppText24('Cài đặt'),
             SizedBox(height: 10.h),
             const AppThemeSwitcher(
               height: 126.9,
