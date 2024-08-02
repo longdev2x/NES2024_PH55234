@@ -49,7 +49,8 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
   Widget build(BuildContext context) {
     final bool isLogin = ref.watch(isLoginProvider);
     final bool isLoader = ref.watch(loaderProvider);
-    final bool? isRemember = ref.watch(isRememberProvider(objRemember?.isRemember));
+    final bool? isRemember =
+        ref.watch(isRememberProvider(objRemember?.isRemember));
     final Role? role = ref.watch(roleProvider);
     final GlobalKey<FormState> keyForm = GlobalKey();
 
@@ -123,8 +124,9 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
                 children: [
                   Checkbox(
                     value: isRemember,
-                    onChanged: (value) =>
-                        ref.read(isRememberProvider(isRemember).notifier).state = value,
+                    onChanged: (value) => ref
+                        .read(isRememberProvider(isRemember).notifier)
+                        .state = value,
                   ),
                   Text(
                     'Ghi nhớ tài khoản?',
@@ -163,7 +165,8 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(isLogin ? "Bạn chưa có tài khoản?" : "Bạn đã có tài khoản?"),
+              AppText16(
+                  isLogin ? "Bạn chưa có tài khoản?" : "Bạn đã có tài khoản?"),
               SizedBox(width: 5.w),
               GestureDetector(
                 onTap: isLoader
@@ -173,10 +176,10 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
                         ref.read(isLoginProvider.notifier).state = !isLogin;
                         didChangeDependencies.call();
                       },
-                child: Text(
+                child: AppText16(
                   isLogin ? "Đăng ký" : "Đăng Nhập",
-                  style: const TextStyle(
-                      color: Colors.purple, fontWeight: FontWeight.bold),
+                  color: Colors.purple,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],

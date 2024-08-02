@@ -2,6 +2,7 @@ class ImageRes {
   const ImageRes._();
   
   static const String _baseImage = "assets/images/";
+    static const String imgDefaultAvatar = '${_baseImage}img_default_avatar.jpg';
   static const String imgBgLogin = "${_baseImage}bg_login.png";
   static const String imgLight = "${_baseImage}light.png";
   static const String avatarDefault = '${_baseImage}img_onbording_boy.png';

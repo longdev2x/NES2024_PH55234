@@ -14,30 +14,27 @@ class AuthRepos {
     required String email,
     required String password,
   }) async {
-    UserCredential userCredential =
-        await _instanceAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    return userCredential;
+    return await _instanceAuth.createUserWithEmailAndPassword(
+        email: email, password: password);
   }
 
   static Future<UserCredential> loginWithFirebase({
     required String email,
     required String password,
   }) async {
-    UserCredential userCredential = await _instanceAuth.signInWithEmailAndPassword(
+    return await _instanceAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    return userCredential;
   }
 
   static Future<void> signOut() async {
     await _instanceAuth.signOut();
-    navKey.currentState!.pushNamedAndRemoveUntil(AppRoutesNames.welcome, (route) => false);
+    navKey.currentState!
+        .pushNamedAndRemoveUntil(AppRoutesNames.welcome, (route) => false);
   }
 
   static Future<UserEntity?> getUserInfor(String userId) async {
-    final query = await _instanceStore.collection(c).where('id', isEqualTo: userId).get();
+    final query =
+        await _instanceStore.collection(c).where('id', isEqualTo: userId).get();
     return UserEntity.fromJson(query.docs.first.data());
   }
 

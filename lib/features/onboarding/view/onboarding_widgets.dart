@@ -20,10 +20,13 @@ class OnboardingWidget1 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 30.h),
-                AppImage(
-                  imagePath: ImageRes.clap,
-                  height: 35.r,
-                  width: 35.r,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(40),
+                  child: AppImage(
+                    imagePath: ImageRes.imgDefaultAvatar,
+                    height: 60.w,
+                    width: 60.w,
+                  ),
                 ),
                 SizedBox(height: 15.h),
                 const AppText40('Hello!'),

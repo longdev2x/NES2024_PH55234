@@ -52,9 +52,8 @@ class _OnboardingScreen extends ConsumerState<OnboardingScreen> {
               'Với các tính năng như kết bạn, nhắn tin và tư vấn bí mật.\n   Bắt đầu ngay thôi nào!'),
     ];
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 25.w),
+      body: Padding(
+          padding: EdgeInsets.symmetric(vertical: 60.h, horizontal: AppConstants.marginHori),
           child: Stack(
             children: [
               PageView(
@@ -100,7 +99,6 @@ class _OnboardingScreen extends ConsumerState<OnboardingScreen> {
             ],
           ),
         ),
-      ),
     );
   }
 }
