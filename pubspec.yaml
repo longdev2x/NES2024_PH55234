@@ -95,6 +95,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/rives/
+    - assets/nes24-ph55234-firebase-adminsdk-43wdc-de5ba10c9e.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

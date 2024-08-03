@@ -260,6 +260,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
           children: [
             _buildHeader(context),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
                     onTap: () =>
@@ -269,17 +270,16 @@ class HomeAnalysisWidget extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () =>
-                          Navigator.of(context).pushNamed(AppRoutesNames.sleep),
-                      child: _buildSleepCard(
-                          listSleeps, _getTarget(AppConstants.typeHoursSleep)),
-                    ),
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(AppRoutesNames.sleep),
+                        child: _buildSleepCard(listSleeps,
+                            _getTarget(AppConstants.typeHoursSleep))),
+                    SizedBox(height: 3.h),
                     GestureDetector(
-                      onTap: () =>
-                          Navigator.of(context).pushNamed(AppRoutesNames.steps),
-                      child: _buildStepCard(
-                          fetchStep, _getTarget(AppConstants.typeStepDaily)),
-                    ),
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(AppRoutesNames.steps),
+                        child: _buildStepCard(
+                            fetchStep, _getTarget(AppConstants.typeStepDaily))),
                   ],
                 ),
               ],
@@ -326,7 +326,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.w),
         child: SizedBox(
-          height: 105.w,
+          height: 108.w,
           width: 135.w,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -337,7 +337,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
                   const Icon(Icons.directions_walk,
                       size: 30, color: Colors.blue),
                   SizedBox(width: 10.w),
-                  const AppText19('Bước chân', fontWeight: FontWeight.bold),
+                  const AppText18('Bước chân', fontWeight: FontWeight.bold),
                 ],
               ),
               SizedBox(height: 15.h),
@@ -348,11 +348,11 @@ class HomeAnalysisWidget extends ConsumerWidget {
                     data: (steps) {
                       StepEntity todayStep = steps.last;
                       return AppProgresTarget(
-                        name: todayStep.step.toString(),
-                        percent: (todayStep.step / (target?.target ?? 10000))
-                            .clamp(0.0, 1.0),
-                        radius: 30,
-                      );
+                          name: todayStep.step.toString(),
+                          percent: (todayStep.step / (target?.target ?? 10000))
+                              .clamp(0.0, 1.0),
+                          radius: 27.w,
+                          fontSize: 15);
                     },
                     error: (e, s) => Text('Lỗi: $e'),
                     loading: () => const CircularProgressIndicator(),
@@ -377,13 +377,13 @@ class HomeAnalysisWidget extends ConsumerWidget {
   }
 
   Widget _buildSleepCard(List<SleepEntity> listSleeps, TargetEntity? target) {
-    double sleepHours = 0;
-    if (listSleeps.isNotEmpty && listSleeps.first.endTime != null) {
-      sleepHours = listSleeps.first.endTime!
-          .difference(listSleeps.first.startTime!)
-          .inHours
-          .toDouble();
-    }
+    double sleepHours = 3.5;
+    // if (listSleeps.isNotEmpty && listSleeps.first.endTime != null) {
+    //   sleepHours = listSleeps.first.endTime!
+    //       .difference(listSleeps.first.startTime!)
+    //       .inHours
+    //       .toDouble();
+    // }
 
     return Card(
       elevation: 4,
@@ -391,7 +391,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.w),
         child: SizedBox(
-          height: 105.w,
+          height: 108.w,
           width: 135.w,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -401,7 +401,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
                 children: [
                   const Icon(Icons.bedtime, size: 30, color: Colors.indigo),
                   SizedBox(width: 10.w),
-                  const AppText19('Giấc ngủ', fontWeight: FontWeight.bold),
+                  const AppText18('Giấc ngủ', fontWeight: FontWeight.bold),
                 ],
               ),
               SizedBox(height: 10.h),
@@ -409,11 +409,11 @@ class HomeAnalysisWidget extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   AppProgresTarget(
-                    name: '${sleepHours.toStringAsFixed(1)} h',
-                    percent:
-                        (sleepHours / (target?.target ?? 8)).clamp(0.0, 1.0),
-                    radius: 30,
-                  ),
+                      name: '${sleepHours.toStringAsFixed(1)} h',
+                      percent:
+                          (sleepHours / (target?.target ?? 8)).clamp(0.0, 1.0),
+                      radius: 27.w,
+                      fontSize: 15),
                   SizedBox(width: 5.h),
                   Column(
                     children: [
@@ -443,7 +443,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
           children: [
             Column(
               children: [
-                const AppText19('Chỉ số sức khoẻ', fontWeight: FontWeight.bold),
+                const AppText18('Chỉ số sức khoẻ', fontWeight: FontWeight.bold),
                 SizedBox(height: 12.h),
                 _buildBMIIndicator(profile),
               ],

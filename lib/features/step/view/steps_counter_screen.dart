@@ -19,7 +19,7 @@ class StepsCounterScreen extends ConsumerStatefulWidget {
 }
 
 class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
-  bool _havePermission = false;
+  // bool _havePermission = false;
   @override
   void initState() {
     super.initState();
@@ -41,7 +41,7 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
   Future<void> _requestPermission() async {
     PermissionStatus status = await Permission.activityRecognition.request();
     if (status.isGranted) {
-      _havePermission = true;
+      // _havePermission = true;
     } else if (status.isDenied) {
       AppToast.showToast("Không thể phát hiện bước chân khi bạn từ chối",
           length: Toast.LENGTH_LONG);
@@ -61,8 +61,8 @@ class _StepsCounterScreenState extends ConsumerState<StepsCounterScreen> {
         padding: EdgeInsets.symmetric(horizontal: 5.r),
         child: Column(
           children: [
-            if (!_havePermission)
-              const Text('Không thể chạy nếu bạn không cấp quyền'),
+            // if (!_havePermission)
+            //   const Text('Không thể chạy nếu bạn không cấp quyền'),
             SizedBox(height: 20.h),
             isStarted
                 ? StepCounterMainCircle(objStep: objSteps)

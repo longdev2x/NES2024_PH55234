@@ -24,7 +24,7 @@ class AnotherVideoWidget extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const AppText14("Video khác", fontWeight: FontWeight.bold),
+        const AppText16("Video khác", fontWeight: FontWeight.bold),
         SizedBox(height: 20.h),
         fetchList.when(
             data: (data) {
@@ -35,7 +35,7 @@ class AnotherVideoWidget extends ConsumerWidget {
                   itemCount: listVideo.length,
                   itemBuilder: (ctx, index) {
                     Color bgColorChosed = videoChose.id == listVideo[index].id
-                        ? AppColors.primaryElement
+                        ? AppColors.shadowColorLight
                         : AppColors.primaryBackground;
                     return InkWell(
                       onTap: () {

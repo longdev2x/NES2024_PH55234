@@ -99,8 +99,8 @@ class _ApplicationScreenState extends ConsumerState<ApplicationScreen>
                   //scaleAnimation<double> 1 - 0.8
                   scale: _scaleAnimation.value,
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: screens[selectedIndex]),
+                          borderRadius: BorderRadius.circular(isDrawerClosed ? 0 : 24),
+                          child: screens[selectedIndex]),
                 ),
               ),
             ),
@@ -134,7 +134,7 @@ class _ApplicationScreenState extends ConsumerState<ApplicationScreen>
         child: SafeArea(
           child: Container(
             padding: const EdgeInsets.all(10),
-            margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 20.h),
+            margin: EdgeInsets.only(left: 24.w, right: 24.w),
             decoration: BoxDecoration(
                 color: AppColors.backgroundColor2.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(24.r)),

@@ -84,13 +84,13 @@ class AppText16 extends StatelessWidget {
   }
 }
 
-class AppText19 extends StatelessWidget {
+class AppText18 extends StatelessWidget {
   final String? text;
   final FontWeight? fontWeight;
   final int? maxLines;
   final TextAlign? textAlign;
   final Color? color;
-  const AppText19(this.text,
+  const AppText18(this.text,
       {super.key,
       this.fontWeight,
       this.maxLines = 1,
@@ -101,7 +101,7 @@ class AppText19 extends StatelessWidget {
     return Text(
       text!,
       style: TextStyle(
-        fontSize: 19.sp,
+        fontSize: 18.sp,
         fontWeight: fontWeight,
         color: color,
       ),

@@ -13,8 +13,9 @@ class AppToast {
 
 class AppConfirm extends StatelessWidget {
   final String title;
+  final Function()? onNoConfirm;
   final Function() onConfirm;
-  const AppConfirm({super.key, required this.title, required this.onConfirm});
+  const AppConfirm({super.key, required this.title,required this.onConfirm, this.onNoConfirm});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class AppConfirm extends StatelessWidget {
       title: Text(title),
       actions: [
         ElevatedButton(
-            onPressed: () {
+            onPressed: onNoConfirm ?? () {
               Navigator.pop(context);
             },
             child: const Text("Huỷ")),

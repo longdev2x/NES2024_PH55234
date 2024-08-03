@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_icon_image.dart';
-import 'package:nes24_ph55234/common/components/app_text.dart';
-import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/post_entity.dart';
 import 'package:nes24_ph55234/features/grateful/controller/post_grateful_provider.dart';
 import 'package:nes24_ph55234/features/grateful/view/post_bottom_screen.dart';
@@ -37,80 +35,122 @@ class GratefulPostItem extends ConsumerWidget {
             builder: (ctx) => const PostBottomScreen());
       },
       child: Card(
-        margin: EdgeInsets.only(bottom: 20.h),
+        elevation: 2,
+        margin: EdgeInsets.only(bottom: 14.h),
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppConstants.marginHori,
-              vertical: AppConstants.marginVeti),
+          padding: EdgeInsets.all(16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  AppText20(
-                    objPost.formatDate,
-                    fontWeight: FontWeight.bold,
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      objPost.formatDate,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
                   ),
                   const Spacer(),
                   AppImage(
                     imagePath: emoijMap[objPost.feel],
-                    width: 40.w,
-                    height: 40.h,
-                    boxFit: BoxFit.fitHeight,
-                  )
+                    width: 32.w,
+                    height: 32.h,
+                    boxFit: BoxFit.contain,
+                  ),
                 ],
               ),
               SizedBox(height: 5.h),
-              if (objPost.title != null)
-                Align(
-                    alignment: Alignment.topCenter,
-                    child: AppText26(objPost.title!)),
+              if (objPost.title != null) ...[
+                SizedBox(height: 12.h),
+                Text(
+                  objPost.title!,
+                  style:
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+              SizedBox(height: 8.h),
               // Hiển thị tối đa 2 text đầu tiên
-              ...textItems.take(2).map((item) => AppText20(item.content!)),
-              if (textItems.length > 2) const Text('...'),
-              SizedBox(height: 10.h),
-              // Hiển thị hàng ảnh
-              Wrap(
-                spacing: 5,
-                runSpacing: 8,
-                children: List.generate(
-                  min(3, imageItems.length),
-                  (index) {
-                    return index == 2 && imageItems.length > 3
-                        ? Stack(
-                            children: [
-                              Image.network(
-                                imageItems[index].content!,
-                                fit: BoxFit.cover,
-                                height: 70.h,
-                                width: 96.w,
-                              ),
-                              Positioned.fill(
-                                child: Container(
-                                  height: 70.h,
-                                  width: 96.w,
-                                  color: Colors.black.withOpacity(0.5),
-                                  child: Center(
-                                    child: AppText20(
-                                      '+${imageItems.length - 3}',
-                                      color: Colors.white,
+              ...textItems.take(2).map((item) => Padding(
+                    padding: EdgeInsets.only(bottom: 4.h),
+                    child: Text(
+                      item.content!,
+                      style: TextStyle(fontSize: 14.sp),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )),
+              if (textItems.length > 2)
+                Text('...', style: TextStyle(fontSize: 14.sp)),
+              if (imageItems.isNotEmpty) ...[
+                SizedBox(height: 12.h),
+                // Hiển thị hàng ảnh
+                SizedBox(
+                  height: 80.h,
+                  child: Row(
+                    children: [
+                      ...List.generate(
+                        min(3, imageItems.length),
+                        (index) {
+                          if (index == 2 && imageItems.length > 3) {
+                            return Stack(
+                              children: [
+                                _buildImageThumbnail(
+                                    imageItems[index].content!),
+                                Positioned.fill(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '+${imageItems.length - 3}',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )
-                        : Image.network(
-                            imageItems[index].content!,
-                            fit: BoxFit.cover,
-                            height: 70.h,
-                            width: 96.w,
-                          );
-                  },
+                              ],
+                            );
+                          }
+                          return _buildImageThumbnail(
+                              imageItems[index].content!);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageThumbnail(String imageUrl) {
+    return Container(
+      width: 80.w,
+      height: 80.h,
+      margin: EdgeInsets.only(right: 8.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
         ),
       ),
     );

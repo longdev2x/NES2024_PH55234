@@ -25,7 +25,7 @@ final getListVideoFutureProvider =
   () => ListVideoNotifer(),
 );
 
-final videoControlProvider = StateProvider<VideoEntity>((ref) => VideoEntity(type: AppConstants.typeVideoYoga));
+final videoControlProvider = StateProvider<VideoEntity>((ref) => VideoEntity(type: AppConstants.typeVideoYoga, updateAt: DateTime.now()));
 
 // VideoPlayerController? videoPlayerController;
 

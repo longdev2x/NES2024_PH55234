@@ -170,7 +170,7 @@ class MessageBubble extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            isFirstMess && !isMe
+            !isMe
                 ? CircleAvatar(
                     backgroundImage: avatar != null
                         ? NetworkImage(avatar!)

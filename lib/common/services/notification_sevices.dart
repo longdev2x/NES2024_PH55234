@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,8 @@ import 'package:nes24_ph55234/global.dart';
 import 'package:nes24_ph55234/main.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:flutter/services.dart' show rootBundle;
+
 
 class NotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -234,8 +235,7 @@ class NotificationServices {
   }
 
   Future<void> _initializeHttpClient() async {
-    final jsonKey =
-        File('/path/to/your/service-account.json').readAsStringSync();
+    final jsonKey = await rootBundle.loadString('assets/nes24-ph55234-firebase-adminsdk-43wdc-de5ba10c9e.json');
     var credentials = ServiceAccountCredentials.fromJson(jsonKey);
     var scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
     _httpClient = await clientViaServiceAccount(credentials, scopes);

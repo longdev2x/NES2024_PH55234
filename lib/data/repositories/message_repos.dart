@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:nes24_ph55234/common/services/notification_sevices.dart';
 import 'package:nes24_ph55234/data/models/message_entity.dart';
 import 'package:nes24_ph55234/global.dart';
 
@@ -80,14 +79,14 @@ class MessageRepos {
       'unread': Global.storageService.getUserId() != objMessage.senderId,
     });
 
-    if (Global.storageService.getUserId() != objMessage.senderId) {
-      NotificationServices().sendNotification(
-        type: 'chat',
-        receiverToken: await getUserToken(objMessage.receiverId),
-        title: "Tin nhắn mới",
-        body: objMessage.content,
-      );
-    }
+    // if (Global.storageService.getUserId() != objMessage.senderId) {
+    //   NotificationServices().sendNotification(
+    //     type: 'chat',
+    //     receiverToken: await getUserToken(objMessage.receiverId),
+    //     title: "Tin nhắn mới",
+    //     body: objMessage.content,
+    //   );
+    // }
   }
   //Lấy token người nhận
   static Future<String> getUserToken(String userId) async {

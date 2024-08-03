@@ -109,10 +109,13 @@ class ExpertAdviseSessionScreen extends ConsumerWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppImage(
-                    imagePath: ImageRes.avatarDefault,
-                    height: 50.h,
-                    width: 50.h,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: AppImage(
+                      imagePath: ImageRes.imgDefaultAvatar,
+                      height: 50.h,
+                      width: 50.h,
+                    ),
                   ),
                   SizedBox(width: 10.w),
                   Expanded(

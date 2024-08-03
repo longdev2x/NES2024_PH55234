@@ -13,10 +13,15 @@ class VideoRepos {
   static const String _c = AppConstants.cVideo;
 
   static Future<List<VideoEntity>> getAllVideo() async {
-    final docRef = await _insFirestore.collection(_c).get();
-    return docRef.docs
-        .map((data) => VideoEntity.fromJson(data.data()))
-        .toList();
+    try {
+      final docRef =
+          await _insFirestore.collection(_c).orderBy('updateAt').get();
+      return docRef.docs
+          .map((data) => VideoEntity.fromJson(data.data()))
+          .toList();
+    } on FirebaseException catch (e) {
+      throw Exception(e);
+    }
   }
 
   static Future<void> uploadVideo(VideoEntity objVideo) async {
@@ -38,7 +43,8 @@ class VideoRepos {
         objVideo = objVideo.copyWith(url: url);
 
         //To Firestore
-        final docRef = _insFirestore.collection(AppConstants.cVideo).doc(objVideo.id);
+        final docRef =
+            _insFirestore.collection(AppConstants.cVideo).doc(objVideo.id);
         await docRef.set(objVideo.toJson());
       }
     } catch (e) {

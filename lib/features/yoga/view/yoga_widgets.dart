@@ -18,13 +18,13 @@ class YogaMenu extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        AppText16(
+        AppText20(
           name,
           fontWeight: FontWeight.bold,
         ),
         GestureDetector(
           onTap: onTapMore,
-          child: const AppText10('Xem hết', fontWeight: FontWeight.bold,),
+          child: const AppText14('Xem hết', fontWeight: FontWeight.bold,),
         ),
       ],
     );

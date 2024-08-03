@@ -16,6 +16,7 @@ class FriendScreen extends ConsumerWidget {
     final friends = ref.watch(friendsProvider);
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           friendRequests.when(
             data: (requests) {
@@ -59,7 +60,6 @@ class FriendScreen extends ConsumerWidget {
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, stack) => Center(child: Text('Error: $error')),
           ),
-          SizedBox(height: 20.h),
           friends.when(
             data: (friends) {
               return Column(

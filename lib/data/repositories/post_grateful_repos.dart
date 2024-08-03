@@ -61,4 +61,8 @@ class PostGratefulRepos {
     }
     return newItems;
   }
+
+  static Future<void> deletePost(String postId) async {
+    await _firestore.collection(_c).doc(postId).delete();
+  }
 }

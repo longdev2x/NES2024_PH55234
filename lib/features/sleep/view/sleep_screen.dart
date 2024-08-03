@@ -116,7 +116,7 @@ class _SleepScreenState extends ConsumerState<SleepScreen> {
                   );
                 },
                 icon: Icon(Icons.history, color: Colors.indigo[700]),
-                label: AppText19(
+                label: AppText18(
                   'Xem lịch sử giấc ngủ',
                   color: Colors.indigo[700],
                 ),
@@ -183,7 +183,7 @@ Widget _buildTargetCard(TargetEntity? target, TimeOfDay timeTellSleep, BuildCont
                   color: Colors.indigo[50],
                   borderRadius: BorderRadius.circular(20.r),
                 ),
-                child: AppText19(
+                child: AppText18(
                   timeTellSleep.format(context),
                   fontWeight: FontWeight.bold,
                   color: Colors.indigo[700],
@@ -248,7 +248,7 @@ Widget _buildTimeColumn(String label, String time) {
     children: [
       AppText16(label, color: Colors.grey[600]),
       SizedBox(height: 4.h),
-      AppText19(time, fontWeight: FontWeight.w600, color: Colors.indigo[700]),
+      AppText18(time, fontWeight: FontWeight.w600, color: Colors.indigo[700]),
     ],
   );
 }

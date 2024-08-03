@@ -321,7 +321,7 @@ class PostFriendItem extends ConsumerWidget {
           // Hiển thị tối đa 2 dong text đầu tiên
           // Hiển thị hàng ảnh
           Wrap(
-            spacing: 8, // Khoảng cách giữa các ảnh theo chiều ngang
+            spacing: 6, // Khoảng cách giữa các ảnh theo chiều ngang
             runSpacing:
                 8, // Khoảng cách giữa các hàng (nếu có nhiều hơn một hàng)
             children: List.generate(

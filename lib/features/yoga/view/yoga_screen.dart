@@ -20,19 +20,21 @@ class YogaScreen extends ConsumerWidget {
           ElevatedButton.icon(
             onPressed: () {
               VideoEntity objVideo = VideoEntity(
-                type: AppConstants.typeVideoYoga,
-                title: 'Video Yoga',
+                type: AppConstants.typeVideoThien,
+                title: 'Thiền định 4',
                 des:
-                    'Chào mừng bạn đến với video thiền của tôi nhé, alo bạn ơi, alo bạn à, bạn',
-                thumbnail:
-                    'https://cdn.hellobacsi.com/wp-content/uploads/2019/07/tam-gi%C3%A1c.png',
+                    'Thực hiện tư thế xếp bằng, lưng thẳng, cơ bụng thả lỏng. Miệng nhẩm câu “Om Shanti” trong 1 phút. Đây là hình thức cầu nguyện quan trọng của đạo Hindu. Quá trình này sẽ giúp tâm hồn bạn được thư giãn hơn và các suy nghĩ dần lắng đọng. Bạn cũng có thể chắp tay cầu nguyện trong thời gian này để tinh thần được thả lỏng hoàn toàn.',
+                thumbnail: 'https://static.tuoitre.vn/tto/i/s626/2016/07/09/hinh-5-1468028701.jpg',
+                updateAt: DateTime.now(),
               );
+              
+              // 'https://cdn.hellobacsi.com/wp-content/uploads/2019/07/tam-gi%C3%A1c.png'
               ref
                   .read(getListVideoFutureProvider.notifier)
                   .uploadVideo(objVideo: objVideo);
             },
             icon: const Icon(Icons.upload),
-            label: const Text('Upload Video'),
+            label: const Text('Up Video'),
           ),
         ],
       ),
@@ -50,19 +52,26 @@ class YogaScreen extends ConsumerWidget {
                     .toList();
                 return Column(
                   children: [
-                    const YogaMenu(name: 'Thiền'),
-                    SizedBox(height: 10.h),
-                    CourseItemGrid(listThien),
-                    SizedBox(height: 20.h),
                     const YogaMenu(name: 'Yoga'),
                     SizedBox(height: 10.h),
-                    CourseItemGrid(listYoga),
+                    listYoga.isEmpty
+                        ? const Center(child: Text('Hiện chưa có video'))
+                        : CourseItemGrid(listYoga),
+                    SizedBox(height: 20.h),
+                    const YogaMenu(name: 'Thiền'),
+                    SizedBox(height: 10.h),
+                    listThien.isEmpty
+                        ? const Center(child: Text('Hiện chưa có video'))
+                        : CourseItemGrid(listThien),
                   ],
                 );
               },
-              error: (error, stackTrace) => const Center(
-                    child: Text('Error'),
-                  ),
+              error: (error, stackTrace) {
+                print(error);
+                return const Center(
+                  child: Text('Error'),
+                );
+              },
               loading: () => const Center(child: CircularProgressIndicator())),
         ),
       ),

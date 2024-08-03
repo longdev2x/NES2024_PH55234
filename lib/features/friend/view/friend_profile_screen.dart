@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
-import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/friend_entity.dart';
 import 'package:nes24_ph55234/features/friend/controller/friend_provider.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_widgets.dart';
@@ -51,7 +50,7 @@ class _FriendProfileScreenState extends ConsumerState<FriendProfileScreen> {
 
   Widget _buildContent(FriendEntity objFriend, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
+      padding: const EdgeInsets.symmetric(horizontal: 0),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -46,8 +46,10 @@ class _YogaDetailScreenState extends ConsumerState<YogaDetailScreen> {
                       horizontal: AppConstants.marginHori,
                       vertical: AppConstants.marginVeti),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppText16(objVideo.des ?? '', maxLines: 10),
+                      Text(objVideo.des ?? '', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500, overflow: TextOverflow.ellipsis), maxLines: 4,),
+                      GestureDetector(onTap: () {}, child: const AppText14('Xem thêm', color: Colors.blue,)),
                       SizedBox(height: 10.h),
                       AnotherVideoWidget(scrollController: _scrollController, type: objVideo.type,)
                     ],

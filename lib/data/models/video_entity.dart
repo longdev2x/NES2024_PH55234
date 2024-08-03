@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class VideoEntity {
@@ -8,6 +9,7 @@ class VideoEntity {
   final String? title;
   final String? thumbnail;
   final String? des;
+  final DateTime updateAt;
 
   VideoEntity({
     String? id,
@@ -17,6 +19,7 @@ class VideoEntity {
     this.title,
     this.thumbnail,
     this.des,
+    required this.updateAt,
   }) : id = const Uuid().v4();
 
   VideoEntity copyWith({
@@ -30,7 +33,8 @@ class VideoEntity {
           des: des,
           thumbnail: thumbnail ?? this.thumbnail,
           title: title,
-          url: url ?? this.url);
+          url: url ?? this.url,
+          updateAt: updateAt);
 
   factory VideoEntity.fromJson(Map<String, dynamic> json) => VideoEntity(
         id: json['id'],
@@ -40,6 +44,7 @@ class VideoEntity {
         thumbnail: json['thumbnail'],
         title: json['title'],
         des: json['des'],
+        updateAt: (json['updateAt'] as Timestamp).toDate()
       );
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -49,35 +54,6 @@ class VideoEntity {
         'title': title,
         'thumbnail': thumbnail,
         'des': des,
+        'updateAt' : Timestamp.fromDate(updateAt),
       };
 }
-
-// class VideoControlEntity {
-//   final String? url;
-//   final bool isPlayed;
-//   final double volume;
-//   final bool isFullScreen;
-//   final Future<void>? initVideo;
-
-//   VideoControlEntity(
-//       {this.url,
-//       this.isPlayed = false,
-//       this.volume = 1,
-//       this.isFullScreen = false,
-//       this.initVideo});
-
-//   VideoControlEntity copyWith({
-//     String? url,
-//     bool? isPlayed,
-//     double? volume,
-//     bool? isFullScreen,
-//     Future<void>? initVideo,
-//   }) =>
-//       VideoControlEntity(
-//         url: url ?? this.url,
-//         isPlayed: isPlayed ?? this.isPlayed,
-//         volume: volume ?? this.volume,
-//         isFullScreen: isFullScreen ?? this.isFullScreen,
-//         initVideo: initVideo ?? this.initVideo,
-//       );
-// }

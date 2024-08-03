@@ -24,7 +24,7 @@ class DailyStepAsyncNotifier
           userId: userId,
           date: DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day),
-          step: 1250,
+          step: 1950,
           calo: 26,
           metre: 550,
           minute: 6),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/components/app_global_app_bar.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
-import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/post_entity.dart';
 import 'package:nes24_ph55234/features/grateful/controller/grateful_provider.dart';
@@ -19,36 +19,48 @@ class GratefulScreen extends ConsumerWidget {
     return Stack(
       children: [
         Scaffold(
-          appBar: appGlobalAppBar('Nhật ký biết ơn', actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, AppRoutesNames.search);
-                },
-                icon: const Icon(Icons.search)),
-          ]),
+          appBar: appGlobalAppBar('Nhật ký biết ơn'),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: AppConstants.marginHori),
               child: fetchList.when(
                   data: (listPost) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 20.h),
-                        listPost.isEmpty
-                            ? const SizedBox()
-                            : ListView.builder(
-                                itemCount: listPost.length,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (ctx, index) {
-                                  PostGratefulEntity objPost = listPost[index];
-                                  return GratefulPostItem(objPost: objPost);
-                                },
-                              )
-                      ],
-                    );
+                    return listPost.isEmpty
+                        ? const Center(child: Text('Chưa có bài viết nào'))
+                        : ListView.builder(
+                            itemCount: listPost.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (ctx, index) {
+                              PostGratefulEntity objPost = listPost[index];
+                              return Dismissible(
+                                  key: ValueKey(objPost.id),
+                                  confirmDismiss: (direction) async {
+                                    bool? result = await showDialog(
+                                      context: context,
+                                      builder: (ctx) => AppConfirm(
+                                        title: 'Bạn muốn xoá chứ?',
+                                        onNoConfirm: () {
+                                          Navigator.of(context).pop(false);
+                                        },
+                                        onConfirm: () {
+                                          Navigator.of(context).pop(true);
+                                        },
+                                      ),
+                                    );
+                                    return result;
+                                  },
+                                  background:
+                                      const BackgrounDismissiableWidget(),
+                                  onDismissed: (direction) {
+                                    ref
+                                        .read(gratefulProvider.notifier)
+                                        .deletePost(objPost.id);
+                                  },
+                                  child: GratefulPostItem(objPost: objPost));
+                            },
+                          );
                   },
                   error: (error, stackTrace) =>
                       const Center(child: AppText40('Error')),
@@ -72,10 +84,10 @@ class GratefulScreen extends ConsumerWidget {
               borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.orange.withOpacity(0.3),
+                  color: Colors.orange.withOpacity(0.2), // Giảm độ mờ
                   spreadRadius: 1,
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
@@ -108,6 +120,44 @@ class GratefulScreen extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class BackgrounDismissiableWidget extends StatelessWidget {
+  const BackgrounDismissiableWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: Container(
+        decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 216, 22, 8),
+            borderRadius: BorderRadius.circular(20)),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: EdgeInsets.only(right: 100.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.delete, color: Colors.white, size: 50.w),
+                SizedBox(height: 7.h),
+                Text(
+                  'Xóa',
+                  style: TextStyle(
+                      fontSize: 30.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
