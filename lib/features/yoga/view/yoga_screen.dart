@@ -30,6 +30,7 @@ class YogaScreen extends ConsumerWidget {
         child: SingleChildScrollView(
           child: fetchList.when(
               data: (listVideo) {
+                print('zzz-listvideolength-${listVideo.length}');
                 final List<VideoEntity> listThien = listVideo
                     .where((video) => video.type == AppConstants.typeVideoThien)
                     .toList()
@@ -38,6 +39,8 @@ class YogaScreen extends ConsumerWidget {
                     .where((video) => video.type == AppConstants.typeVideoYoga)
                     .toList()
                     .sublist(0, 4);
+                print('zzz-listThienlength-${listThien.length}');
+                print('zzz-listYogalength-${listYoga.length}');
                 return Column(
                   children: [
                     YogaMenu(

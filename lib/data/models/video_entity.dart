@@ -38,6 +38,8 @@ class VideoEntity {
           des: des,
           thumbnail: thumbnail ?? this.thumbnail,
           title: title,
+          fileImage: fileImage,
+          fileVideo: fileVideo,
           url: url ?? this.url,
           updateAt: updateAt);
 

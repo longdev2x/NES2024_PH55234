@@ -22,16 +22,19 @@ class VideoRepos {
   }
 
   static Future<void> uploadVideo(VideoEntity objVideo) async {
+    print('zzz-${objVideo.toJson()}');
     if (objVideo.fileImage == null || objVideo.fileVideo == null) return;
     try {
       objVideo = objVideo.copyWith(
           url: await _storeAndgetLinkVideo(objVideo, 'video'));
       objVideo = objVideo.copyWith(
           thumbnail: await _storeAndgetLinkVideo(objVideo, ''));
+      print('zzz1-${objVideo.toJson()}');
       //To Firestore
       final docRef =
           _insFirestore.collection(AppConstants.cVideo).doc(objVideo.id);
       await docRef.set(objVideo.toJson());
+      print('zzzdone-${objVideo.toJson()}');
     } catch (e) {
       if (kDebugMode) {
         print('Error video picker');
@@ -41,12 +44,14 @@ class VideoRepos {
 
   static Future<String> _storeAndgetLinkVideo(
       VideoEntity objVideo, String type) async {
+    print('zzz-Now get link-${objVideo.fileImage} + ${objVideo.fileVideo}');
     UploadTask uploadVideoTask = _insStorage
         .ref()
-        .child(AppConstants.fbStorageAllVideo)
+        .child(type == 'video' ? AppConstants.fbStorageAllVideo : AppConstants.fbStorageAllImage)
         .child(objVideo.id)
         .putFile(type == 'video' ? objVideo.fileVideo! : objVideo.fileImage!);
     TaskSnapshot snapshot = await uploadVideoTask;
+    print('zzz- get link-${await snapshot.ref.getDownloadURL()}');
     return await snapshot.ref.getDownloadURL();
   }
 }

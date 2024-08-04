@@ -24,7 +24,7 @@ class YogaMenu extends StatelessWidget {
         ),
         GestureDetector(
           onTap: onTapMore,
-          child: const AppText14('Xem hết', fontWeight: FontWeight.bold,),
+          child: const AppText14('Xem hết', fontWeight: FontWeight.bold, color: Colors.blue,),
         ),
       ],
     );

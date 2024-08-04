@@ -50,10 +50,10 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
   Widget build(BuildContext context) {
     final bool isLogin = ref.watch(isLoginProvider);
     final bool isLoader = ref.watch(loaderProvider);
-    final bool? isRemember = ref.watch(isRememberProvider(objRemember?.isRemember));
+    final bool? isRemember =
+        ref.watch(isRememberProvider(objRemember?.isRemember));
     final Role? role = ref.watch(roleProvider);
     final GlobalKey<FormState> keyForm = GlobalKey();
-    List<Role> newListRole = listRoles.where((role) => role.value != listRoles[2].value).toList();
 
     return Form(
       key: keyForm,
@@ -63,19 +63,39 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
             isLogin ? 'Đăng Nhập' : 'Đăng Ký',
             color: Colors.white,
           ),
-          if (!isLogin)
-            DropdownButton<String>(
-              underline: const SizedBox(),
-              value: role?.value,
-              items: newListRole
-                  .map((role) => DropdownMenuItem<String>(
-                      value: role.value, child: Text(role.name)))
-                  .toList(),
-              onChanged: (role) {
-                ref.read(roleProvider.notifier).state =
-                    newListRole.firstWhere((e) => e.value == role);
-              },
+          if (!isLogin) ...[
+            Row(
+              children: [
+                const Spacer(),
+                Radio<String>(
+                  activeColor: Colors.white,
+                  value: listRoles[0].value,
+                  groupValue: role?.value,
+                  fillColor: const WidgetStatePropertyAll(Colors.white),
+                  onChanged: (value) {
+                    ref.read(roleProvider.notifier).state =
+                        listRoles.firstWhere((e) => e.value == value);
+                  },
+                ),
+                const AppText14(
+                  'Người dùng',
+                  color: Colors.white,
+                ),
+                Radio<String>(
+                  value: listRoles[1].value,
+                  groupValue: role?.value,
+                  activeColor: Colors.white,
+                  fillColor: const WidgetStatePropertyAll(Colors.white),
+                  onChanged: (value) {
+                    ref.read(roleProvider.notifier).state =
+                        listRoles.firstWhere((e) => e.value == value);
+                  },
+                ),
+                const AppText14('Chuyên gia', color: Colors.white),
+                const Spacer(),
+              ],
             ),
+          ],
           SizedBox(height: isLogin ? 180.h : 80.h),
           AppTextFormField(
             lable: "Email",
@@ -136,10 +156,14 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
                   ),
                   const Spacer(),
                   GestureDetector(
-                      onTap: () => Navigator.of(context)
-                          .pushNamed(AppRoutesNames.forget, arguments: emailController.text),
-                      child: const AppText16('Quên mật khẩu?',
-                          color: Colors.purple, fontWeight: FontWeight.bold,)),
+                      onTap: () => Navigator.of(context).pushNamed(
+                          AppRoutesNames.forget,
+                          arguments: emailController.text),
+                      child: const AppText16(
+                        'Quên mật khẩu?',
+                        color: Colors.purple,
+                        fontWeight: FontWeight.bold,
+                      )),
                 ],
               ),
             ),
