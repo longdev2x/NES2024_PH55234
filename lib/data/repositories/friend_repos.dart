@@ -67,7 +67,6 @@ class FriendRepos {
   }
 
   
-
   //get Stream list tất cả lời mời đang pendding.
   static Stream<List<FriendshipEntity>> checkFriendShipStatus(String userId) {
     return _firestore

@@ -8,6 +8,7 @@ import 'package:nes24_ph55234/features/friend/controller/friend_provider.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_widgets.dart';
 
 class FriendSearchScreen extends ConsumerWidget {
+  static String query = '';
   const FriendSearchScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,8 +18,11 @@ class FriendSearchScreen extends ConsumerWidget {
         title: Padding(
           padding: const EdgeInsets.all(0.0),
           child: AppSearchBar(
-            onChanged: (query) {
-              _onSearch(query, ref);
+            onChanged: (textQuery) {
+              query = textQuery;
+              print('zzzzz textQuey $textQuery');
+              print('zzzzz query $query');
+              _onSearch(textQuery, ref);
             },
             focus: true,
             hintText: 'Tìm bạn bè',
@@ -33,7 +37,9 @@ class FriendSearchScreen extends ConsumerWidget {
         ),
         child: fetchListHaveStatus.when(
           data: (listFriendsHaveStatus) {
+            print('zzzzz -before com -$query');
             return _buildContent(
+              query: query,
               ref: ref,
               context: context,
               listFriendsHaveStatus: listFriendsHaveStatus,
@@ -49,6 +55,7 @@ class FriendSearchScreen extends ConsumerWidget {
   }
 
   Widget _buildContent({
+    required String query,
     required WidgetRef ref,
     required BuildContext context,
     required List<FriendEntityWithStatus> listFriendsHaveStatus,
@@ -64,8 +71,10 @@ class FriendSearchScreen extends ConsumerWidget {
                 arguments: listFriendsHaveStatus[index]);
           },
           onTapAdd: () {
+            print('zzzzz-come query-$query');
+            print('zzzOk send - ${listFriendsHaveStatus[index].friend.username}');
             _sendFriendRequest(
-                ref, listFriendsHaveStatus[index].friend.friendId);
+                ref, listFriendsHaveStatus[index].friend.friendId, query);
           },
           onAcceptFriend: () {
             _acceptFriendRequest(objFriend.friendId, ref);
@@ -86,8 +95,8 @@ class FriendSearchScreen extends ConsumerWidget {
     }
   }
 
-  void _sendFriendRequest(WidgetRef ref, String friendId) {
-    ref.read(friendshipProvider.notifier).sendFriendRequest(friendId, ref);
+  void _sendFriendRequest(WidgetRef ref, String friendId, String query) {
+    ref.read(friendshipProvider.notifier).sendFriendRequest(friendId, ref, query);
   }
 
   void _acceptFriendRequest(String friendshipId, WidgetRef ref) {

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:nes24_ph55234/common/components/app_global_app_bar.dart';
 import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/components/app_text_form_field.dart';
@@ -16,14 +15,13 @@ import 'package:nes24_ph55234/features/yoga/controller/video_provider.dart';
 import 'package:nes24_ph55234/features/yoga/view/yoga_widgets.dart';
 import 'package:nes24_ph55234/main.dart';
 
-class YogaScreen extends ConsumerWidget {
-  const YogaScreen({super.key});
+class YogaVideoScreen extends ConsumerWidget {
+  const YogaVideoScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchList = ref.watch(getListVideoFutureProvider);
     return Scaffold(
-      appBar: appGlobalAppBar('Thiền và Yoga'),
       body: Padding(
         padding:
             const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
@@ -43,6 +41,7 @@ class YogaScreen extends ConsumerWidget {
                 print('zzz-listYogalength-${listYoga.length}');
                 return Column(
                   children: [
+                    SizedBox(height: 10.h),
                     YogaMenu(
                         name: 'Yoga',
                         onTapMore: () {

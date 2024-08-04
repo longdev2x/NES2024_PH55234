@@ -100,7 +100,7 @@ class ItemListFriendSearch extends StatelessWidget {
                                   )),
                             ],
                           )
-                        : const Text('Đã là bạn bè')
+                        : const Text('Đã gửi lời mời')
               ],
             ),
           ),

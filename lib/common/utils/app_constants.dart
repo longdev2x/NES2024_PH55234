@@ -21,7 +21,7 @@ class AppConstants {
   static const String cStep = 'steps';
   static const String cStepCounter = 'steps_counter';
   static const String cVideo = 'videos';
-  static const String cMusic = 'musics';
+  static const String cMusic = 'music';
   static const String cPostGrateful = 'postsGrateful';
   static const String cPostFriend = 'postsFriend';
   static const String cBMI = 'bmis';

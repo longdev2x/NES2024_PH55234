@@ -30,7 +30,7 @@ class _StepMainTabState extends State<StepMainTab>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(56.h), // Đặt chiều cao tùy chỉnh ở đây
+        preferredSize: Size.fromHeight(56.h), 
         child: AppBar(
           bottom: TabBar(
             controller: _tabController,

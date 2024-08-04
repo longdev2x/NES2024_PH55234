@@ -19,10 +19,10 @@ import 'package:nes24_ph55234/features/profile/view/profile/profile_screen.dart'
 import 'package:nes24_ph55234/features/search/view/search_screen.dart';
 import 'package:nes24_ph55234/features/sleep/view/sleep_screen.dart';
 import 'package:nes24_ph55234/features/step/view/history_step_counter_screen.dart';
-import 'package:nes24_ph55234/features/step/view/main_tab_step.dart';
+import 'package:nes24_ph55234/features/step/view/step_main_tab.dart';
+import 'package:nes24_ph55234/features/yoga/view/yoga_main_tab.dart';
 import 'package:nes24_ph55234/features/yoga/view/yoga_detail_screen.dart';
 import 'package:nes24_ph55234/features/yoga/view/yoga_full_videos.dart';
-import 'package:nes24_ph55234/features/yoga/view/yoga_screen.dart';
 import 'package:nes24_ph55234/global.dart';
 
 class AppRoutes {
@@ -50,7 +50,7 @@ class AppRoutes {
       ),
       const RouteEntity(
         path: AppRoutesNames.yoga,
-        page: YogaScreen(),
+        page: YogaMainTab(),
       ),
       const RouteEntity(
         path: AppRoutesNames.historyStep,
