@@ -9,7 +9,7 @@ final isTrackingProvider = StateProvider<bool>(
 //Để rebuild lại giao diện ( Timer sẽ gọi provider này)
 final currentTimeProvider = StateProvider<DateTime>((ref) => DateTime.now());
 
-final sleepProvider = StateNotifierProvider<SleepNotifier, List<SleepEntity>>((ref) => SleepNotifier(),);
+final sleepProvider = StateNotifierProvider.autoDispose<SleepNotifier, List<SleepEntity>>((ref) => SleepNotifier(),);
 
 //Main
 class SleepNotifier extends StateNotifier<List<SleepEntity>> {

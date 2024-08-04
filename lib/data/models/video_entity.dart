@@ -1,13 +1,16 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
-
 class VideoEntity {
   final String id;
   final String? userId;
   final String? type;
-  final String? url;
   final String? title;
+  final String? url;
   final String? thumbnail;
+  final File? fileVideo;
+  final File? fileImage;
   final String? des;
   final DateTime updateAt;
 
@@ -18,6 +21,8 @@ class VideoEntity {
     this.userId,
     this.title,
     this.thumbnail,
+    this.fileImage,
+    this.fileVideo,
     this.des,
     required this.updateAt,
   }) : id = const Uuid().v4();

@@ -8,6 +8,7 @@ import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
 import 'package:nes24_ph55234/data/models/advise_entity.dart';
+import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:nes24_ph55234/data/repositories/advise_repos.dart';
 import 'package:nes24_ph55234/features/advise/controller/advise_provider.dart';
 import 'package:nes24_ph55234/global.dart';
@@ -39,8 +40,7 @@ class _AdviseChatDetailScreenState
 
   @override
   Widget build(BuildContext context) {
-    final sessionStream =
-        ref.watch(adviseSessionDetailProvider(widget.sessionId));
+    final sessionStream = ref.watch(adviseSessionDetailProvider(widget.sessionId));
 
     return Scaffold(
       appBar: appGlobalAppBar('Tư vấn tâm lý'),
@@ -86,6 +86,7 @@ class _AdviseChatDetailScreenState
                     itemCount: session.messages.length,
                     itemBuilder: (context, index) {
                       final message = session.messages[index];
+                      print('zzzzz--IsExpert----${message.isExpert}');
                       return MessageBubble(
                         message: message.message,
                         isMe: message.senderId ==
@@ -143,7 +144,7 @@ class _AdviseChatDetailScreenState
       message: _messageController.text,
       senderId: Global.storageService.getUserId(),
       timestamp: DateTime.now(),
-      isExpert: Global.storageService.getRole() == AppConstants.roleExpert,
+      isExpert: Global.storageService.getRole() == listRoles[1].name,
     );
 
     await AdviseRepos.addMessageToSession(widget.sessionId, message);

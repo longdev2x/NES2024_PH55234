@@ -24,11 +24,13 @@ class BMINavigate extends ConsumerWidget {
           BottomNavigationBarItem(
               icon: AppIconAsset(
                 path: ImageRes.icBMI,
+                size: 30,
               ),
               label: 'BMI gần nhất'),
           BottomNavigationBarItem(
               icon: AppIconAsset(
                 path: ImageRes.icCalculate,
+                size: 30,
               ),
               label: 'Tính toán'),
         ],

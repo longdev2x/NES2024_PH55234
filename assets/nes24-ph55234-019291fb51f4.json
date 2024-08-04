@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "nes24-ph55234",
+  "private_key_id": "019291fb51f403294197e0d96f8ce8dcbc8396bb",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCN6DtZI/eSJYdQ\n0yxyoaWJbwG3DJ6IioO+XBbIbAgmLZhUDTCYNfFIBGIEEl0lky3l2aU2IXnPlA5P\nFt15KHPtKwf2s8OzIzapHDULq1eogn7WT/wqp2pv2j7flwMd0jYpaLAgTpnqRck7\n95Z4qppFZyKFyvtR3lBkhuPvm+M4TL+SUXb8XtqH8n0hZOCdWdvJcaspMt6Yzesx\n3U0hc0k12nPsnAfIjf87W3P3kiEPt1wmkyLoBltWLP6lCCHn2AvMiyuh6JshI08f\nDON5GNFpJiAHxq2cwerXLFoYLGM0s0vGOTBD2uM/T2QLgVOqhiFDWaquJCLCcJ8f\nVCI9V54/AgMBAAECggEAPaxQ4sBdb9BMm2Vzu0wid/TdH3NmEPx2HkzCgA9niUQm\noFztIjHLb5usB439mn95IpxxD3IEESGNCHVtAqOAonIhr2fYJSooLt359dzdJ3iz\nbCvt8ZG6EeudiKoGajb6YAvGA/x1KxpyR1QmusGWc5RLri8WA7IlaVMwi+nJmiUn\nLKyuKNaqNX9VkmhrMaK2JUninGNSfkCL2bkMNmbuGskWOy4rOGVSLckmlxjuCB5q\nckydNlVUYdXvFALXD3/cBFIzz8TNp3u/Yh+qM2h03suOBKYzPMHBjU62rCl9Tma8\nU0nnVAFhGqg8pE3BHCKYRAdS+cAD9H1Jdnqd1oU9yQKBgQDAkI8CHx6gersKVrc1\nTi8hkWvua76O7ASIcnUJYgkuUXk6Dzu29/CysnBIvdqsANuTSsXORrxeGrDGisM+\nQCDnEQX+Ee9K4aqo+EQDmmjgky5aKNlFcBLB6tWwxEez9JPvDUqf9Pj+/hlyJKLT\nRrltBC0C8uLh59c17sc7SIwI9wKBgQC8p5o+7Dn3WbQxH5Z/TJRHmF5lQxsraGWV\nE/L3uAi4ZBVuJ4X/qEtFAIAsMH6qY0PcOvGY0oCW1dr4ndX30Q1EIDlZiCYYxF9z\n0xH60dVCxb2ho3FnxT3ePvws2GpAK0iUOjek1T8KwR/gc4lQdBanTra97lxQdPzv\nZ5ndTnDK+QKBgHpoaj/zAEkLO3KrBPNBq/wusOlyXEQGDCugdn1scGGdMO6TWGZK\n3hr6Cx5ycVr9gJb05SDnHj7DwLO06b/cjA3WaHTFedOj+BRJHRMdSKXZaZGufc8C\nGyph2UzwuJPQWWmQjWt5Ef8mD47bcxXS03RVPzespkTsV4XVL5ij2UCpAoGANith\n7ONjmZSWWuyZCCBzC0PDBwyHxqUJVg8OWvbq+hcy2BhdL5WhV0TXiNi75izulVQP\nfzQiXC033N9lSu0qA//Et+KSHdZ1GgrnRL/vnmatFraZn5RROXmYa0AQ8i/7fSRi\nSeA5Y9skTgyexw0uXAgMDOledHPDFPMIiTU2yfECgYBwkxkotRJMR8JDLyJ6FM4T\nwJTwTyN12w5YuNaA3oTec6N0eLprEfFEgmjS3IK/znIfc9i98G3wskVHRqyIOt8T\nHdrdRAX/AfYvO7lAzgUJf/npxQZ391QJRhIbjuyJjzkejiVH2a8DkLyH3fJedBw3\nOA+PCGD3f3+HNvo/A3m6Zw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "nes24-becom-better@nes24-ph55234.iam.gserviceaccount.com",
+  "client_id": "112928093976679315610",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/nes24-becom-better%40nes24-ph55234.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

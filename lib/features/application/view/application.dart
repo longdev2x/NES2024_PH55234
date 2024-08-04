@@ -134,7 +134,7 @@ class _ApplicationScreenState extends ConsumerState<ApplicationScreen>
         child: SafeArea(
           child: Container(
             padding: const EdgeInsets.all(10),
-            margin: EdgeInsets.only(left: 24.w, right: 24.w),
+            margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 10.h),
             decoration: BoxDecoration(
                 color: AppColors.backgroundColor2.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(24.r)),

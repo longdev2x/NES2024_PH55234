@@ -9,7 +9,7 @@ import 'package:nes24_ph55234/features/yoga/controller/video_provider.dart';
 
 class YogaMenu extends StatelessWidget {
   final String name;
-  final Function()? onTapMore;
+  final void Function()? onTapMore;
   const YogaMenu({super.key, required this.name, this.onTapMore});
 
   @override

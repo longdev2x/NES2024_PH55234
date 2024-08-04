@@ -7,6 +7,7 @@ import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/post_entity.dart';
 import 'package:nes24_ph55234/features/grateful/controller/grateful_provider.dart';
+import 'package:nes24_ph55234/features/grateful/controller/post_grateful_provider.dart';
 import 'package:nes24_ph55234/features/grateful/view/grateful_items.dart';
 import 'package:nes24_ph55234/features/grateful/view/post_bottom_screen.dart';
 
@@ -27,7 +28,10 @@ class GratefulScreen extends ConsumerWidget {
               child: fetchList.when(
                   data: (listPost) {
                     return listPost.isEmpty
-                        ? const Center(child: Text('Chưa có bài viết nào'))
+                        ? Padding(
+                          padding: EdgeInsets.only(top: 300.h),
+                          child: const Center(child: AppText18('Chưa có bài viết nào')),
+                        )
                         : ListView.builder(
                             itemCount: listPost.length,
                             shrinkWrap: true,
@@ -109,13 +113,16 @@ class GratefulScreen extends ConsumerWidget {
                   fontSize: 18.sp,
                 ),
               ),
-              onPressed: () => showModalBottomSheet(
-                context: context,
-                useSafeArea: false,
-                enableDrag: false,
-                isScrollControlled: true,
-                builder: (ctx) => const PostBottomScreen(),
-              ),
+              onPressed: () {
+                ref.read(createPostGratefulProvider.notifier).reset();
+                showModalBottomSheet(
+                  context: context,
+                  useSafeArea: false,
+                  enableDrag: false,
+                  isScrollControlled: true,
+                  builder: (ctx) => const PostBottomScreen(),
+                );
+              },
             ),
           ),
         ),

@@ -63,6 +63,8 @@ dependencies:
   flick_video_player: ^0.8.0
   flex_color_scheme: ^7.3.1
   google_fonts: ^6.2.1
+  http:
+  googleapis:
   googleapis_auth: ^1.6.0
   timezone: ^0.9.4
 
@@ -95,7 +97,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/rives/
-    - assets/nes24-ph55234-firebase-adminsdk-43wdc-de5ba10c9e.json
+    - assets/nes24-ph55234-019291fb51f4.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

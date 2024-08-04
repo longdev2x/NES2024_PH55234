@@ -6,10 +6,7 @@ class AdviseRepos {
   //Phía màn danh sách tin nhắn
   //Phía user - Tạo cuộc tư vấn
   static Future<void> createAdviseSession(AdviseSession session) async {
-    await _firestore
-        .collection('advise')
-        .doc(session.id)
-        .set(session.toJson());
+    await _firestore.collection('advise').doc(session.id).set(session.toJson());
   }
 
   //Phía user - get tất cả các cuộc tư vấn của current User
@@ -42,6 +39,7 @@ class AdviseRepos {
   //Màn hình nhắn mỗi cuộc nhắn tin
   //Stream nội dung tin nhắn để trả về màn nhắn tin chi tiết
   static Stream<AdviseSession> getAdviseSessionStream(String sessionId) {
+    print('zzzzz-${sessionId}');
     return _firestore
         .collection('advise')
         .doc(sessionId)
@@ -51,7 +49,10 @@ class AdviseRepos {
 
   //Nhắn tin.Người gửi nhắn tin
   static Future<void> addMessageToSession(
-      String sessionId, AdviseMessage message) async {
+    String sessionId,
+    AdviseMessage message,
+  ) async {
+    print('zzzzz----Toi---${message.isExpert}');
     await _firestore.collection('advise').doc(sessionId).update({
       'messages': FieldValue.arrayUnion([message.toJson()])
     });
@@ -63,7 +64,8 @@ class AdviseRepos {
       'responses': FieldValue.arrayUnion([response])
     });
   }
-  // Lấy cuộc trò chuyện theo từng category
+
+  // Lấy cuộc trò chuyện theo list category
   static Stream<List<AdviseSession>> getSessionsByCategory(
       List<String> categories) {
     return FirebaseFirestore.instance

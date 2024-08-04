@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:nes24_ph55234/common/components/app_dialog.dart';
 import 'package:nes24_ph55234/common/provider_global/loader_provider.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
@@ -31,7 +32,7 @@ class AuthController {
       UserEntity objUser = UserEntity(
         id: user.uid,
         email: email,
-        token: await user.getIdToken(),
+        fcmToken: await FirebaseMessaging.instance.getToken(),
         role: role,
         bith: DateTime.now().subtract(const Duration(days: 7300)),
         gender: 'Nam',
@@ -48,12 +49,13 @@ class AuthController {
       }
       await Global.storageService.setUserId(objUser.id);
       Global.storageService.setRole(objUser.role.name);
+      await Global.storageService.setRemember(email: '', password: '', isRemember: false);
+
       ref.read(allTargetProvider.notifier).setAllDefaultTarget();
-      await Global.storageService
-          .setRemember(email: '', password: '', isRemember: false);
+
+
       AppToast.showToast("Đăng ký thành công!");
-      navKey.currentState!
-          .pushNamed(AppRoutesNames.editProfile, arguments: false);
+      navKey.currentState!.pushNamed(AppRoutesNames.editProfile, arguments: false);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "email-already-in-use":
@@ -97,7 +99,7 @@ class AuthController {
         return;
       }
       UserEntity objUser = await ProfileRepos.getUserProfile(user.uid);
-      objUser = objUser.copyWith(token: await user.getIdToken());
+      objUser = objUser.copyWith(fcmToken: await FirebaseMessaging.instance.getToken());
       await ProfileRepos.updateUserProfile(objUser);
 
       await Global.storageService.setUserId(user.uid);

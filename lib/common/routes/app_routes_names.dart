@@ -22,5 +22,6 @@
   static const String forget = '/forget';
   static const String rePass = '/repass';
   static const String settings = '/settings';
+  static const String yogaFullVideos = '/yogaFullVideos';
 }
 

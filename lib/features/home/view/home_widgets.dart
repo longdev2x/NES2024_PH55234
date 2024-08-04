@@ -377,13 +377,13 @@ class HomeAnalysisWidget extends ConsumerWidget {
   }
 
   Widget _buildSleepCard(List<SleepEntity> listSleeps, TargetEntity? target) {
-    double sleepHours = 3.5;
-    // if (listSleeps.isNotEmpty && listSleeps.first.endTime != null) {
-    //   sleepHours = listSleeps.first.endTime!
-    //       .difference(listSleeps.first.startTime!)
-    //       .inHours
-    //       .toDouble();
-    // }
+    double sleepHours = 0;
+    if (listSleeps.isNotEmpty && listSleeps.first.endTime != null) {
+      sleepHours = listSleeps.first.endTime!
+          .difference(listSleeps.first.startTime!)
+          .inHours
+          .toDouble();
+    }
 
     return Card(
       elevation: 4,
@@ -434,33 +434,37 @@ class HomeAnalysisWidget extends ConsumerWidget {
   }
 
   Widget _buildHealthCard(UserEntity profile) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.w),
-        child: Column(
-          children: [
-            Column(
-              children: [
-                const AppText18('Chỉ số sức khoẻ', fontWeight: FontWeight.bold),
-                SizedBox(height: 12.h),
-                _buildBMIIndicator(profile),
-              ],
-            ),
-            SizedBox(height: 10.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildHealthInfo(Icons.height, 'Chiều cao',
-                    '${profile.height?.toInt() ?? 0} cm'),
-                SizedBox(width: 25.w),
-                _buildHealthInfo(Icons.monitor_weight, 'Cân nặng',
-                    '${profile.weight?.toInt() ?? 0} kg'),
-              ],
-            ),
-          ],
+    return SizedBox(
+      height: 285.h,
+      width: 165.w,
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.w),
+          child: Column(
+            children: [
+              Column(
+                children: [
+                  const AppText18('Chỉ số sức khoẻ', fontWeight: FontWeight.bold),
+                  SizedBox(height: 12.h),
+                  _buildBMIIndicator(profile),
+                ],
+              ),
+              SizedBox(height: 10.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildHealthInfo(Icons.height, 'Chiều cao',
+                      '${profile.height?.toInt() ?? 0} cm'),
+                  SizedBox(width: 25.w),
+                  _buildHealthInfo(Icons.monitor_weight, 'Cân nặng',
+                      '${profile.weight?.toInt() ?? 0} kg'),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

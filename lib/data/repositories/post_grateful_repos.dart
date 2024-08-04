@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/post_entity.dart';
+import 'package:nes24_ph55234/global.dart';
 
 class PostGratefulRepos {
   static const String _c = AppConstants.cPostGrateful;
@@ -9,7 +10,7 @@ class PostGratefulRepos {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
   static Future<List<PostGratefulEntity>> getAllPosts() async {
-    final snapshot = await _firestore.collection(_c).orderBy('date', descending: true).get();
+    final snapshot = await _firestore.collection(_c).where('user_id', isEqualTo: Global.storageService.getUserId()).orderBy('date', descending: true).get();
     return snapshot.docs
         .map((e) => PostGratefulEntity.fromJson(e.data()))
         .toList();

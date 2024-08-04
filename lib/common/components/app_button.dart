@@ -145,10 +145,7 @@ class AppButtonWithIcon extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(width: 12.w),
-            AppIconAsset(
-              path: iconPath,
-              iconColor: Colors.white,
-            ),
+            AppImage(imagePath: iconPath),
             const Spacer(),
             Text(
               name!,

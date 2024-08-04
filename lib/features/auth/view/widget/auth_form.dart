@@ -50,10 +50,10 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
   Widget build(BuildContext context) {
     final bool isLogin = ref.watch(isLoginProvider);
     final bool isLoader = ref.watch(loaderProvider);
-    final bool? isRemember =
-        ref.watch(isRememberProvider(objRemember?.isRemember));
+    final bool? isRemember = ref.watch(isRememberProvider(objRemember?.isRemember));
     final Role? role = ref.watch(roleProvider);
     final GlobalKey<FormState> keyForm = GlobalKey();
+    List<Role> newListRole = listRoles.where((role) => role.value != listRoles[2].value).toList();
 
     return Form(
       key: keyForm,
@@ -67,13 +67,13 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
             DropdownButton<String>(
               underline: const SizedBox(),
               value: role?.value,
-              items: listRoles
+              items: newListRole
                   .map((role) => DropdownMenuItem<String>(
                       value: role.value, child: Text(role.name)))
                   .toList(),
               onChanged: (role) {
                 ref.read(roleProvider.notifier).state =
-                    listRoles.firstWhere((e) => e.value == role);
+                    newListRole.firstWhere((e) => e.value == role);
               },
             ),
           SizedBox(height: isLogin ? 180.h : 80.h),
@@ -139,7 +139,7 @@ class _AuthFormWidgetState extends ConsumerState<AuthFormWidget> {
                       onTap: () => Navigator.of(context)
                           .pushNamed(AppRoutesNames.forget, arguments: emailController.text),
                       child: const AppText16('Quên mật khẩu?',
-                          color: Colors.purple)),
+                          color: Colors.purple, fontWeight: FontWeight.bold,)),
                 ],
               ),
             ),
