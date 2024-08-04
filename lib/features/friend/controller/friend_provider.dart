@@ -7,10 +7,12 @@ import 'package:nes24_ph55234/global.dart';
 
 //Search Provider
 class SearchFriendNotifier
-    extends AutoDisposeAsyncNotifier<List<FriendEntity>> {
+    extends AutoDisposeAsyncNotifier<List<FriendEntityWithStatus>> {
+  List<FriendshipEntity> listFriendShip = [];
   SearchFriendNotifier();
   @override
-  FutureOr<List<FriendEntity>> build() async {
+  FutureOr<List<FriendEntityWithStatus>> build() async {
+    listFriendShip = ref.watch(checkFriendStatusProvider).valueOrNull ?? [];
     return [];
   }
 
@@ -18,22 +20,48 @@ class SearchFriendNotifier
     String? query,
     bool isEmail = false,
   }) async {
-    state = AsyncValue.data(
-      await FriendRepos.searchUsers(
-        query ?? '',
-        isEmail: isEmail,
-      ),
+    List<FriendEntity> getFriends = await FriendRepos.searchUsers(
+      query ?? '',
+      isEmail: isEmail,
     );
+
+    String currentUserId = Global.storageService.getUserId();
+    //Lọc lấy status
+    List<FriendEntityWithStatus> friendHaveStatus = getFriends.map((friend) {
+      FriendshipEntity? friendShip = listFriendShip.isEmpty
+          ? null
+          : listFriendShip.firstWhere((friendShip) =>
+              (friendShip.userId == currentUserId &&
+                  friendShip.friendId == friend.friendId) ||
+              (friendShip.friendId == currentUserId &&
+                  friendShip.userId == friend.friendId));
+      if (friendShip == null) {
+        return FriendEntityWithStatus(friend: friend);
+      } else {
+        return FriendEntityWithStatus(
+            friend: friend, status: friendShip.status);
+      }
+    }).toList();
+
+    state = AsyncValue.data(friendHaveStatus);
   }
 }
 
-final searchProvider =
-    AutoDisposeAsyncNotifierProvider<SearchFriendNotifier, List<FriendEntity>>(
-        () {
-  return SearchFriendNotifier();
+final searchProvider = AutoDisposeAsyncNotifierProvider<SearchFriendNotifier,
+    List<FriendEntityWithStatus>>(
+  () => SearchFriendNotifier(),
+);
+//Stream xem đã gửi lời mời chưa, có lời mời rồi, xử lý trạng thái nút kết bạn
+final checkFriendStatusProvider = StreamProvider<List<FriendshipEntity>>((ref) {
+  final stream = FriendRepos.checkFriendShipStatus(
+    Global.storageService.getUserId(),
+  );
+  return stream;
 });
+
 //get trang friend profile
-final friendProfileProvider = FutureProvider.family<List<FriendEntity>, String>((ref, query) async {
+final friendProfileProvider =
+    FutureProvider.family<List<FriendEntity>, String>((ref, query) async {
   return FriendRepos.searchUsers(query);
 });
 

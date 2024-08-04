@@ -66,6 +66,26 @@ class FriendRepos {
     });
   }
 
+  
+
+  //get Stream list tất cả lời mời đang pendding.
+  static Stream<List<FriendshipEntity>> checkFriendShipStatus(String userId) {
+    return _firestore
+        .collection(_cFriendships)
+        //friendId == userId(xem có dc nhận lời mời k, trạng thái pending)
+        .where(Filter.or(
+          Filter('friend_id', isEqualTo: userId), 
+          Filter('user_id', isEqualTo: userId)
+          ))
+        //Tạo luồng stream
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return FriendshipEntity.fromJson(doc.data());
+      }).toList();
+    });
+  }
+
   //get Stream list tất cả lời mời đang pendding.
   static Stream<List<FriendshipEntity>> getFriendRequests(String userId) {
     return _firestore

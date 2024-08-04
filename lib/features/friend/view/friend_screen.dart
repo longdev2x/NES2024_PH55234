@@ -33,27 +33,28 @@ class FriendScreen extends ConsumerWidget {
                           ),
                         )
                       : const SizedBox(),
-                  if(requests.isNotEmpty ) ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: requests.length,
-                    itemBuilder: (context, index) {
-                      final objFriendShip = requests[index];
-                      return ItemListRequest(
-                        objFriendShip: objFriendShip,
-                        onTapRow: () {
-                          Navigator.pushNamed(
-                              context, AppRoutesNames.friendProfile,
-                              arguments: objFriendShip.senderUsername);
-                        },
-                        onAccept: () {
-                          _acceptFriendRequest(objFriendShip.id, ref);
-                        },
-                        onReject: () {
-                          _rejectFriendRequest(objFriendShip.id, ref);
-                        },
-                      );
-                    },
-                  ),
+                  if (requests.isNotEmpty)
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: requests.length,
+                      itemBuilder: (context, index) {
+                        final objFriendShip = requests[index];
+                        return ItemListRequest(
+                          objFriendShip: objFriendShip,
+                          onTapRow: () {
+                            Navigator.pushNamed(
+                                context, AppRoutesNames.friendProfile,
+                                arguments: objFriendShip.senderUsername);
+                          },
+                          onAccept: () {
+                            _acceptFriendRequest(objFriendShip.id, ref);
+                          },
+                          onReject: () {
+                            _rejectFriendRequest(objFriendShip.id, ref);
+                          },
+                        );
+                      },
+                    ),
                 ],
               );
             },
@@ -86,7 +87,7 @@ class FriendScreen extends ConsumerWidget {
                                 context, AppRoutesNames.friendProfile,
                                 arguments: friend);
                           },
-                          onTapAdd: () {
+                          onTapMess: () {
                             ref.read(createChatProvider(friend));
                             Navigator.pushNamed(
                                 context, AppRoutesNames.messageScreen,

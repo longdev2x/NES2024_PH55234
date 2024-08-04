@@ -2,6 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nes24_ph55234/data/models/user_entity.dart';
 import 'package:uuid/uuid.dart';
 
+class FriendEntityWithStatus {
+  final FriendEntity friend;
+  final String? status;
+
+  FriendEntityWithStatus({
+    required this.friend,
+    this.status,
+  });
+}
+
 class FriendEntity {
   final String friendId;
   final String username;
@@ -36,16 +46,16 @@ class FriendshipEntity {
   final Role role;
   final DateTime createdAt;
 
-  FriendshipEntity(
-      {String? id,
-      required this.userId,
-      required this.friendId,
-      required this.status,
-      required this.senderUsername,
-      this.senderAvatar,
-      required this.role,
-      required this.createdAt,})
-      : id = id ?? const Uuid().v4();
+  FriendshipEntity({
+    String? id,
+    required this.userId,
+    required this.friendId,
+    required this.status,
+    required this.senderUsername,
+    this.senderAvatar,
+    required this.role,
+    required this.createdAt,
+  }) : id = id ?? const Uuid().v4();
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -54,7 +64,7 @@ class FriendshipEntity {
         'status': status,
         'sender_username': senderUsername,
         'sender_avatar': senderAvatar,
-        'role' : role.value,
+        'role': role.value,
         'created_at': createdAt,
       };
 

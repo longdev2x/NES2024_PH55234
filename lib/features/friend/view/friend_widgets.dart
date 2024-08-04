@@ -11,18 +11,128 @@ import 'package:nes24_ph55234/data/models/post_entity.dart';
 import 'package:nes24_ph55234/features/friend/controller/friend_post_provider.dart';
 import 'package:nes24_ph55234/global.dart';
 
-class ItemListFriend extends StatelessWidget {
+class ItemListFriendSearch extends StatelessWidget {
   final Function() onTapRow;
   final Function() onTapAdd;
-  final bool isAddFriend;
+  final Function() onAcceptFriend;
+  final Function() onNotAcceptFriend;
+  final FriendEntityWithStatus objFriendWithStatus;
+
+  const ItemListFriendSearch(
+      {super.key,
+      required this.objFriendWithStatus,
+      required this.onTapRow,
+      required this.onAcceptFriend,
+      required this.onNotAcceptFriend,
+      required this.onTapAdd});
+
+  @override
+  Widget build(BuildContext context) {
+    final String currentUserId = Global.storageService.getUserId();
+    return GestureDetector(
+      onTap: onTapRow,
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 2.w),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: objFriendWithStatus.friend.avatar != null
+                      ? NetworkImage(objFriendWithStatus.friend.avatar!)
+                      : const AssetImage(ImageRes.avatarDefault)
+                          as ImageProvider,
+                  radius: 25,
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText16(
+                        objFriendWithStatus.friend.username,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      AppText14(
+                        objFriendWithStatus.friend.role?.name ?? 'Nguời dùng',
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                objFriendWithStatus.status == null
+                    ? ElevatedButton.icon(
+                        onPressed: onTapAdd,
+                        icon: AppIconAsset(
+                          path: ImageRes.icAddFriend,
+                          size: 12.r,
+                        ),
+                        label: const Text(
+                          'Kết bạn',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ))
+                    : objFriendWithStatus.friend.friendId == currentUserId
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ElevatedButton.icon(
+                                  onPressed: onAcceptFriend,
+                                  icon: AppIconAsset(
+                                    path: ImageRes.icAddFriend,
+                                    size: 12.r,
+                                  ),
+                                  label: const Text(
+                                    'Xác nhận',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )),
+                              SizedBox(width: 5.w),
+                              ElevatedButton.icon(
+                                  onPressed: onNotAcceptFriend,
+                                  icon: AppIconAsset(
+                                    path: ImageRes.icAddFriend,
+                                    size: 12.r,
+                                  ),
+                                  label: const Text(
+                                    'Từ chối',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  )),
+                            ],
+                          )
+                        : const Text('Đã là bạn bè')
+              ],
+            ),
+          ),
+          // Divider
+          Row(
+            children: [
+              const SizedBox(width: 62),
+              Expanded(
+                child: Container(
+                  height: 1,
+                  color: Colors.grey[300],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ItemListFriend extends StatelessWidget {
+  final Function() onTapRow;
+  final Function() onTapMess;
   final FriendEntity objFriend;
 
-  const ItemListFriend(
-      {super.key,
-      required this.objFriend,
-      required this.onTapRow,
-      this.isAddFriend = false,
-      required this.onTapAdd});
+  const ItemListFriend({
+    super.key,
+    required this.objFriend,
+    required this.onTapRow,
+    required this.onTapMess,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,41 +152,15 @@ class ItemListFriend extends StatelessWidget {
                   radius: 25,
                 ),
                 SizedBox(width: 12.w),
-                isAddFriend
-                    ? Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AppText16(
-                              objFriend.username,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            AppText14(
-                              objFriend.role?.name ?? 'Nguời dùng',
-                            ),
-                          ],
-                        ),
-                      )
-                    : AppText20(objFriend.username),
+                AppText20(objFriend.username),
                 const Spacer(),
-                isAddFriend
-                    ? ElevatedButton.icon(
-                        onPressed: onTapAdd,
-                        icon: AppIconAsset(
-                          path: ImageRes.icAddFriend,
-                          size: 12.r,
-                        ),
-                        label: const Text(
-                          'Kết bạn',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ))
-                    : GestureDetector(
-                        onTap: onTapAdd,
-                        child: const AppIconAsset(
-                          path: ImageRes.icSMS,
-                          size: 28,
-                        ),
-                      )
+                GestureDetector(
+                  onTap: onTapMess,
+                  child: const AppIconAsset(
+                    path: ImageRes.icSMS,
+                    size: 28,
+                  ),
+                )
               ],
             ),
           ),
