@@ -70,6 +70,7 @@ dependencies:
   just_audio: ^0.9.34
   audio_service: ^0.18.10
   file_picker: ^8.0.6
+  health: ^10.2.0
 
 
 dev_dependencies:

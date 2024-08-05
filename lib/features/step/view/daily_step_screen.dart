@@ -25,6 +25,7 @@ class _DailyStepScreenState extends ConsumerState<DailyStepScreen> {
   void initState() {
     super.initState();
     _requestPermission();
+    ref.read(dailyStepProvider.notifier).setValueFromApi();
   }
 
   Future<void> _requestPermission() async {

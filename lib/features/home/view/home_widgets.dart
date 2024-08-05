@@ -249,6 +249,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     final fetchStep = ref.watch(dailyStepProvider);
     final fetchProfile = ref.watch(profileProvider);
     final List<SleepEntity> listSleeps = ref.watch(sleepProvider);

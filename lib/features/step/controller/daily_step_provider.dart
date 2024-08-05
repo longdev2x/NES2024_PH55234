@@ -1,15 +1,20 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/data/models/step_entity.dart';
 import 'package:nes24_ph55234/global.dart';
+import 'package:nes24_ph55234/main.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:health/health.dart';
 
 class DailyStepAsyncNotifier
     extends AutoDisposeAsyncNotifier<List<StepEntity>> {
+  Health health = Health();
   @override
   FutureOr<List<StepEntity>> build() {
-    return _getValueFromApi();
+    return _getDefaultValue();
   }
 
   String userId = Global.storageService.getUserId();
@@ -18,18 +23,92 @@ class DailyStepAsyncNotifier
   StreamSubscription<StepCount>? _stepCountSubscription;
   StreamSubscription<PedestrianStatus>? _pedestrianStatusSubscription;
 
-  List<StepEntity> _getValueFromApi() {
-    final list = [
-      StepEntity(
+//Get data step 7 ngày gần nhất và tính các chỉ số còn lại cho objStep
+  Future<void> setValueFromApi() async {
+    final List<StepEntity> stepsList = [];
+    print('zzzzz-1');
+    // Configure the health plugin
+    health.configure(useHealthConnectIfAvailable: true);
+    print('zzzzz-2');
+    // Define the types to get
+    List<HealthDataType> types = [HealthDataType.STEPS];
+    print('zzzzz-3');
+
+    // Request permissions
+    bool permission;
+    permission = await health.hasPermissions(types) ?? false;
+    if (!permission) {
+      showDialog(
+          context: navKey.currentContext!,
+          builder: (ctx) {
+            return AlertDialog(
+              title: const AppText16(
+                'Bạn đăng nhập tài khoản google và quyền truy cập healh connect để sử dụng tính năng daily steps',
+                maxLines: 5,
+              ),
+              actions: [
+                ElevatedButton(
+                    onPressed: () async {
+                      permission = await health.requestAuthorization(types);
+                      navKey.currentState!.pop();
+                      print('zzzzz-5 - Authorization permission: $permission');
+                    },
+                    child: const Text('Đăng nhập google ngay'))
+              ],
+            );
+          });
+      state = AsyncValue.data(stepsList);
+    }
+
+    print('zzzzz-6 - Authorization permission: $permission');
+
+    if (permission) {
+      print('zzzzz-7');
+      var now = DateTime.now();
+      var sevenDaysAgo = now.subtract(const Duration(days: 7));
+
+      for (int i = 0; i < 7; i++) {
+        var startDate = sevenDaysAgo.add(Duration(days: i));
+        var endDate = startDate.add(const Duration(days: 1));
+
+        List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(
+          types: types,
+          startTime: startDate,
+          endTime: endDate,
+        );
+        print('zzzzz-8');
+
+        //Bước chân của ngày hôm đó
+        int totalSteps = healthData
+            .where((dataPoint) => dataPoint.type == HealthDataType.STEPS)
+            .fold(0, (sum, dataPoint) => sum + (dataPoint.value as int));
+        print('zzzzz-9');
+        StepEntity objStep = StepEntity(
           userId: userId,
-          date: DateTime(
-              DateTime.now().year, DateTime.now().month, DateTime.now().day),
-          step: 1950,
-          calo: 26,
-          metre: 550,
-          minute: 6),
+          date: startDate,
+          step: totalSteps,
+          calo: calculateCalo(totalSteps),
+          metre: calculateMetre(totalSteps),
+          minute: calculateMinute(totalSteps),
+        );
+
+        stepsList.add(objStep);
+      }
+    }
+  }
+
+  List<StepEntity> _getDefaultValue() {
+    return [
+      StepEntity(
+        userId: userId,
+        date: DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day),
+        step: 1950,
+        calo: 26,
+        metre: 550,
+        minute: 6,
+      ),
     ];
-    return list;
   }
 
   void initPlatformState() {
@@ -48,7 +127,6 @@ class DailyStepAsyncNotifier
       onError: onPedestrianStatusError,
     );
   }
-  
 
   void onStepCount(StepCount event) {
     final today = DateTime.now();
@@ -116,9 +194,9 @@ class DailyStepAsyncNotifier
   }
 }
 
-final dailyStepProvider = AutoDisposeAsyncNotifierProvider<
-    DailyStepAsyncNotifier,
-    List<StepEntity>>(() => DailyStepAsyncNotifier());
+final dailyStepProvider =
+    AutoDisposeAsyncNotifierProvider<DailyStepAsyncNotifier, List<StepEntity>>(
+        () => DailyStepAsyncNotifier());
 
 extension DateTimeExtensions on DateTime {
   bool isSameDate(DateTime other) {
