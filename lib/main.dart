@@ -13,15 +13,11 @@ final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 
 void main() async {
   await Global.init();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const ProviderScope(child: MyApp()));
 }
-
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     NotificationServices().initialize1();
@@ -34,7 +30,6 @@ class MyApp extends ConsumerWidget {
         navigatorKey: navKey,
         supportedLocales: supportedLocales,
         localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
-        title: 'NES24 PH55234 Hoàng Nhật Long',
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         themeMode: isDark ? ThemeMode.dark : ThemeMode.light,

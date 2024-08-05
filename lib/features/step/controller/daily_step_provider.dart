@@ -43,7 +43,7 @@ class DailyStepAsyncNotifier
           builder: (ctx) {
             return AlertDialog(
               title: const AppText16(
-                'Bạn đăng nhập tài khoản google và quyền truy cập healh connect để sử dụng tính năng daily steps',
+                'Bạn cần cho phép truy cập vào dữ liệu của health connect để sử dụng tính năng',
                 maxLines: 5,
               ),
               actions: [
@@ -53,11 +53,15 @@ class DailyStepAsyncNotifier
                       navKey.currentState!.pop();
                       print('zzzzz-5 - Authorization permission: $permission');
                     },
-                    child: const Text('Đăng nhập google ngay'))
+                    child: const Text('Cho phép')),
+                ElevatedButton(
+                    onPressed: () async {
+                      navKey.currentState!.pop();
+                    },
+                    child: const Text('Không'))
               ],
             );
           });
-      state = AsyncValue.data(stepsList);
     }
 
     print('zzzzz-6 - Authorization permission: $permission');
@@ -93,7 +97,10 @@ class DailyStepAsyncNotifier
         );
 
         stepsList.add(objStep);
+        state = AsyncValue.data(stepsList);
       }
+    } else {
+      state = AsyncValue.data(_getDefaultValue());
     }
   }
 

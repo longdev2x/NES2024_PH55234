@@ -347,6 +347,9 @@ class HomeAnalysisWidget extends ConsumerWidget {
                 children: [
                   fetchStep.when(
                     data: (steps) {
+                      if(steps.isEmpty) {
+                        return Container();
+                      }
                       StepEntity todayStep = steps.last;
                       return AppProgresTarget(
                           name: todayStep.step.toString(),
