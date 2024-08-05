@@ -6,7 +6,7 @@ class NotifyNotifier extends StateNotifier<List<NotifyEntity>> {
 
   void addNotify(NotifyEntity notify) {
     print('zzz3333');
-    state = [...state, notify];
+    state = [notify,...state];
     print('zzz4444-${state.length}');
   }
 

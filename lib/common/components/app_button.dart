@@ -107,6 +107,7 @@ class AppButtonWithIcon extends StatelessWidget {
   final double? radius;
   final Color? bgColor;
   final Color? textColor;
+  final Color? iconColor;
   final double? fontSize;
   final Function()? ontap;
 
@@ -120,6 +121,7 @@ class AppButtonWithIcon extends StatelessWidget {
       this.name = "",
       this.bgColor = AppColors.bgButton,
       this.textColor = Colors.white,
+      this.iconColor,
       this.fontSize = 19});
 
   @override
@@ -145,7 +147,7 @@ class AppButtonWithIcon extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(width: 12.w),
-            AppImage(imagePath: iconPath),
+            AppImage(imagePath: iconPath, color: iconColor,),
             const Spacer(),
             Text(
               name!,

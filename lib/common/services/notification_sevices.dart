@@ -49,6 +49,7 @@ class NotificationServices {
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
       onDidReceiveNotificationResponse: (NotificationResponse details) {
+        print('zzzzzzz-${details.payload}');
         // Xử lý khi nhấn vào thông báo
         if (details.payload != null) {
           if (details.payload == 'sleep_screen') {
@@ -57,13 +58,11 @@ class NotificationServices {
             navKey.currentState!.pushNamed(AppRoutesNames.steps);
           } else {
             final String type =
-                json.decode(details.payload!)['message']['type'];
+                json.decode(details.payload!)['type'];
             if (type == 'chat') {
-              final String senderId =
-                  json.decode(details.payload!)['message']['sender_id'];
-              navKey.currentState!.pushReplacementNamed(
-                  AppRoutesNames.messageScreen,
-                  arguments: senderId);
+              print('zzzzzzz-$type');
+              navKey.currentState!.pushNamed(
+                  AppRoutesNames.chatScreen);
             }
           }
         }
@@ -124,15 +123,15 @@ class NotificationServices {
         payload: payload,
       );
       //Thêm vào provider thông báo
-      ref.read(notifyProvider.notifier).addNotify(
-            NotifyEntity(
-              title: 'Đã đến giờ ngủ',
-              body: 'Nhấn để bắt đầu theo dõi giấc ngủ của bạn.',
-              type: 'sleep',
-              time: DateTime.now(),
-              isRead: false,
-            ),
-          );
+      // ref.read(notifyProvider.notifier).addNotify(
+      //       NotifyEntity(
+      //         title: 'Đã đến giờ ngủ',
+      //         body: 'Nhấn để bắt đầu theo dõi giấc ngủ của bạn.',
+      //         type: 'sleep',
+      //         time: DateTime.now(),
+      //         isRead: false,
+      //       ),
+      //     );
       print('zzz22222');
       if (kDebugMode) {
         print("zzzĐã lên lịch thông báo thành công");

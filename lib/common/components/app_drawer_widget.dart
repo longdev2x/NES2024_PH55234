@@ -55,16 +55,6 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
             children: [
               AppListTileDrawer(
                 onTap: () {
-                  ref.read(drawerIndexProvider.notifier).state = 0;
-                  widget.callBackWhenNavigate();
-                  Navigator.of(context).pushNamed(AppRoutesNames.steps);
-                },
-                title: 'Đếm số bước chân',
-                path: ImageRes.icFoot,
-                isActive: indexDrawer == 0,
-              ),
-              AppListTileDrawer(
-                onTap: () {
                   ref.read(drawerIndexProvider.notifier).state = 1;
                   widget.callBackWhenNavigate();
                   Navigator.of(context).pushNamed(AppRoutesNames.grateful);
@@ -73,16 +63,7 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
                 path: ImageRes.icGrateful,
                 isActive: indexDrawer == 1,
               ),
-              AppListTileDrawer(
-                onTap: () {
-                  ref.read(drawerIndexProvider.notifier).state = 2;
-                  widget.callBackWhenNavigate();
-                  Navigator.of(context).pushNamed(AppRoutesNames.sleep);
-                },
-                title: 'Đo lường giấc ngủ',
-                path: ImageRes.icTime,
-                isActive: indexDrawer == 2,
-              ),
+
               AppListTileDrawer(
                 onTap: () {
                   ref.read(drawerIndexProvider.notifier).state = 3;
@@ -93,15 +74,27 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
                 path: ImageRes.icBMI2,
                 isActive: indexDrawer == 3,
               ),
+
               AppListTileDrawer(
                 onTap: () {
-                  ref.read(drawerIndexProvider.notifier).state = 4;
+                  ref.read(drawerIndexProvider.notifier).state = 0;
                   widget.callBackWhenNavigate();
-                  Navigator.of(context).pushNamed(AppRoutesNames.yoga);
+                  Navigator.of(context).pushNamed(AppRoutesNames.steps);
                 },
-                title: 'Thiền và Yoga',
-                path: ImageRes.icYoga,
-                isActive: indexDrawer == 4,
+                title: 'Đếm số bước chân',
+                path: ImageRes.icFoot,
+                isActive: indexDrawer == 0,
+              ),
+              
+              AppListTileDrawer(
+                onTap: () {
+                  ref.read(drawerIndexProvider.notifier).state = 2;
+                  widget.callBackWhenNavigate();
+                  Navigator.of(context).pushNamed(AppRoutesNames.sleep);
+                },
+                title: 'Đo lường giấc ngủ',
+                path: ImageRes.icTime,
+                isActive: indexDrawer == 2,
               ),
               fetchUser.when(
                 data: (objUser) {
@@ -124,6 +117,17 @@ class _AppDrawerWidgetState extends ConsumerState<AppDrawerWidget> {
                     const Center(child: Text('Error')),
                 loading: () => const Center(child: CircularProgressIndicator()),
               ),
+              AppListTileDrawer(
+                onTap: () {
+                  ref.read(drawerIndexProvider.notifier).state = 4;
+                  widget.callBackWhenNavigate();
+                  Navigator.of(context).pushNamed(AppRoutesNames.yoga);
+                },
+                title: 'Thiền và Yoga',
+                path: ImageRes.icYoga,
+                isActive: indexDrawer == 4,
+              ),
+              
               AppListTileDrawer(
                 onTap: () {
                   AuthRepos.signOut();

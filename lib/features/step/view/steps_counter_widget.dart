@@ -204,6 +204,7 @@ class CounterRowButton extends ConsumerWidget {
               name: isPaused ? 'Tiếp tục' : 'Tạm ngưng',
               width: 170,
               radius: 20,
+              iconColor: Colors.white,
             ),
             const Spacer(),
             AppButtonWithIcon(
@@ -233,6 +234,7 @@ class CounterRowButton extends ConsumerWidget {
               name: 'Kết thúc',
               width: 170,
               radius: 20,
+              iconColor: Colors.white,
             ),
           ],
         ),

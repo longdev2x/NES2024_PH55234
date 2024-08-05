@@ -23,5 +23,6 @@
   static const String rePass = '/repass';
   static const String settings = '/settings';
   static const String yogaFullVideos = '/yogaFullVideos';
+  static const String chatScreen = '/chatScreen';
 }
 

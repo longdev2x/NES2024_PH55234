@@ -8,6 +8,7 @@ import 'package:nes24_ph55234/features/auth/view/auth_screen.dart';
 import 'package:nes24_ph55234/features/auth/view/forget_screen.dart';
 import 'package:nes24_ph55234/features/auth/view/rePass.dart';
 import 'package:nes24_ph55234/features/auth/view/settings_screen.dart';
+import 'package:nes24_ph55234/features/friend/view/chat_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_profile_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_search_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/message_screen.dart';
@@ -115,6 +116,10 @@ class AppRoutes {
       const RouteEntity(
         path: AppRoutesNames.yogaFullVideos,
         page: YogaFullVideos(),
+      ),
+      const RouteEntity(
+        path: AppRoutesNames.chatScreen,
+        page: ChatScreen(),
       ),
     ];
   }

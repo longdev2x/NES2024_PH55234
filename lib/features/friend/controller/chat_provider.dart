@@ -22,3 +22,5 @@ final createChatProvider =
       partnerUsername: objFriend.username,
       partnerAvatar: objFriend.avatar));
 });
+
+

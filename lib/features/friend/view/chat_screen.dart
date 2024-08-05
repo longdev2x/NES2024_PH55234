@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/routes/app_routes_names.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/data/models/friend_entity.dart';
@@ -13,7 +14,13 @@ class ChatScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fetchChats = ref.watch(chatProvider);
+
+
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 35,
+        title: const AppText16('Cuộc trò chuyện', fontWeight: FontWeight.bold,),
+      ) ,
         body: Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppConstants.marginHori),
       child: fetchChats.when(
