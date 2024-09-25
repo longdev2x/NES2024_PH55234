@@ -6,7 +6,8 @@ import 'package:nes24_ph55234/features/profile/controller/profile_provider.dart'
 import 'package:nes24_ph55234/global.dart';
 
 //Search Provider
-class SearchFriendNotifier extends AutoDisposeAsyncNotifier<List<FriendEntityWithStatus>> {
+class SearchFriendNotifier
+    extends AutoDisposeAsyncNotifier<List<FriendEntityWithStatus>> {
   List<FriendshipEntity> listFriendShip = [];
   SearchFriendNotifier();
   @override
@@ -24,36 +25,22 @@ class SearchFriendNotifier extends AutoDisposeAsyncNotifier<List<FriendEntityWit
       isEmail: isEmail,
     );
 
-    print('zzz-length-${getFriends.length}');
-
     //Lọc lấy status
     List<FriendEntityWithStatus> friendHaveStatus = getFriends.map((friend) {
-      print('zzz-friend-${friend.friendId}');
       FriendshipEntity? friendShip;
       //Không dùng firstWhere do nó không trả về null được
       if (listFriendShip.isNotEmpty) {
-        print('zzzNoNUll listFriendShipLength - ${listFriendShip.length}');
         for (FriendshipEntity frs in listFriendShip) {
-          print('zzzNoNUll friendShipFrId - ${frs.friendId}');
-                  print('zzzNoNUll getFriendId - ${friend.friendId}');
-          print('zzzNoNUll listFriendShipLength - ${listFriendShip.length}');
           if (friend.friendId == frs.friendId ||
               friend.friendId == frs.userId) {
-            print('zzzNoNUll - Have..');
             friendShip = frs;
             break;
           }
         }
       }
-      print('zzzOK');
-      if (friendShip == null) print('zzz - frs null');
-      print('zzz-friendShip-${friendShip}');
       if (friendShip == null) {
-        print('zzz-Ok come to null status');
         return FriendEntityWithStatus(friend: friend);
       } else {
-        print('zzzNoNUll');
-        print('zzzNoNUll-${friendShip.status}');
         return FriendEntityWithStatus(
             friend: friend, status: friendShip.status);
       }
@@ -97,8 +84,8 @@ final friendsProvider = StreamProvider<List<FriendEntity>>((ref) {
 class FriendshipNotifier extends StateNotifier<AsyncValue<void>> {
   FriendshipNotifier() : super(const AsyncValue.data(null));
 
-  Future<void> sendFriendRequest(String friendId, WidgetRef ref, String query) async {
-    print('zzzzz--$query');
+  Future<void> sendFriendRequest(
+      String friendId, WidgetRef ref, String query) async {
     final objUser = await ref.read(profileProvider.future);
 
     FriendshipEntity objFriendShip = FriendshipEntity(

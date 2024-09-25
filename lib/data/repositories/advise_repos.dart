@@ -39,7 +39,6 @@ class AdviseRepos {
   //Màn hình nhắn mỗi cuộc nhắn tin
   //Stream nội dung tin nhắn để trả về màn nhắn tin chi tiết
   static Stream<AdviseSession> getAdviseSessionStream(String sessionId) {
-    print('zzzzz-${sessionId}');
     return _firestore
         .collection('advise')
         .doc(sessionId)
@@ -52,7 +51,6 @@ class AdviseRepos {
     String sessionId,
     AdviseMessage message,
   ) async {
-    print('zzzzz----Toi---${message.isExpert}');
     await _firestore.collection('advise').doc(sessionId).update({
       'messages': FieldValue.arrayUnion([message.toJson()])
     });

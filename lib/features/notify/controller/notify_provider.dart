@@ -5,9 +5,7 @@ class NotifyNotifier extends StateNotifier<List<NotifyEntity>> {
   NotifyNotifier() : super([]);
 
   void addNotify(NotifyEntity notify) {
-    print('zzz3333');
     state = [notify,...state];
-    print('zzz4444-${state.length}');
   }
 
   void markAsRead(String id) {

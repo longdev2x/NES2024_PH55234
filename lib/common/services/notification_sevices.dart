@@ -49,7 +49,6 @@ class NotificationServices {
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
       onDidReceiveNotificationResponse: (NotificationResponse details) {
-        print('zzzzzzz-${details.payload}');
         // Xử lý khi nhấn vào thông báo
         if (details.payload != null) {
           if (details.payload == 'sleep_screen') {
@@ -60,7 +59,6 @@ class NotificationServices {
             final String type =
                 json.decode(details.payload!)['type'];
             if (type == 'chat') {
-              print('zzzzzzz-$type');
               navKey.currentState!.pushNamed(
                   AppRoutesNames.chatScreen);
             }
@@ -132,7 +130,6 @@ class NotificationServices {
       //         isRead: false,
       //       ),
       //     );
-      print('zzz22222');
       if (kDebugMode) {
         print("zzzĐã lên lịch thông báo thành công");
       }
@@ -147,9 +144,6 @@ class NotificationServices {
   void _handleFCMReceive(BuildContext context, WidgetRef ref) {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       AndroidNotificationDetails androidDetails;
-      print('zzz-Ok getmessage cate- ${message.category}');
-      print('zzz-Ok getmessage DATA - ${message.data.toString()}');
-      print('zzz-Ok getmessage NOTI - ${message.notification}');
 
       String? type = message.data['type'];
       String? title = message.notification?.title;
@@ -157,7 +151,6 @@ class NotificationServices {
 
       switch (type) {
         case 'chat':
-                print('zzzOk come heareChat');
           androidDetails = const AndroidNotificationDetails(
             'chat_channel',
             'Chat Notifications',
@@ -213,7 +206,6 @@ class NotificationServices {
           body = body ?? "Bạn có một thông báo mới";
       }
 
-      print('zzz-Ok ccc');
       try {
         await _flutterLocalNotificationsPlugin.show(
           0,
@@ -224,7 +216,6 @@ class NotificationServices {
           payload: json.encode(message.data),
         );
 
-        print('zzzok ddax show notify');
         // Thêm vào provider thông báo
         ref.read(notifyProvider.notifier).addNotify(
               NotifyEntity(
@@ -292,7 +283,6 @@ class NotificationServices {
     var projectId = 'nes24-ph55234'; //project id trên firebaes
     var url = Uri.parse(
         'https://fcm.googleapis.com/v1/projects/$projectId/messages:send');
-    print('zzz-Đã tạo url - $url');
     // Payload thông báo
     var payload = {
       'message': {
@@ -307,7 +297,6 @@ class NotificationServices {
         }
       },
     };
-    print('zzz-Đã tạo payload - ${jsonEncode(payload)}');
 
     // Gửi yêu cầu POST đến API HTTP v1
     final http.Response response = await http.post(
@@ -318,10 +307,6 @@ class NotificationServices {
       },
       body: jsonEncode(payload),
     );
-    print('zzz-Response status: ${response.statusCode}');
-    print('zzz-Response body: ${response.body}');
-    print('zzz-$response');
-    print('zzz-Đã gửi Post - $url');
 
     // Xử lý kết quả
     if (response.statusCode == 200) {

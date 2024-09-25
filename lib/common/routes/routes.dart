@@ -6,7 +6,7 @@ import 'package:nes24_ph55234/features/advise/view/user/user_advise_session_scre
 import 'package:nes24_ph55234/features/application/view/application.dart';
 import 'package:nes24_ph55234/features/auth/view/auth_screen.dart';
 import 'package:nes24_ph55234/features/auth/view/forget_screen.dart';
-import 'package:nes24_ph55234/features/auth/view/rePass.dart';
+import 'package:nes24_ph55234/features/auth/view/re_pass.dart';
 import 'package:nes24_ph55234/features/auth/view/settings_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/chat_screen.dart';
 import 'package:nes24_ph55234/features/friend/view/friend_profile_screen.dart';

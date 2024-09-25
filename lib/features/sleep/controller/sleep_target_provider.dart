@@ -52,7 +52,6 @@ class PlanBedNotifier extends StateNotifier<TimeOfDay> {
   }
 
   void _scheduleSleepNotification() {
-    print('zzz0101-$ref');
     //String channelId, String channelName, String title, String body, String payload, TimeOfDay sleepTime, StateNotifierProviderRef ref
     NotificationServices().scheduleSleepNotification('sleep_channel_id', 'Sleep Notifications', 'Đã đến giờ ngủ!', 'Nhấn để bắt đầu theo dõi giấc ngủ của bạn.', 'sleep_screen', state, ref!);
   }

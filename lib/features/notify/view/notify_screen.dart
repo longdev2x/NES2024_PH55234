@@ -10,7 +10,6 @@ class NotifyScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final objNotify = ref.watch(notifyProvider);
-print('zzz999-${objNotify.length}');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Thông báo'),

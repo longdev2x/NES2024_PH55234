@@ -65,9 +65,6 @@ class MessageRepos {
 
   static Future<void> sendMessage(MessageEntity objMessage) async {
     await _firestore.collection('messages').add(objMessage.toJson());
-     print('zzz-Ok đã nhắn ${objMessage.id}');
-     print('zzz-Ok đã nhắn senderID ${objMessage.senderId}');
-     print('zzz-Ok đã nhắn ReciveId ${objMessage.receiverId}');
     //Update last mess + seen
     QuerySnapshot chatQuery = await _firestore
         .collection('chats')
@@ -76,7 +73,6 @@ class MessageRepos {
         .limit(1)
         .get();
 
-        print('zzz-Ok đã get message - ${chatQuery.docs.toString()}');
     String chatId = chatQuery.docs.first.id;
     await _firestore.collection('chats').doc(chatId).update({
       'last_msg': objMessage.content,
@@ -84,10 +80,8 @@ class MessageRepos {
       'unread': Global.storageService.getUserId() != objMessage.senderId,
     });
 
-    print('zzz-Ok đã update doạn chát');
 
     if (Global.storageService.getUserId() == objMessage.senderId) {
-      print('zzz-Ok đã vào để sen notify');
       NotificationServices().sendNotification(
         type: 'chat',
         receiverToken: await getUserToken(objMessage.receiverId),
@@ -98,10 +92,8 @@ class MessageRepos {
   }
   //Lấy token người nhận
   static Future<String> getUserToken(String userId) async {
-    print('zzz-Ok đang get token người nhận');
     DocumentSnapshot userDoc =
         await _firestore.collection('user').doc(userId).get();
-        print('zzz-đã getToken - ${userDoc['fcmToken']}');
     return userDoc['fcmToken'] ?? '';
   }
 

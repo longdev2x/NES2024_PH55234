@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,10 +5,7 @@ import 'package:nes24_ph55234/common/components/app_icon_image.dart';
 import 'package:nes24_ph55234/common/components/app_text.dart';
 import 'package:nes24_ph55234/common/utils/app_constants.dart';
 import 'package:nes24_ph55234/common/utils/image_res.dart';
-import 'package:nes24_ph55234/data/models/music_entity.dart';
-import 'package:nes24_ph55234/data/repositories/music_repos.dart';
 import 'package:nes24_ph55234/features/yoga/controller/music_provider.dart';
-import 'package:file_picker/file_picker.dart';
 
 class YogaMusicScreen extends ConsumerWidget {
   const YogaMusicScreen({Key? key}) : super(key: key);
@@ -86,33 +82,33 @@ class YogaMusicScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _uploadMusic() async {
-    try {
-      // Chọn file nhạc
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.audio,
-      );
+  // Future<void> _uploadMusic() async {
+  //   try {
+  //     // Chọn file nhạc
+  //     FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //       type: FileType.audio,
+  //     );
 
-      if (result != null) {
-        File file = File(result.files.single.path!);
-        String fileName = result.files.single.name;
+  //     if (result != null) {
+  //       File file = File(result.files.single.path!);
+  //       String fileName = result.files.single.name;
 
-        // Upload file lên Firebase Storage
-        String downloadUrl = await MusicRepos.uploadAudio(file, fileName);
+  //       // Upload file lên Firebase Storage
+  //       String downloadUrl = await MusicRepos.uploadAudio(file, fileName);
 
-        // Tạo đối tượng MusicEntity
-        MusicEntity newMusic = MusicEntity(
-          title: fileName,
-          url: downloadUrl,
-        );
+  //       // Tạo đối tượng MusicEntity
+  //       MusicEntity newMusic = MusicEntity(
+  //         title: fileName,
+  //         url: downloadUrl,
+  //       );
 
-        // Lưu thông tin vào Firestore
-        await MusicRepos.saveMusicInfo(newMusic);
+  //       // Lưu thông tin vào Firestore
+  //       await MusicRepos.saveMusicInfo(newMusic);
 
-        print('zzzUp nhạc thành công');
-      }
-    } catch (e) {
-      print('zzzUp nhạc lỗi: $e');
-    }
-  }
+  //       print('zzzUp nhạc thành công');
+  //     }
+  //   } catch (e) {
+  //     print('zzzUp nhạc lỗi: $e');
+  //   }
+  // }
 }

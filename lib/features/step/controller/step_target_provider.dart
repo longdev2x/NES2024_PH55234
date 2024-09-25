@@ -79,7 +79,6 @@ class PlanWalkNotifier extends StateNotifier<TimeOfDay> {
   }
 
   void _scheduleSleepNotification() {
-    print('zzz0101-$ref');
     //String channelId, String channelName, String title, String body, String payload, TimeOfDay sleepTime, StateNotifierProviderRef ref
     NotificationServices().scheduleSleepNotification('Run_channel_id', 'Run Notifications', 'Đã đến giờ chạy!', 'Nhấn để bắt đầu chạy', 'steps_screen', state, ref!);
   }

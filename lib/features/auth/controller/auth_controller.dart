@@ -115,7 +115,6 @@ class AuthController {
       navKey.currentState!.pushNamedAndRemoveUntil(
           AppRoutesNames.application, (route) => false);
     } on FirebaseAuthException catch (e) {
-      print(e.code);
       switch (e.code) {
         case "user-disabled":
           AppToast.showToast("Tài khoản bị vô hiệu hoá");

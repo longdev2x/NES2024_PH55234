@@ -338,7 +338,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
                   const Icon(Icons.directions_walk,
                       size: 30, color: Colors.blue),
                   SizedBox(width: 10.w),
-                  const AppText18('Bước chân', fontWeight: FontWeight.bold),
+                  const AppText16('Bước chân', fontWeight: FontWeight.bold),
                 ],
               ),
               SizedBox(height: 15.h),
@@ -363,9 +363,10 @@ class HomeAnalysisWidget extends ConsumerWidget {
                   ),
                   SizedBox(width: 6.h),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       const AppText14('Mục tiêu'),
-                      AppText14(
+                      AppText10(
                         '${target?.target.toInt() ?? 2500} bước',
                         fontWeight: FontWeight.bold,
                       ),
@@ -405,7 +406,7 @@ class HomeAnalysisWidget extends ConsumerWidget {
                 children: [
                   const Icon(Icons.bedtime, size: 30, color: Colors.indigo),
                   SizedBox(width: 10.w),
-                  const AppText18('Giấc ngủ', fontWeight: FontWeight.bold),
+                  const AppText14('Giấc ngủ', fontWeight: FontWeight.bold),
                 ],
               ),
               SizedBox(height: 10.h),
@@ -420,9 +421,10 @@ class HomeAnalysisWidget extends ConsumerWidget {
                       fontSize: 15),
                   SizedBox(width: 5.h),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       const AppText14('Mục tiêu'),
-                      AppText14(
+                      AppText10(
                         '${target?.target ?? 8} giờ',
                         fontWeight: FontWeight.bold,
                       ),

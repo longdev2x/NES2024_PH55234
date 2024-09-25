@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ThemeClass {
+class AppThemeData {
   static ThemeData lightTheme = ThemeData(
+    useMaterial3: true,
     scaffoldBackgroundColor: const Color(0xFFEEF1F8),
     fontFamily: "Intel",
     primaryColor: Colors.blue,
@@ -41,6 +42,7 @@ class ThemeClass {
   );
 
   static ThemeData darkTheme = ThemeData(
+    useMaterial3: true,
     scaffoldBackgroundColor: Colors.black,
     fontFamily: "Intel",
     primaryColor: Colors.cyan,

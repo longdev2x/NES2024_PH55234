@@ -26,13 +26,10 @@ class DailyStepAsyncNotifier
 //Get data step 7 ngày gần nhất và tính các chỉ số còn lại cho objStep
   Future<void> setValueFromApi() async {
     final List<StepEntity> stepsList = [];
-    print('zzzzz-1');
     // Configure the health plugin
     health.configure(useHealthConnectIfAvailable: true);
-    print('zzzzz-2');
     // Define the types to get
     List<HealthDataType> types = [HealthDataType.STEPS];
-    print('zzzzz-3');
 
     // Request permissions
     bool permission;
@@ -51,7 +48,6 @@ class DailyStepAsyncNotifier
                     onPressed: () async {
                       permission = await health.requestAuthorization(types);
                       navKey.currentState!.pop();
-                      print('zzzzz-5 - Authorization permission: $permission');
                     },
                     child: const Text('Cho phép')),
                 ElevatedButton(
@@ -63,11 +59,7 @@ class DailyStepAsyncNotifier
             );
           });
     }
-
-    print('zzzzz-6 - Authorization permission: $permission');
-
     if (permission) {
-      print('zzzzz-7');
       var now = DateTime.now();
       var sevenDaysAgo = now.subtract(const Duration(days: 7));
 
@@ -80,13 +72,11 @@ class DailyStepAsyncNotifier
           startTime: startDate,
           endTime: endDate,
         );
-        print('zzzzz-8');
 
         //Bước chân của ngày hôm đó
         int totalSteps = healthData
             .where((dataPoint) => dataPoint.type == HealthDataType.STEPS)
             .fold(0, (sum, dataPoint) => sum + (dataPoint.value as int));
-        print('zzzzz-9');
         StepEntity objStep = StepEntity(
           userId: userId,
           date: startDate,

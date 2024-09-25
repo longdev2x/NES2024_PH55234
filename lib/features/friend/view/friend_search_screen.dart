@@ -20,8 +20,6 @@ class FriendSearchScreen extends ConsumerWidget {
           child: AppSearchBar(
             onChanged: (textQuery) {
               query = textQuery;
-              print('zzzzz textQuey $textQuery');
-              print('zzzzz query $query');
               _onSearch(textQuery, ref);
             },
             focus: true,
@@ -37,7 +35,6 @@ class FriendSearchScreen extends ConsumerWidget {
         ),
         child: fetchListHaveStatus.when(
           data: (listFriendsHaveStatus) {
-            print('zzzzz -before com -$query');
             return _buildContent(
               query: query,
               ref: ref,
@@ -71,8 +68,6 @@ class FriendSearchScreen extends ConsumerWidget {
                 arguments: listFriendsHaveStatus[index]);
           },
           onTapAdd: () {
-            print('zzzzz-come query-$query');
-            print('zzzOk send - ${listFriendsHaveStatus[index].friend.username}');
             _sendFriendRequest(
                 ref, listFriendsHaveStatus[index].friend.friendId, query);
           },

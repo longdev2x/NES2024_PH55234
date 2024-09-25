@@ -86,7 +86,6 @@ class _AdviseChatDetailScreenState
                     itemCount: session.messages.length,
                     itemBuilder: (context, index) {
                       final message = session.messages[index];
-                      print('zzzzz--IsExpert----${message.isExpert}');
                       return MessageBubble(
                         message: message.message,
                         isMe: message.senderId ==

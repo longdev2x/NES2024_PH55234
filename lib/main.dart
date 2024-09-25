@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nes24_ph55234/common/routes/routes.dart';
 import 'package:nes24_ph55234/common/provider_global/is_dark_theme_provider.dart';
 import 'package:nes24_ph55234/common/services/notification_sevices.dart';
+import 'package:nes24_ph55234/common/utils/app_theme_datas.dart';
 import 'package:nes24_ph55234/global.dart';
-import 'firebase_options.dart';
 
 final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 
 void main() async {
   await Global.init();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const ProviderScope(child: MyApp()));
 }
 class MyApp extends ConsumerWidget {
@@ -30,8 +28,8 @@ class MyApp extends ConsumerWidget {
         navigatorKey: navKey,
         supportedLocales: supportedLocales,
         localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
+        theme: AppThemeData.lightTheme,
+        darkTheme: AppThemeData.darkTheme,
         themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
         onGenerateRoute: (settings) {
           return AppRoutes.generateRoutSettings(settings);
